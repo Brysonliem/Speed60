@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    image: dunglas/frankenphp:latest
+    container_name: speed60_app
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=local
+      - APP_KEY=base64:aT5hnDkafZZqoBKIqPp+L00FdxDzg2/xWH8aYdWtReg=
+      - APP_DEBUG=true
+    depends_on:
+      - db
+    command: ["frankenphp", "run"]
+
+  db:
+    image: mariadb:10.11
+    container_name: speed60_db
+    restart: unless-stopped
+    ports:
+      - "33306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: 123456
+      MARIADB_DATABASE: speed60
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
