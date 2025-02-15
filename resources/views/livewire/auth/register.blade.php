@@ -1,88 +1,99 @@
-<form wire:submit="register" class="mt-8 space-y-6">
-   <div>
-       <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-       <input wire:model="name" type="text" id="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
+<div class="w-full">
+    {{-- input form --}}
+    <form wire:submit.prevent="register">
+        <div class="flex flex-col gap-2 mt-3">
+            <div>
+                <x-input-label for="role" value="Role" />
+                <x-select wire:model="role_level" id="role" class="w-full" placeholder="">
+                    <option value="">Pilih Role</option>
+                    <option value="1">SUPERADMIN</option>
+                    <option value="2">ADMIN</option>
+                </x-select>
+                @error('role_level') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="name" value="Fullname" />
+                <x-input wire:model="name" id="fullname" class="block mt-1 w-full" type="text" required autofocus autocomplete="fullname" />
+                @error('fullname') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="username" value="Username" />
+                <x-input wire:model="username" id="username" class="block mt-1 w-full" type="text" required autofocus autocomplete="username" />
+                @error('username') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="email" value="Email" />
+                <x-input wire:model="email" id="email" class="block mt-1 w-full" type="text" required autofocus autocomplete="email" />
+                @error('email') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="birth_date" value="Birth Date" />
+                <x-date-input wire:model="birth_date" id="birth_date" class="block mt-1 w-full" type="date" required autocomplete="current-password" />
+                @error('birth_date') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <x-input-label for="rt" value="RT" />
+                    <x-input wire:model="rt" id="rt" class="block mt-1 w-full" type="text" required />
+                    @error('rt') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+            
+                <div>
+                    <x-input-label for="rw" value="RW" />
+                    <x-input wire:model="rw" id="rw" class="block mt-1 w-full" type="text" required />
+                    @error('rw') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+            
+                <div>
+                    <x-input-label for="blok" value="Block" />
+                    <x-input wire:model="block" id="blok" class="block mt-1 w-full" type="text" required />
+                    @error('blok') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+            </div>            
+            
+            <div>
+                <x-input-label for="province" value="Province" />
+                <x-input wire:model="province" id="province" class="block mt-1 w-full" type="text" required autocomplete="province" />
+                @error('province') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="district" value="District" />
+                <x-input wire:model="district" id="district" class="block mt-1 w-full" type="text" required autocomplete="district" />
+                @error('district') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="city" value="City" />
+                <x-input wire:model="city" id="city" class="block mt-1 w-full" type="text" required autocomplete="city" />
+                @error('city') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <x-input-label for="password" value="Password" />
+                <x-input wire:model="password" id="password" class="block mt-1 w-full" type="password" required autocomplete="current-password" />
+                @error('password') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div >
+                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+    
+                <x-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
+                                type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
+                @error('password_confirmation') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div class="flex gap-2">
+                <x-button type="submit">
+                    Submit
+                </x-button>
+                <x-button-secondary type="button" wire:click="login">
+                    Login
+                </x-button-secondary>
+            </div>
+        </div>
+    </form>
 
-   <div>
-       <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-       <input wire:model="username" type="text" id="username" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       @error('username') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
-
-   <div>
-       <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-       <input wire:model="email" type="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
-
-   <div>
-       <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-       <input wire:model="password" type="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
-
-   <div>
-       <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-       <input wire:model="password_confirmation" type="password" id="password_confirmation" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       @error('password_confirmation') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
-
-   <div>
-       <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-       <input wire:model="phone" type="text" id="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
-
-   <div>
-       <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-       <textarea wire:model="address" id="address" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
-       @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-   </div>
-
-   <div class="grid grid-cols-2 gap-4">
-       <div>
-           <label for="province" class="block text-sm font-medium text-gray-700">Provinsi</label>
-           <input wire:model="province" type="text" id="province" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-           @error('province') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-       </div>
-
-       <div>
-           <label for="city" class="block text-sm font-medium text-gray-700">Kota/Kabupaten</label>
-           <input wire:model="city" type="text" id="city" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-           @error('city') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-       </div>
-   </div>
-
-   <div class="grid grid-cols-2 gap-4">
-       <div>
-           <label for="district" class="block text-sm font-medium text-gray-700">Kecamatan</label>
-           <input wire:model="district" type="text" id="district" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-           @error('district') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-       </div>
-
-       <div>
-           <label for="block" class="block text-sm font-medium text-gray-700">Blok (Opsional)</label>
-           <input wire:model="block" type="text" id="block" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-       </div>
-   </div>
-
-   <div class="grid grid-cols-2 gap-4">
-       <div>
-           <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
-           <input wire:model="rt" type="text" id="rt" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-           @error('rt') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-       </div>
-
-       <div>
-           <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
-           <input wire:model="rw" type="text" id="rw" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-           @error('rw') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-       </div>
-   </div>
-
-   <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-       Daftar
-   </button>
-</form>
+    {{-- Pesan Sukses --}}
+    @if (session()->has('message'))
+        <div class="mt-3 text-green-500">
+            {{ session('message') }}
+        </div>
+    @endif
+</div>

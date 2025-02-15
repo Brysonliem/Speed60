@@ -1,28 +1,19 @@
 <?php
 
+use App\Livewire\Admin;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Home;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Auth;
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', Login::class)->name('login');
-    Route::get('/register', Register::class)->name('register');
-});
+Route::get('/admin', Admin::class)
+    ->middleware('auth','verified')
+    ->name('home');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
-    
-    Route::post('/logout', function () {
-        Auth::logout();
-        return redirect()->route('login');
-    })->name('logout');
-});
-
-Route::get('/', Home::class)->name('home');
+Route::get('/superadmin', Home::class)
+    ->middleware('auth','verified')
+    ->name('home.superadmin');
 
 // Halaman produk
 Route::get('/products', function () {
@@ -58,3 +49,5 @@ Route::get('/cart', function () {
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
+
+require __DIR__.'/auth.php';

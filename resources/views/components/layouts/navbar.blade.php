@@ -88,7 +88,7 @@
     </div>
 
     <!-- Profile -->
-    <a href="{{ route('profile') }}" class="p-1 hidden sm:block">
+    <a href="{{ route('logout') }}" class="p-1 hidden sm:block">
         <span class="material-icons text-gray-900">person</span>
     </a>
 </div>
