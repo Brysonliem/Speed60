@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Pages\Carts;
 use App\Livewire\Pages\CheckoutProduct;
 use App\Livewire\Pages\CheckoutSuccess;
 use App\Livewire\Pages\Products;
@@ -22,6 +23,10 @@ Route::middleware('auth')->group(function() {
         Route::get('{product}/detail', ProductDetail::class)->name('detail');
         Route::get('checkout', CheckoutProduct::class)->name('checkout');
         Route::get('checkout/success', CheckoutSuccess::class)->name('checkout.success');
+    });
+
+    Route::prefix('carts')->name('carts.')->group(function() {
+        Route::get('', Carts::class)->name('index');
     });
 
 });

@@ -75,7 +75,7 @@
         <div class="flex items-center relative gap-4">
             
             <div class="flex">
-                <span class="material-icons">shopping_cart</span>
+                <a href="{{ route('carts.index') }}" class="material-icons">shopping_cart</a>
             </div>
 
             <div class="flex">
