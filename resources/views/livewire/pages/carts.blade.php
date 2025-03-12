@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 h-screen">
     <!-- Breadcrumb -->
     @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Cart', 'url' => route('carts.index')]
