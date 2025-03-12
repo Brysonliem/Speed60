@@ -39,59 +39,74 @@
                 <span class="material-icons">menu</span>
             </button>
 
- <!-- Navigation Links - Desktop -->
-<div class="hidden md:flex md:space-x-8">
-    <a href="{{ route('home') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-        Beranda
-    </a>
+        <!-- Navigation Links - Desktop -->
+        <div class="hidden md:flex md:space-x-8">
+            @if (Auth::check())
+                @php
+                    $dashboardRoute = match (Auth::user()->role->level) {
+                        1 => route('dashboard.superadmin'),
+                        2 => route('dashboard.admin'),
+                        default => route('dashboard.user'),
+                    };
+                @endphp
+                <a href="{{ $dashboardRoute }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                    Beranda
+                </a>
+            @endif
+            
 
-    <!-- Produk dengan Dropdown -->
-    <div class="relative group">
-        <a href="{{ route('products') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-            Produk
-            <span class="material-icons text-sm ml-1">expand_more</span>
-        </a>
-        <div class="absolute hidden group-hover:block bg-white shadow-md rounded-lg mt-2 w-40">
-            <a href="{{ route('category', ['category' => 'helm']) }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 text-sm">Helm</a>
-            <a href="{{ route('category', ['category' => 'jaket']) }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 text-sm">Jaket</a>
-            <a href="{{ route('category', ['category' => 'sarung-tangan']) }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 text-sm">Sarung Tangan</a>
+            <!-- Produk dengan Dropdown -->
+            <a href="{{ route('products.index') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                Produk
+            </a>
+
+            <a href="{{ route('track_order') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                Track Order
+            </a>
+            <a href="{{ route('dealers') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                Dealers
+            </a>
+            <a href="{{ route('support') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                Customer Support
+            </a>
         </div>
-    </div>
 
-    <a href="{{ route('track_order') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-        Track Order
-    </a>
-    <a href="{{ route('dealers') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-        Dealers
-    </a>
-    <a href="{{ route('support') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-        Customer Support
-    </a>
-</div>
+        <!-- Right side icons -->
+        <div class="flex items-center relative gap-4">
+            
+            <div class="flex">
+                <span class="material-icons">shopping_cart</span>
+            </div>
 
-<!-- Right side icons -->
-<div class="flex items-center space-x-4 md:space-x-6">
-    <!-- Cart -->
-    <a href="{{ route('cart') }}" class="flex items-center space-x-1">
-        <span class="material-icons text-gray-900">shopping_cart</span>
-        <span class="text-sm text-gray-900 hidden sm:inline">$items</span>
-    </a>
+            <div class="flex">
+                <span class="material-icons">search</span>
+            </div>
 
-    <!-- Search Button -->
-    <button class="p-1 hidden sm:block" id="search-button">
-        <span class="material-icons text-gray-900">search</span>
-    </button>
+            <div id="dropdownProfileButton" data-dropdown-toggle="dropdownProfile" class="flex cursor-pointer">
+                <span class="material-icons text-gray-900">person</span>
+            </div>
 
-    <!-- Search Bar (Hidden by Default) -->
-    <div id="search-bar" class="hidden absolute right-20 top-16 bg-white shadow-md rounded-lg p-2">
-        <input type="text" class="border border-gray-300 rounded-lg px-3 py-1 w-64 focus:outline-none focus:ring-2 focus:ring-gray-500" placeholder="Search...">
-    </div>
+            <!-- Dropdown menu -->
+            <div id="dropdownProfile" class="hidden absolute right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
+                <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownProfileButton">
+                    <li>
+                        <a href="#" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                            <i class="material-icons">person</i>
+                            Akun Saya
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('logout') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                            <i class="material-icons">logout</i>
+                            Keluar
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-    <!-- Profile -->
-    <a href="{{ route('logout') }}" class="p-1 hidden sm:block">
-        <span class="material-icons text-gray-900">person</span>
-    </a>
-</div>
+            
+        </div>
+
 
         <!-- Mobile menu - Hidden by default -->
         <div class="md:hidden hidden" id="mobile-menu">

@@ -13,27 +13,34 @@ class Login extends Component
 {
     public LoginForm $loginForm;
 
-    public function login() 
+    public function login()
     {
-        //validating all rules
+        // Validasi input
         $this->validate();
 
+        // Hapus URL yang disimpan di session sebelum autentikasi
+        session()->forget('url.intended');
+
+        // Autentikasi pengguna
         $this->loginForm->authenticate();
 
+        // Regenerasi session untuk keamanan
         Session::regenerate();
 
         // Ambil user yang sedang login
         $user = Auth::user();
-        session()->forget('url.intended');
 
-        // Cek role level dan tentukan redirect
-        if ($user->role->level == 1) {
-            return $this->redirectIntended(route('home.superadmin', absolute: false), navigate: true);
-        } else {
-            return $this->redirectIntended(route('home', absolute: false), navigate: true);
-        }
-
+        // Tentukan redirect berdasarkan level role
+        return $this->redirectIntended(
+            match ($user->role->level) {
+                1 => route('dashboard.superadmin', absolute: false),
+                2 => route('dashboard.admin', absolute: false),
+                default => route('dashboard.user', absolute: false),
+            },
+            navigate: true
+        );
     }
+
 
     public function register()
     {
@@ -42,6 +49,6 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.auth.login');
+        return view('livewire.pages.auth.login');
     }
 }

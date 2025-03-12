@@ -1,24 +1,32 @@
 <?php
 
-use App\Livewire\Admin;
+use App\Livewire\Pages\CheckoutProduct;
+use App\Livewire\Pages\CheckoutSuccess;
+use App\Livewire\Pages\Products;
+use App\Livewire\Pages\ProductDetail;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Home;
-use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
-use Illuminate\Support\Facades\Auth;
+use App\Livewire\Pages\Admin;
+use App\Livewire\Pages\Home;
+use App\Livewire\Pages\UserDashboard;
 
-Route::get('/admin', Admin::class)
-    ->middleware('auth','verified')
-    ->name('home');
+Route::middleware(['auth','verified'])->name('dashboard.')->group(function() {
+    Route::get('/dashboard-admin', Admin::class)->name('admin');
+    Route::get('/dashboard-superadmin', Home::class)->name('superadmin');
+    Route::get('/dashboard', UserDashboard::class)->name('user');
+});
 
-Route::get('/superadmin', Home::class)
-    ->middleware('auth','verified')
-    ->name('home.superadmin');
+Route::middleware('auth')->group(function() {
+    
+    Route::prefix('products')->name('products.')->group(function() {
+        Route::get('', Products::class)->name('index');
+        Route::get('{product}/detail', ProductDetail::class)->name('detail');
+        Route::get('checkout', CheckoutProduct::class)->name('checkout');
+        Route::get('checkout/success', CheckoutSuccess::class)->name('checkout.success');
+    });
+
+});
 
 // Halaman produk
-Route::get('/products', function () {
-    return view('products');
-})->name('products');
 
 // Kategori produk
 Route::get('/products/{category}', function ($category) {

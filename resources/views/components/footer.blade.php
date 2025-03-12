@@ -26,12 +26,24 @@
         <div>
             <h3 class="font-bold text-lg">LINKS</h3>
             <ul class="mt-2 space-y-1">
-                <li><a href="{{ route('home') }}" class="hover:underline">Beranda</a></li>
+                @if (Auth::check())
+                    @php
+                        $dashboardRoute = match (Auth::user()->role->level) {
+                            1 => route('dashboard.superadmin'),
+                            2 => route('dashboard.admin'),
+                            default => route('dashboard.user'),
+                        };
+                    @endphp
+                    <li><a href="{{ $dashboardRoute }}" class="hover:underline">Beranda</a></li>
+                @endif
                 <li><a href="{{ route('cart') }}" class="hover:underline">Cart</a></li>
                 <li><a href="{{ route('support') }}" class="hover:underline">Layanan Customer</a></li>
                 <li><a href="{{ route('track_order') }}" class="hover:underline">Track Order</a></li>
+        
+                
             </ul>
         </div>
+        
 
         <!-- Ikuti Kami -->
         <div>
@@ -44,9 +56,9 @@
         </div>
     </div>
 
-<!-- Logo Footer dengan Background Hitam -->
-<div class="mt-10 flex justify-center border-t border-gray-700 pt-6 bg-black py-6">
-    <img src="/images/speed60.png" alt="Logo" class="w-12">
-</div>
+    <!-- Logo Footer dengan Background Hitam -->
+    <div class="mt-10 flex justify-center border-t border-gray-700 pt-6 bg-black py-6">
+        <img src="/images/speed60.png" alt="Logo" class="w-12">
+    </div>
 
 </footer>

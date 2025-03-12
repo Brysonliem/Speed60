@@ -46,6 +46,8 @@ class Registration extends Component
     #[Validate('required|numeric')]
     public string $role_level = '';
 
+    public $roles;
+
     public function login()
     {
         $this->redirect(route('login'), true);
@@ -78,8 +80,13 @@ class Registration extends Component
         $this->redirect(route('login'));
     }
 
+    public function mount()
+    {
+        $this->roles = DB::table('role as r')->orderByDesc('r.created_at')->get();
+    }
+
     public function render()
     {
-        return view('livewire.auth.register');
+        return view('livewire.pages.auth.register');
     }
 }
