@@ -8,6 +8,7 @@ use App\Livewire\Pages\ProductDetail;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Admin;
 use App\Livewire\Pages\Home;
+use App\Livewire\Pages\Profile;
 use App\Livewire\Pages\UserDashboard;
 
 Route::middleware(['auth','verified'])->name('dashboard.')->group(function() {
@@ -27,6 +28,10 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('carts')->name('carts.')->group(function() {
         Route::get('', Carts::class)->name('index');
+    });
+
+    Route::prefix('profile')->name('profile.')->group(function() {
+        Route::get('/{user}', Profile::class)->name('show');
     });
 
 });

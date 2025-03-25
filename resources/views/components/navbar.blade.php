@@ -90,7 +90,7 @@
             <div id="dropdownProfile" class="hidden absolute right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
                 <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownProfileButton">
                     <li>
-                        <a href="#" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                        <a href="{{ route('profile.show', Auth::user()->id) }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
                             <i class="material-icons">person</i>
                             Akun Saya
                         </a>
