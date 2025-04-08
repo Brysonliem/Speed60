@@ -25,6 +25,15 @@ class IndexAdmin extends BaseComponent
     {
         $this->loadProducts();
     }
+
+    public function deleteProduct(int $id)
+    {
+        $this->productService->deleteProduct($id);
+
+        $this->loadProducts();
+
+        session()->flash('success','Produk Berhasil Dihapus');
+    }
     
     public function render()
     {

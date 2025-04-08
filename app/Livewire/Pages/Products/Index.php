@@ -27,6 +27,8 @@ class Index extends BaseComponent
         $this->loadProducts();
     }
 
+    
+
     public function render()
     {
         return view('livewire.pages.products.index');

@@ -22,4 +22,14 @@ class ProductImageService
     {
         return $this->productImageRepository->create($data);
     }
+
+    public function getProductImageById(int $id)
+    {
+        return $this->productImageRepository->find($id);
+    }
+
+    public function deleteProductById(int $id)
+    {
+        return $this->productImageRepository->delete($id);
+    }
 }

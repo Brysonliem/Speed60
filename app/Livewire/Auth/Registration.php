@@ -7,6 +7,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 
@@ -30,16 +31,22 @@ class Registration extends Component
 
     #[Validate('required|string')]
     public string $rt = '';
+
     #[Validate('required|string')]
     public string $rw = '';
+
     #[Validate('required|string')]
     public string $block = '';
+    
     #[Validate('required|string')]
     public string $district = '';
+
     #[Validate('required|string')]
     public string $province = '';
+
     #[Validate('required')]
     public string $birth_date = '';
+
     #[Validate('required|string')]
     public string $city = '';
 
@@ -70,7 +77,7 @@ class Registration extends Component
                 'rw' => $this->rw,
                 'district' => $this->district,
                 'province' => $this->province,
-                'birth_date' => $this->birth_date,
+                'birth_date' => Carbon::parse($this->birth_date)->format('Y-m-d'),
                 'block' => $this->block,
                 'role_id' => $role->id
             ]);

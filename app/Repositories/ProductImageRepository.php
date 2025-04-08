@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\ProductImageRepositoryInterface;
 use App\Models\ProductImages;
+use Illuminate\Support\Facades\DB;
 
 class ProductImageRepository implements ProductImageRepositoryInterface
 {
@@ -19,9 +20,17 @@ class ProductImageRepository implements ProductImageRepositoryInterface
         return $productImage;
     }
 
+    public function find(int $id)
+    {
+        $productImage = ProductImages::findOrFail($id);
+
+        return $productImage;
+    }
+
     public function delete(int $id)
     {
         $productImage = ProductImages::findOrFail($id);
-        return $productImage->delete();
+
+        return DB::transaction(fn() => $productImage->delete());
     }
 }

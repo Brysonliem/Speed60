@@ -39,7 +39,7 @@ class ProductService
 
     public function updateProduct(int $id, array $data)
     {
-        return $this->productRepository->update($id, $data);
+        return DB::transaction(fn() => $this->productRepository->update($id, $data) );
     }
 
     public function deleteProduct(int $id)

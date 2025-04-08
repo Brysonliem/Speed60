@@ -1,18 +1,15 @@
 <div class="flex flex-col gap-3 h-screen">
     <!-- Breadcrumb -->
-    @livewire('components.breadcrumb', ['links' => [
+    {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Product', 'url' => route('products.index.admin')],
-        ['name' => 'Create Product', 'url' => route('products.create')],
-    ]])
+        ['name' => 'Update Product', 'url' => route('products.edit', $form->product->id)],
+    ]]) --}}
 
     <div class="bg-white w-full p-4 border rounded-lg my-4 hover:shadow-lg transition-shadow duration-300">
-        <h2 class="text-xl font-semibold text-gray-800">Create Product</h2>
+        <h2 class="text-xl font-semibold text-gray-800">Update Product</h2>
         <p class="text-sm text-gray-500 mt-1">Fill the forms below.</p>
 
-        {{-- <pre>{{ print_r(session('debug'), true) }}</pre> --}}
-
-        <form wire:submit.prevent="store" class="mt-4">
-            {{-- @csrf --}}
+        <form wire:submit.prevent="update" class="mt-4">
             <div class="grid grid-cols-4 gap-4">
                 <div>
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Product Name</label>
@@ -45,7 +42,7 @@
 
                 <div class="col-span-2">                    
                     <label class="block mb-2 text-sm font-medium text-gray-900 " for="multiple_files">Upload Picture Product</label>
-                    <input wire:model="images" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
+                    <input wire:model="newImages" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
                     focus:outline-none " id="multiple_files" type="file" multiple>
                     {{-- @error('images.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
                 </div>
@@ -57,25 +54,40 @@
                         focus:ring-blue-500 focus:border-blue-500 " placeholder=""></textarea>
                     {{-- @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
                 </div>
-                <div class="col-span-4 flex gap-3">
-                    @if (!empty($imagePreviews))
-                        @foreach ($imagePreviews as $image)
-                            <img src="{{ $image }}" alt="" class="w-24 h-24 object-cover rounded-lg me-2 mb-2">
+        
+                <!-- Preview gambar lama -->
+                <div class="col-span-4 flex gap-3 flex-wrap">
+                    @foreach ($form->product->images as $image)
+                        <div class="relative">
+                            <img src="{{ asset('storage/' . $image->image_path) }}" class="w-24 h-24 object-cover rounded-lg">
+                            {{-- Tombol hapus (optional) --}}
+                            <button wire:click.prevent="deleteImage({{ $image->id }})" class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center">×</button>
+                        </div>
+                    @endforeach
+                </div>
+        
+                <!-- Preview upload baru -->
+                <div class="col-span-4 flex gap-3 flex-wrap">
+                    @if (!empty($previewNewImages))
+                        @foreach ($previewNewImages as $image)
+                            <img src="{{ $image }}" class="w-24 h-24 object-cover rounded-lg">
                         @endforeach
                     @endif
                 </div>
+        
+                <!-- Tombol Submit -->
                 <div class="col-span-4 flex">
                     <div class="ms-auto">
                         {{-- <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Submit</button> --}}
                         <button
                             type="submit"
                             wire:loading.attr="disabled"
-                            wire:target="store"
+                            wire:target="update"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
                         >
                             <svg
                                 wire:loading
-                                wire:target="store"
+                                wire:target="update"
                                 aria-hidden="true"
                                 role="status"
                                 class="inline w-4 h-4 me-3 text-white animate-spin"
@@ -92,13 +104,13 @@
                                     fill="currentColor"
                                 />
                             </svg>
-                            <span wire:loading.remove wire:target="store">Simpan</span>
-                            <span wire:loading wire:target="store">Menyimpan...</span>
+                            <span wire:loading.remove wire:target="update">Simpan</span>
+                            <span wire:loading wire:target="update">Memperbarui...</span>
                         </button>
                     </div>
                 </div>
-                
             </div>
         </form>
+        
     </div>
 </div>

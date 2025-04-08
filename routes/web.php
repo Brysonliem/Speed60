@@ -10,6 +10,7 @@ use App\Livewire\Pages\Products\IndexAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Admin;
 use App\Livewire\Pages\Home;
+use App\Livewire\Pages\Products\Edit;
 use App\Livewire\Pages\Profile;
 use App\Livewire\Pages\UserDashboard;
 
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function() {
         Route::get('', Index::class)->name('index');
         Route::get('index-admin', IndexAdmin::class)->name('index.admin');
         Route::get('create', Create::class)->name('create');
+        Route::get('{product}/edit', Edit::class)->name('edit');
         Route::get('{product}/detail', ProductDetail::class)->name('detail');
         Route::get('checkout', CheckoutProduct::class)->name('checkout');
         Route::get('checkout/success', CheckoutSuccess::class)->name('checkout.success');
