@@ -16,7 +16,8 @@ class RoleSeeder extends Seeder
     {
         $data = [
             ['name' => 'SUPERADMIN','level' => 1],
-            ['name' => 'ADMIN','level' => 2]
+            ['name' => 'ADMIN','level' => 2],
+            ['name' => 'USER','level' => 3],
         ];
 
         foreach($data as $d)
