@@ -20,7 +20,7 @@ return new class extends Migration
             $table->float('price');
             
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('product_type_id')->constrained('product_type')->onDelete('cascade');
+            $table->foreignId('product_type_id')->constrained('product_types')->onDelete('cascade');
             $table->timestamps();
         });
     }
