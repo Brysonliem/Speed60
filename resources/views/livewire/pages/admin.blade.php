@@ -1,4 +1,8 @@
-<div class="text-center mt-10">
-    <h1 class="text-3xl font-bold">Selamat Datang di Halaman ADMIN</h1>
-    <p class="mt-2">Website ini menggunakan Laravel Livewire</p>
+<div class="flex">
+    
+    <div class="bg-white w-full p-4 border rounded-lg my-4 text-center hover:shadow-lg transition-shadow duration-300">
+        <h2 class="text-xl font-semibold text-gray-800">SELAMAT DATANG DI PANEL ADMIN</h2>
+        <p class="text-sm text-gray-500 mt-1">Silakan kelola data dan pantau aktivitas melalui dashboard ini.</p>
+    </div>    
+    
 </div>

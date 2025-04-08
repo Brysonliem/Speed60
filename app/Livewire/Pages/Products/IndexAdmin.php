@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\Pages;
+namespace App\Livewire\Pages\Products;
 
-use App\Livewire\BaseComponent;
 use App\Services\ProductService;
+use App\Livewire\BaseComponent;
 
-class UserDashboard extends BaseComponent
+class IndexAdmin extends BaseComponent
 {
     public $products;
 
@@ -25,8 +25,9 @@ class UserDashboard extends BaseComponent
     {
         $this->loadProducts();
     }
+    
     public function render()
     {
-        return view('livewire.pages.user-dashboard');
+        return view('livewire.pages.products.index-admin');
     }
 }

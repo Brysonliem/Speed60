@@ -3,8 +3,10 @@
 use App\Livewire\Pages\Carts;
 use App\Livewire\Pages\CheckoutProduct;
 use App\Livewire\Pages\CheckoutSuccess;
-use App\Livewire\Pages\Products;
+use App\Livewire\Pages\Products\Create;
+use App\Livewire\Pages\Products\Index;
 use App\Livewire\Pages\ProductDetail;
+use App\Livewire\Pages\Products\IndexAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Admin;
 use App\Livewire\Pages\Home;
@@ -20,7 +22,9 @@ Route::middleware(['auth','verified'])->name('dashboard.')->group(function() {
 Route::middleware('auth')->group(function() {
     
     Route::prefix('products')->name('products.')->group(function() {
-        Route::get('', Products::class)->name('index');
+        Route::get('', Index::class)->name('index');
+        Route::get('index-admin', IndexAdmin::class)->name('index.admin');
+        Route::get('create', Create::class)->name('create');
         Route::get('{product}/detail', ProductDetail::class)->name('detail');
         Route::get('checkout', CheckoutProduct::class)->name('checkout');
         Route::get('checkout/success', CheckoutSuccess::class)->name('checkout.success');

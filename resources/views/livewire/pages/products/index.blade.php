@@ -81,16 +81,17 @@
                 <span class="text-lg font-semibold">Semua Produk</span>
 
                 <div class="grid grid-cols-3 gap-3">
-                    @for ($i = 0; $i < 6; $i++)
+                    @foreach ($products as $product)
                         @livewire('components.product-card', [
-                            'image' => 'images/product.png',
-                            'title' => 'Titanium Hardware Valve Cover Kit - Honda K20/K24 Titanium',
-                            'price' => 'Rp 130.000',
-                            'rating' => 4.95,
-                            'reviews' => 73
+                            'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
+                            'title' => $product['name'],
+                            'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),
+                            'rating' => round($product['reviews_avg_rating_point'], 2),
+                            'reviews' => $product['reviews_count']
                         ])
-                    @endfor
+                    @endforeach
                 </div>
+                
             </div>
         </div>
         

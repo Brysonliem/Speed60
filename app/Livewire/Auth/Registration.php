@@ -59,7 +59,7 @@ class Registration extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $role = Role::where('level', $this->role_level)->first();
+            $role = Role::where('level', 3)->first();
 
             User::create([
                 'username' => $this->username,

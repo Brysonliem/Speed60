@@ -40,47 +40,60 @@
             </button>
 
         <!-- Navigation Links - Desktop -->
+        @php
+            $user = Auth::user();
+            $dashboardRoute = match ($user->role->level) {
+                1 => route('dashboard.superadmin'),
+                2 => route('dashboard.admin'),
+                default => route('dashboard.user'),
+            };
+        @endphp
+
         <div class="hidden md:flex md:space-x-8">
             @if (Auth::check())
-                @php
-                    $dashboardRoute = match (Auth::user()->role->level) {
-                        1 => route('dashboard.superadmin'),
-                        2 => route('dashboard.admin'),
-                        default => route('dashboard.user'),
-                    };
-                @endphp
+                {{-- Beranda: semua role --}}
                 <a href="{{ $dashboardRoute }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
                     Beranda
                 </a>
+
+                {{-- Role 1 & 2 hanya tampilkan Buat Produk --}}
+                @if (in_array($user->role->level, [1, 2]))
+                    <a href="{{ route('products.index.admin') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                        Buat Produk
+                    </a>
+                @endif
+
+                {{-- Role 3: tampilkan semua menu lainnya --}}
+                @if ($user->role->level === 3)
+                    <a href="{{ route('products.index') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                        Produk
+                    </a>
+                    <a href="{{ route('track_order') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                        Track Order
+                    </a>
+                    <a href="{{ route('dealers') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                        Dealers
+                    </a>
+                    <a href="{{ route('support') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                        Customer Support
+                    </a>
+                @endif
             @endif
-            
-
-            <!-- Produk dengan Dropdown -->
-            <a href="{{ route('products.index') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                Produk
-            </a>
-
-            <a href="{{ route('track_order') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                Track Order
-            </a>
-            <a href="{{ route('dealers') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                Dealers
-            </a>
-            <a href="{{ route('support') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                Customer Support
-            </a>
         </div>
+
 
         <!-- Right side icons -->
         <div class="flex items-center relative gap-4">
-            
-            <div class="flex">
-                <a href="{{ route('carts.index') }}" class="material-icons">shopping_cart</a>
-            </div>
 
-            <div class="flex">
-                <span class="material-icons">search</span>
-            </div>
+            @if (!in_array($user->role->level, [1, 2]))
+                <div class="flex">
+                    <a href="{{ route('carts.index') }}" class="material-icons">shopping_cart</a>
+                </div>
+
+                <div class="flex">
+                    <span class="material-icons">search</span>
+                </div>
+            @endif            
 
             <div id="dropdownProfileButton" data-dropdown-toggle="dropdownProfile" class="flex cursor-pointer">
                 <span class="material-icons text-gray-900">person</span>
@@ -110,6 +123,7 @@
 
         <!-- Mobile menu - Hidden by default -->
         <div class="md:hidden hidden" id="mobile-menu">
+            
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Beranda</a>
                 <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">

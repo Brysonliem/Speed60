@@ -1,8 +1,8 @@
-<div class="w-full max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+<div class="w-full max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow-sm my-5">
     <form class="space-y-6" wire:submit.prevent="register">
-        <h5 class="text-xl font-medium text-gray-900">Create an account</h5>
+        <h5 class="text-xl font-medium text-gray-900">Create your account</h5>
         
-        <div>
+        {{-- <div>
             <label for="role" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
             <select wire:model="role_level" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 @foreach ($roles as $role)
@@ -10,7 +10,7 @@
                 @endforeach
             </select>
             @error('role_level') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
+        </div> --}}
         
         <div>
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
@@ -33,7 +33,7 @@
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                 </svg>
             </div> --}}
-            <input datepicker wire:model="birth_date" id="birth_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 " placeholder="">
+            <input datepicker wire:model="birth_date" id="birth_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="">
             @error('birth_date') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 

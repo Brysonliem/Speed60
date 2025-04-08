@@ -1,6 +1,12 @@
 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">
     <a href="#">
-        <img class="pl-2 rounded-t-lg" src="{{ asset($image) }}" alt="{{ $title }}" />
+        @if (!empty($image))
+            <img src="{{ asset('storage/' . $image) }}"
+                alt="Product Image"
+                class="pl-2 rounded-t-lg" />
+        @else
+            <span class="text-gray-400">No image</span>
+        @endif
     </a>
     <div class="px-5 pb-5">
         <a href="{{ route('products.detail', ['product' => 5]) }}">
