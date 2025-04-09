@@ -11,7 +11,7 @@ services:
       - "8080:80"
     environment:
       - APP_ENV=local
-      - APP_KEY=base64:aT5hnDkafZZqoBKIqPp+L00FdxDzg2/xWH8aYdWtReg=
+      - APP_KEY=base64:bGmI1TY7VHAPCJdINeOjpvNkeRA4OwDh00TV4DRDNvA=
       - APP_DEBUG=true
     depends_on:
       - db
