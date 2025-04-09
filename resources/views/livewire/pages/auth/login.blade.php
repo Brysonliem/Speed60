@@ -13,7 +13,7 @@
             @error('loginForm.password') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
         <div class="flex items-start">
-            <a href="#" class="ms-auto text-sm text-blue-700 hover:underline ">Lost Password?</a>
+            <a href="#" class="ms-auto text-sm text-blue-700 hover:underline ">Forgot Password?</a>
         </div>
         {{-- <button wire:click="login" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Login</button> --}}
         <button
