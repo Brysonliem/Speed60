@@ -44,7 +44,7 @@ class Registration extends Component
     #[Validate('required|string')]
     public string $province = '';
 
-    #[Validate('required')]
+    #[Validate('nullable')]
     public string $birth_date = '';
 
     #[Validate('required|string')]
@@ -77,7 +77,7 @@ class Registration extends Component
                 'rw' => $this->rw,
                 'district' => $this->district,
                 'province' => $this->province,
-                'birth_date' => Carbon::parse($this->birth_date)->format('Y-m-d'),
+                // 'birth_date' => Carbon::parse($this->birth_date)->format('Y-m-d'),
                 'block' => $this->block,
                 'role_id' => $role->id
             ]);
