@@ -1,9 +1,9 @@
 <div class="flex flex-col gap-3 h-screen">
     <!-- Breadcrumb -->
-    @livewire('components.breadcrumb', ['links' => [
+    {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Product', 'url' => route('products.index.admin')],
         ['name' => 'Create Product', 'url' => route('products.create')],
-    ]])
+    ]]) --}}
 
     <div class="bg-white w-full p-4 border rounded-lg my-4 hover:shadow-lg transition-shadow duration-300">
         <h2 class="text-xl font-semibold text-gray-800">Create Product</h2>
