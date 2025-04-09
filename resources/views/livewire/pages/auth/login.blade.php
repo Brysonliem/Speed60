@@ -41,7 +41,7 @@
                     fill="currentColor"
                 />
             </svg>
-            <span wire:loading.remove wire:target="login">Registrasi</span>
+            <span wire:loading.remove wire:target="login">Login</span>
             <span wire:loading wire:target="login">Loading...</span>
         </button>
         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">

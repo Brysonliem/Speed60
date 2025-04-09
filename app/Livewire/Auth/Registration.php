@@ -44,8 +44,8 @@ class Registration extends Component
     #[Validate('required|string')]
     public string $province = '';
 
-    #[Validate('nullable')]
-    public string $birth_date = '';
+    // #[Validate('nullable')]
+    // public string $birth_date = '';
 
     #[Validate('required|string')]
     public string $city = '';
@@ -63,7 +63,7 @@ class Registration extends Component
     public function register()
     {
         // Validasi otomatis berdasarkan atribut #[Validate]
-        $this->validate();
+        // $this->validate();
 
         DB::transaction(function () {
             $role = Role::where('level', 3)->first();
