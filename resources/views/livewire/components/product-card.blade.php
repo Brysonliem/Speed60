@@ -9,11 +9,18 @@
         @endif
     </a>
     <div class="px-5 pb-5">
-        <a href="{{ route('products.detail', ['product' => $product['id']]) }}">
+        @if (!empty($product['id']))
+            <a href="{{ route('products.detail', ['product' => $product['id']]) }}">
+                <h5 class="text-xl font-semibold tracking-tight text-gray-900 hover:underline hover:underline-offset-2">
+                    {{ $title }}
+                </h5>
+            </a>
+        @else
             <h5 class="text-xl font-semibold tracking-tight text-gray-900 hover:underline hover:underline-offset-2">
                 {{ $title }}
             </h5>
-        </a>
+        @endif
+
         <div class="flex items-center mt-2.5 mb-5">
             <div class="flex items-center space-x-1 rtl:space-x-reverse">
                 <div class="flex items-center">

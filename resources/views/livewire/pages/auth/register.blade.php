@@ -66,25 +66,31 @@
 
         {{-- Province --}}
         <div>
-            <x-input-label for="province" value="Province" />
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Province</label>
             <input wire:model="province" id="province" type="province" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
             @error('province') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
         {{-- District --}}
         <div>
-            <x-input-label for="district" value="District" />
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">District</label>
             <input wire:model="district" id="district" type="district" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
             @error('district') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
         {{-- City --}}
         <div>
-            <x-input-label for="city" value="City" />
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">City</label>
             <input wire:model="city" id="city" type="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
             @error('city') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
         
+        <div>            
+            <label for="address" class="block mb-2 text-sm font-medium text-gray-900 ">Full Address</label>
+            <textarea wire:model="address" id="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder=""></textarea>
+            @error('addres') <span class="text-red-500">{{ $message }}</span> @enderror
+        </div>
+
         <div>
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
             <input wire:model="password" id="password" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />

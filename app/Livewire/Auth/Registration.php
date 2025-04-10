@@ -53,6 +53,8 @@ class Registration extends Component
     #[Validate('required|numeric')]
     public string $role_level = '';
 
+    public $address;
+
     public $roles;
 
     public function login()
@@ -77,6 +79,7 @@ class Registration extends Component
                 'rw' => $this->rw,
                 'district' => $this->district,
                 'province' => $this->province,
+                'address' => $this->address,
                 // 'birth_date' => Carbon::parse($this->birth_date)->format('Y-m-d'),
                 'block' => $this->block,
                 'role_id' => $role->id
