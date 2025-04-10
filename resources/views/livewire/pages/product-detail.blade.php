@@ -1,47 +1,26 @@
 <div class="flex flex-col gap-4">
     <!-- Breadcrumb -->
-    @livewire('components.breadcrumb', ['links' => [
+    {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Produk', 'url' => route('products.index')],
         ['name' => 'Probolt Titanium', 'url' => route('products.detail', ['product' => 7])]
-    ]])
+    ]]) --}}
 
     <div class="grid grid-cols-6 gap-2">
         <div class="col-span-3">
             {{-- products image --}}
             <div id="indicators-carousel" class="relative w-full" data-carousel="static">
                 <!-- Carousel wrapper -->
-                <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                    <!-- Item 1 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                        <img src="{{ asset('images/product.png') }}" 
-                            class="absolute inset-0 m-auto max-w-full max-h-full"
-                            alt="...">
-                    </div>
-                    <!-- Item 2 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('images/product.png') }}" 
-                            class="absolute inset-0 m-auto max-w-full max-h-full"
-                            alt="...">
-                    </div>
-                    <!-- Item 3 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('images/product.png') }}" 
-                            class="absolute inset-0 m-auto max-w-full max-h-full"
-                            alt="...">
-                    </div>
-                    <!-- Item 4 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('images/product.png') }}" 
-                            class="absolute inset-0 m-auto max-w-full max-h-full"
-                            alt="...">
-                    </div>
-                    <!-- Item 5 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('images/product.png') }}" 
-                            class="absolute inset-0 m-auto max-w-full max-h-full"
-                            alt="...">
-                    </div>
+                <div class="relative h-56 overflow-hidden rounded-lg md:h-96" wire:ignore>
+                    @foreach ($detailProduct->productImages as $image)
+                        <div class="{{ $image['is_main'] ? '' : 'hidden' }} duration-700 ease-in-out"
+                             data-carousel-item="{{ $image['is_main'] ? 'active' : '' }}">
+                            <img src="{{ asset('storage/'.$image['image_path']) }}" 
+                                 class="absolute inset-0 m-auto max-w-full max-h-full"
+                                 alt="Product Image">
+                        </div>
+                    @endforeach
                 </div>
+                
                 <!-- Slider controls -->
                 <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
@@ -67,32 +46,34 @@
 
                 {{-- title product --}}
                 <span class="text-lg font-semibold">
-                    Probolt Titanium NT Baut DUdukan Knalpot Kawasaki Ninja R RR SS Grade 5 King Nut New Tech - Athena
+                    {{ $detailProduct->name }}
                 </span>
 
                 {{-- information product --}}
                 <div class="flex justify-between">
                     <div class="flex flex-col gap-2">
                         <span class="text-sm text-gray-500">Sisa Stok : 
-                            <span class="text-black">500</span></span>
+                            <span class="text-black">{{ $detailProduct->current_stock }}</span></span>
                         <span class="text-sm text-gray-500">Kondisi : 
-                            <span class="text-black">BARU</span>
+                            <span class="text-black">{{$detailProduct->condition}}</span>
                         </span>
                     </div>
                     <div class="flex flex-col gap-2">
                         <span class="text-sm text-gray-500">Stock : 
-                            <span class="bg-green-100 text-green-600 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm ">
-                                Tersedia
+                            <span class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm 
+                                {{ $detailProduct->stock > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                TERSEDIA
                             </span>
+
                         </span>
                         <span class="text-sm text-gray-500">Category :  
-                            <span class="text-black">Electronics Devices</span>
+                            <span class="text-black">{{ $detailProduct->productType->name }}</span>
                         </span>
                     </div>
                 </div>
 
                 {{-- price --}}
-                <span class="text-2xl text-blue-400 font-semibold">Rp 130.000</span>
+                <span class="text-2xl text-blue-400 font-semibold">{{ 'Rp ' . number_format($detailProduct->price, 0, ',', '.') }}</span>
 
                 {{-- divider --}}
                 <div class="w-full border-t border-gray-300 my-4"></div>
@@ -141,30 +122,71 @@
                 <div class="flex items-end gap-4 ms-auto">
 
                     {{-- quantity button --}}
-                    <form class="max-w-xs">
+                    <div class="max-w-xs">
                         <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 ">Quantity :</label>
                         <div class="relative flex items-center max-w-[8rem]">
-                            <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
+                            <button wire:click="incrementQuantity" type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
                                 <svg class="w-3 h-3 text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
                                 </svg>
                             </button>
-                            <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 " placeholder="999" required />
-                            <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
+                            <input wire:model="quantity" type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 " placeholder="999" required />
+                            <button wire:click="decrementQuantity" type="button" id="increment-button" data-input-counter-increment="quantity-input" class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
                                 <svg class="w-3 h-3 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
                                 </svg>
                             </button>
                         </div>
-                    </form>
+                    </div>
 
-                    <button 
-                        type="button" 
-                        class="px-5 h-11 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300"
-                        
+                    @if (Session::has('success'))
+                        <div x-data="{show: true}" x-show="show" id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
+                            <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg ">
+                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                                </svg>
+                                <span class="sr-only">Check icon</span>
+                            </div>
+                            <div class="ms-3 text-sm font-normal">Berhasil menambahkan ke cart!</div>
+                            <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
+                                <span class="sr-only">Close</span>
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
+
+                    <button
+                        type="button"
+                        wire:click="addToCart"
+                        wire:loading.attr="disabled"
+                        wire:target="addToCart"
+                        class="px-5 h-11 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 inline-flex items-center justify-center"
                     >
-                        ADD TO CART
+                        <svg
+                            wire:loading
+                            wire:target="addToCart"
+                            aria-hidden="true"
+                            role="status"
+                            class="inline w-4 h-4 me-2 text-white animate-spin"
+                            viewBox="0 0 100 101"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="#E5E7EB"
+                            />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                        <span wire:loading.remove wire:target="addToCart">ADD TO CART</span>
+                        <span wire:loading wire:target="addToCart">Menambahkan...</span>
                     </button>
+
 
                     <button wire:click="redirectCheckout" type="button" class="px-5 h-11 text-base font-medium text-center text-blue-700 rounded-lg border border-blue-500 hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300">
                         BELI SEKARANG
@@ -188,9 +210,9 @@
                 </ul>
             </div>
             <div id="default-tab-content">
-                <div class="hidden p-4 rounded-lg " id="description" role="tabpanel" aria-labelledby="description-tab">
+                <div class="hidden p-4 rounded-lg " id="description" role="tabpanel" aria-labelledby="description-tab" wire:ignore>
                     <p class="text-sm text-gray-600 ">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores, ratione. Natus esse assumenda, in ducimus expedita perferendis quam obcaecati nulla soluta velit voluptatum iusto. Quis libero impedit itaque sit fugit!
+                        {{ $detailProduct->description }}
                     </p>
                 </div>
                 <div class="hidden p-4 rounded-lg " id="review" role="tabpanel" aria-labelledby="review-tab">
@@ -226,15 +248,16 @@
     <div class="flex flex-col gap-2">
         <span class="text-lg font-semibold">Produk Lainnya</span>
         <div class="grid grid-cols-4 gap-3">
-            @for ($i = 0; $i < 5; $i++)
+            @foreach ($products as $product)
                 @livewire('components.product-card', [
-                    'image' => 'images/product.png',
-                    'title' => 'Titanium Hardware Valve Cover Kit - Honda K20/K24 Titanium',
-                    'price' => 'Rp 130.000',
-                    'rating' => 4.95,
-                    'reviews' => 73
+                    'product' => $product,
+                    'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
+                    'title' => $product['name'],
+                    'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),
+                    'rating' => round($product['reviews_avg_rating_point'], 2),
+                    'reviews' => $product['reviews_count']
                 ])
-            @endfor
+            @endforeach
         </div>
     </div>
 </div>

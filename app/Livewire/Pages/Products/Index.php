@@ -3,7 +3,10 @@
 namespace App\Livewire\Pages\Products;
 
 use App\Livewire\BaseComponent;
+use App\Livewire\Forms\CartCreateForm;
+use App\Services\CartService;
 use App\Services\ProductService;
+use Livewire\Attributes\On;
 
 class Index extends BaseComponent
 {
@@ -12,7 +15,9 @@ class Index extends BaseComponent
 
     protected ProductService $productService;
 
-    public function boot(ProductService $productService)
+    public CartCreateForm $cartForm;
+
+    public function boot(ProductService $productService, CartService $cartService)
     {
         $this->productService = $productService;
     }
@@ -26,8 +31,6 @@ class Index extends BaseComponent
     {
         $this->loadProducts();
     }
-
-    
 
     public function render()
     {

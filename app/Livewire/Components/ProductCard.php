@@ -7,6 +7,7 @@ use Livewire\Component;
 class ProductCard extends Component
 {
 
+    public $product;
     public $image;
     public $title;
     public $subtitle;

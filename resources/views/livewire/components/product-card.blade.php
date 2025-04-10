@@ -9,7 +9,7 @@
         @endif
     </a>
     <div class="px-5 pb-5">
-        <a href="{{ route('products.detail', ['product' => 5]) }}">
+        <a href="{{ route('products.detail', ['product' => $product['id']]) }}">
             <h5 class="text-xl font-semibold tracking-tight text-gray-900 hover:underline hover:underline-offset-2">
                 {{ $title }}
             </h5>
@@ -27,9 +27,6 @@
                     </a>
                 </div>
             </div>
-        </div>
-        <div class="flex items-center justify-between">
-            <span class="text-2xl font-bold text-gray-900 ">{{ $price }}</span>
         </div>
     </div>
 </div>
