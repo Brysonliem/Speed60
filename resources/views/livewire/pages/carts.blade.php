@@ -50,7 +50,7 @@
                         <tbody>
 
 
-                            @foreach ($products as $product)
+                            @foreach ($products as $index => $product)
                                 <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
                                     <td class="p-4">
                                         <img src="{{ asset('storage/'.$product->image_path) }}" class="w-5 md:w-32 max-w-full max-h-full" alt="images">
@@ -67,7 +67,7 @@
                                                 </svg>
                                             </button>
                                             <div>
-                                                <input type="number" class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" placeholder="1" required />
+                                                <input wire:model="products.{{ $index }}.quantity" type="number" class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" placeholder="1" required />
                                             </div>
                                             <button class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" type="button">
                                                 <span class="sr-only">Quantity button</span>
