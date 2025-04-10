@@ -18,7 +18,7 @@ class CartRepository implements CartRepositoryInterface
                 $join->on('product_images.product_id', '=', 'products.id')
                      ->where('product_images.is_main', true);
             })
-            ->where('carts.user_id', 9)
+            ->where('carts.user_id', Auth::user()->id)
             ->select(
                 'carts.id',
                 'carts.quantity',

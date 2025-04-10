@@ -109,6 +109,7 @@
                 <div class="grid grid-cols-3 gap-3">
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
+                            'product' => $product,
                             'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
                             'title' => $product['name'],
                             'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),

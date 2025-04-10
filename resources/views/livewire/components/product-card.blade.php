@@ -35,5 +35,8 @@
                 </div>
             </div>
         </div>
+        <div class="flex items-center justify-between">
+            <span class="text-2xl font-bold text-gray-900 ">{{ $price }}</span>
+        </div>
     </div>
 </div>
