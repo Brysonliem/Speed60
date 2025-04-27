@@ -28,6 +28,10 @@ class ProductService
         return $this->productRepository->find($id);
     }
 
+    public function getAllType() {
+        return $this->productRepository->getAllType();
+    }
+
     public function createProduct(array $data)
     {
         return DB::transaction(function () use ($data) {

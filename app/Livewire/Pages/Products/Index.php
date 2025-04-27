@@ -10,7 +10,6 @@ use Livewire\Attributes\On;
 
 class Index extends BaseComponent
 {
-
     public $products;
 
     protected ProductService $productService;

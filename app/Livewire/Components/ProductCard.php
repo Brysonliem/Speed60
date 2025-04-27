@@ -12,6 +12,8 @@ class ProductCard extends Component
     public $title;
     public $subtitle;
     public $price;
+
+    public $discount_percentage;
     public $rating;
     public $reviews;
     

@@ -7,7 +7,6 @@ use App\Repositories\ProductImageRepository;
 
 class ProductImageService
 {
-
     protected ProductImageRepositoryInterface $productImageRepository;
 
     /**
@@ -17,7 +16,7 @@ class ProductImageService
     {
         $this->productImageRepository = $productImageRepository;
     }
-    
+
     public function createProductImage(array $data)
     {
         return $this->productImageRepository->create($data);

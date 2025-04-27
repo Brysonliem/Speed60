@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
+use App\Models\ProductType;
 
 class ProductRepository implements ProductRepositoryInterface
 {
@@ -20,6 +21,10 @@ class ProductRepository implements ProductRepositoryInterface
             ->withAvg('reviews', 'rating_point')
             ->get()
             ->toArray();
+    }
+
+    public function getAllType() {
+        return ProductType::get()->toArray();
     }
 
     public function find(int $id)
