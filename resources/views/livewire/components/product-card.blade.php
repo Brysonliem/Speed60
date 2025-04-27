@@ -1,42 +1,62 @@
-<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">
-    <a href="#">
-        @if (!empty($image))
-            <img src="{{ asset('storage/' . $image) }}"
-                alt="Product Image"
-                class="pl-2 rounded-t-lg" />
-        @else
-            <span class="text-gray-400">No image</span>
-        @endif
-    </a>
-    <div class="px-5 pb-5">
-        @if (!empty($product['id']))
-            <a href="{{ route('products.detail', ['product' => $product['id']]) }}">
-                <h5 class="text-xl font-semibold tracking-tight text-gray-900 hover:underline hover:underline-offset-2">
-                    {{ $title }}
-                </h5>
-            </a>
-        @else
-            <h5 class="text-xl font-semibold tracking-tight text-gray-900 hover:underline hover:underline-offset-2">
-                {{ $title }}
-            </h5>
-        @endif
+<div style="display:contents;">
+    <div
+        class="h-full duration-100 ease-sharp-motion-curve hover:shadow-hover active:shadow-active hover:-translate-y-[1px] active:translate-y-0 relative hover:z-[1] box-content group border border-solid hover:border-shopee-primary border border-solid border-shopee-black9">
+        <a href="{{ !empty($product['id']) ? route('products.detail', ['product' => $product['id']]) : '#' }}"
+            class="contents" style="display: contents;">
+            <div class="flex flex-col bg-white cursor-pointer h-full">
+                <div class="relative z-0 w-full pt-full">
+                    @if (!empty($image))
+                        {{-- <img src="{{ asset('storage/' . $image) }}" alt="Product Image" class="pl-2 rounded-t-lg" />
+                        --}}
+                        <img src="{{ $image }}" alt="{{ $title }}"
+                            class="inset-y-0 w-full h-full pointer-events-none object-contain absolute" />
+                    @else
+                        <span class="text-gray-400">No image</span>
+                    @endif
 
-        <div class="flex items-center mt-2.5 mb-5">
-            <div class="flex items-center space-x-1 rtl:space-x-reverse">
-                <div class="flex items-center">
-                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                    </svg>
-                    <p class="ms-2 text-sm font-bold text-gray-900">{{ $rating }}</p>
-                    <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full"></span>
-                    <a href="#" class="text-sm font-medium text-gray-900 underline hover:no-underline">
-                        {{ $reviews }} reviews
-                    </a>
+                    @if(!empty($discount_percentage))
+                        <div
+                            class="text-red-500 font-medium bg-red-100 py-0.5 px-1 text-xs/sp14 absolute top-0 right-0 z-30">
+                            {{ $discount_percentage }}%
+                        </div>
+                    @endif
+                </div>
+                <div class="p-2 flex-1 flex flex-col justify-between">
+                    <div class="space-y-1 mb-1 flex-1 flex flex-col justify-between min-h-[4rem]">
+                        <div class="line-clamp-2 break-words min-w-0 min-h-[2.5rem] text-md">
+                            {{ $title }}
+                        </div>
+                        <div class="flex items-center">
+                            <div
+                                class="flex-shrink min-w-0 mr-1 truncate text-shopee-primary flex items-center font-medium">
+                                <div class="truncate flex items-baseline">
+                                    <span class="text-xs/sp14 font-medium mr-px">Rp</span>
+                                    <span class="font-medium text-base/5 truncate">{{ $price }}</span>
+                                    <span class="text-xs/sp14 font-medium mr-px"></span>
+                                </div>
+                            </div>
+                            <div
+                                class="text-red-500 font-medium bg-red-100 py-0.5 px-1 text-sp10/3 h-4 rounded-[2px] shrink-0 mr-1">
+                                -41%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div></div>
+                        <div class="mb-2 flex items-center space-x-1">
+                            <div class="flex-none flex items-center space-x-0.5 h-sp14">
+                                <img src="https://deo.shopeemobile.com/shopee/modules-federation/live/0/shopee__item-card-standard-v2/0.1.53/pc/d7099d3fd1dfdaf705ab.svg"
+                                    alt="rating-star-full" style="height: 0.625rem; width: 0.625rem;" />
+                                <div class="text-shopee-black87 text-xs/sp14 flex-none">{{ $rating }}</div>
+                            </div>
+                            <div class="ml-1 h-sp10 scale-x-50 border-l border-shopee-black9"></div>
+                            <div class="truncate text-shopee-black87 text-xs min-h-4">
+                                {{ $reviews }} reviews
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="flex items-center justify-between">
-            <span class="text-2xl font-bold text-gray-900 ">{{ $price }}</span>
-        </div>
+        </a>
     </div>
 </div>
