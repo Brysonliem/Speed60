@@ -1,63 +1,27 @@
+
+<div>
+    @livewire('components.carousel',[
+        "images" => [
+            "/images/Slide 1 rev.jpg",
+            "/images/Slide 2 New.jpg",
+            "/images/Slide 3 Rev.jpg",  
+            "/images/Slide 6 v1.jpg",
+        ]
+    ])
+    @livewire('components.carousel',[
+        "images" => [
+            "/images/assets/influence/7.jpg",
+            "/images/assets/influence/8.jpg",
+            "/images/assets/influence/11.jpg",  
+            "/images/assets/influence/12.jpg",
+            "/images/assets/influence/13.jpg",
+            "/images/assets/influence/14.jpg",
+        ]
+    ])
 <div class="flex flex-col gap-4 ">
-    {{-- image section --}}
-    <div class="flex items-center min-h-screen z-0">
-        <figure class="relative w-full transition-all duration-300 cursor-pointer filter grayscale hover:grayscale-0">
-            <a href="#">
-                <img class="rounded-lg w-full" src="{{ asset('images/dashboard-imgs.jpg') }}" alt="image description">
-            </a>
-            <figcaption class="absolute inset-0 flex flex-col justify-center items-center text-center bg-gradient-to-t from-black/70 via-black/30 to-transparent rounded-lg p-4">
-                <span class="text-5xl text-white mb-4 font-bold">
-                    ONE STOP DETAILING <br> SOLUTION!
-                </span>
-                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    Belanja Sekarang
-                </button>
-                {{-- <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                    Notify Me
-                </button> --}}
-            </figcaption>
-        </figure>
-    </div>
+<div class="px-40 mt-10">
     
     {{-- information section --}}
-    <div class="grid grid-cols-4 gap-10 mb-5">
-        <!-- Item 1 -->
-        <div class="flex items-center gap-5">
-            <img src="{{ asset('icons/good-service.svg') }}" alt="Good Service" class="w-16 h-16">
-            <div class="flex flex-col gap-2">
-                <span class="mt-2 text-xl font-semibold">Produk Terjamin</span>
-                <span class="text-lg font-light">Dari material terbaik</span>
-            </div>
-        </div>
-        
-        <!-- Item 2 -->
-        <div class="flex items-center gap-5">
-            <img src="{{ asset('icons/good-support.svg') }}" alt="Good Support" class="w-16 h-16">
-            <div class="flex flex-col gap-2">
-                <span class="mt-2 text-xl font-semibold">Garansi Produk</span>
-                <span class="text-lg font-light">Garansi 2 Bulan</span>
-            </div>
-        </div>
-        
-        <!-- Item 3 -->
-        <div class="flex items-center gap-5">
-            <img src="{{ asset('icons/good-security.svg') }}" alt="Good Security" class="w-16 h-16">
-            <div class="flex flex-col gap-2">
-                <span class="mt-2 text-xl font-semibold">Transaksi Terjamin</span>
-                <span class="text-lg font-light">Jaminan Transaksi</span>
-            </div>
-        </div>
-        
-        <!-- Item 4 -->
-        <div class="flex items-center gap-5">
-            <img src="{{ asset('icons/good-waranty.svg') }}" alt="Good Warranty" class="w-16 h-16">
-            <div class="flex flex-col gap-2">
-                <span class="mt-2 text-xl font-semibold">24/7 Support</span>
-                <span class="text-lg font-light">Support 24 Jam</span>
-            </div>
-        </div>
-    </div>
-
     <div class="grid grid-cols-5 gap-4 mb-10">
 
         {{-- Ad --}}
@@ -78,41 +42,29 @@
         <div class="col-span-4">
             <div class="flex flex-col gap-2">
                 {{-- tab --}}
-                <div class="flex">
-                    <div class="text-sm font-medium text-center text-gray-500 dark:text-gray-400 dark:border-gray-700">
-                        <ul class="flex flex-wrap -mb-px">
-                            <li class="me-2">
-                                <a href="#" class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500" aria-current="page">
-                                    Best Seller Produk
-                                </a>
-                            </li>
-                            <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                                    PCR - ADV
-                                </a>
-                            </li>
-                            <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                                    NMAX - Aerox - Lexi
-                                </a>
-                            </li>
-                            <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                                    Satria FU Rider
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                
+                @livewire('components.product-radio-filter')
         
                 {{-- products content --}}
-                <div class="grid grid-cols-3 gap-3">
+
+                <div class="grid md:grid-cols-6 h-full grid-cols-2 gap-2 mt-4">
+                    @livewire('components.product-card', [
+                        'product' => [
+                            "id" => 1,
+                        ],
+                        'image' => '/images/product.png',
+                        'title' => "Product Test",
+                        'discount_percentage'=> 55,
+                        'price' =>  number_format(1000000, 0, ',', '.'),
+                        'rating' => round(3, 2),
+                        'reviews' => 100 
+                    ])
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
                             'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
                             'title' => $product['name'],
-                            'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),
+                            'price' => number_format($product['price'], 0, ',', '.'),
                             'rating' => round($product['reviews_avg_rating_point'], 2),
                             'reviews' => $product['reviews_count']
                         ])
@@ -224,4 +176,8 @@
         
     </div>
     
+</div>
+
+</div>
+
 </div>
