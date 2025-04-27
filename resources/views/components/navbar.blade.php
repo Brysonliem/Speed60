@@ -35,107 +35,235 @@
             </div>
 
             <!-- Mobile menu button -->
-            <button class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-900 hover:text-gray-600" id="mobile-menu-button">
+            <button
+                class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-900 hover:text-gray-600"
+                id="mobile-menu-button">
                 <span class="material-icons">menu</span>
             </button>
 
-        <!-- Navigation Links - Desktop -->
-        @php
-            $user = Auth::user();
-            $dashboardRoute = match ($user->role->level) {
-                1 => route('dashboard.superadmin'),
-                2 => route('dashboard.admin'),
-                default => route('dashboard.user'),
-            };
-        @endphp
+            <!-- Navigation Links - Desktop -->
+            @php
+                $user = Auth::user();
+                $dashboardRoute = match ($user->role->level) {
+                    1 => route('dashboard.superadmin'),
+                    2 => route('dashboard.admin'),
+                    default => route('dashboard.user'),
+                };
 
-        <div class="hidden md:flex md:space-x-8">
-            @if (Auth::check())
-                {{-- Beranda: semua role --}}
-                <a href="{{ $dashboardRoute }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                    Beranda
-                </a>
 
-                {{-- Role 1 & 2 hanya tampilkan Buat Produk --}}
-                @if (in_array($user->role->level, [1, 2]))
-                    <a href="{{ route('products.index.admin') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                        Buat Produk
-                    </a>
+                $productTypes = \App\Models\ProductType::get()->map(function ($type) {
+                    return array(
+                        "id" => $type->id,
+                        "name" => $type->name,
+                        "link" => route('products.index'),
+                        "childrens" => [],
+                    );
+                })->toArray();
+
+
+
+                $links[] = array(
+                    "id" => "HOMEPAGE",
+                    "name" => "Beranda",
+                    "link" => $dashboardRoute,
+                    "childrens" => [],
+                );
+
+                if (in_array($user->role->level, [1, 2])) {
+                    $userLinksLevel1_2 = [
+                        [
+                            "id" => "CREATE_PRODUCT",
+                            "name" => "Buat Produk",
+                            "link" => route('products.index.admin'),
+                            "childrens" => [],
+                        ],
+                    ];
+                    $links = array_merge($links, $userLinksLevel1_2);
+                }
+
+                if ($user->role->level == 3) {
+
+
+                    $userLinks = [
+                        [
+                            "id" => "PRODUCT",
+                            "name" => "Vehicle",
+                            "link" => route('products.index'),
+                            "childrens" => [
+                                [
+                                    "id" => "PCX_ADV",
+                                    "name" => "🚀 PCX · ADV",
+                                    "link" => route('products.index'),
+                                    "childrens" => [],
+                                ],
+
+                                [
+                                    "id" => "NMAX_AEROX",
+                                    "name" => "🏍️ Nmax · Aerox · Lexi",
+                                    "link" => route('products.index'),
+                                    "childrens" => [],
+                                ],
+
+                                [
+                                    "id" => "Satria FU",
+                                    "name" => "⚡ Satria FU",
+                                    "link" => route('products.index'),
+                                    "childrens" => [],
+                                ],
+
+
+                                [
+                                    "id" => "BAUT",
+                                    "name" => "� Baut M 4 Drat 6",
+                                    "link" => route('products.index'),
+                                    "childrens" => [],
+                                ],
+
+                                [
+                                    "id" => "BAUT",
+                                    "name" => "🔩 Baut M 5 Drat 8",
+                                    "link" => route('products.index'),
+                                    "childrens" => [],
+                                ],
+                            ],
+                        ],
+                        [
+                            "id" => "PRODUCT_TYPE",
+                            "name" => "Product Type",
+                            "link" => route('products.index'),
+                            "childrens" => $productTypes,
+                        ],
+                        // [
+                        //     "id" => "TRACK_ORDER",
+                        //     "name" => "Track Order",
+                        //     "link" => route('track_order'),
+                        //     "childrens" => [],
+                        // ],
+                        // [
+                        //     "id" => "DEALERS",
+                        //     "name" => "Dealers",
+                        //     "link" => route('dealers'),
+                        //     "childrens" => [],
+                        // ],
+                        // [
+                        //     "id" => "CUSTOMER_SUPPORT",
+                        //     "name" => "Customer Support",
+                        //     "link" => route('support'),
+                        //     "childrens" => [],
+                        // ]
+                    ];
+
+                    $links = array_merge($links, $userLinks);
+                }
+
+
+
+            @endphp
+
+            <div class="hidden flex-shrink-0 md:flex md:justify-center h-full">
+                @if (Auth::check())
+                    {{-- Beranda: semua role --}}
+                    @foreach($links as $link)
+                        @if(is_array($link['childrens']) && !empty($link['childrens']) && count($link["childrens"]) > 0)
+                            <!-- Link with dropdown -->
+                            <div class="relative group">
+                                <a href="{{ $link['link'] }}"
+                                    class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 mr-0 text-sm font-medium h-full flex items-center">
+                                    {{ $link['name'] }}
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                        </path>
+                                    </svg>
+                                </a>
+
+
+                                <!-- Dropdown menu appears on hover -->
+                                <div class="absolute left-0 hidden group-hover:block z-10">
+                                    <div class="bg-white border-x border-b w-48">
+                                        @foreach($link['childrens'] as $child)
+                                            <a href="{{ $child['link'] }}"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white">
+                                                {{ $child['name'] }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <!-- Regular link without dropdown -->
+                            <a href="{{ $link['link'] }}"
+                                class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 mr-0 text-sm font-medium h-full flex items-center">
+                                {{ $link['name'] }}
+                            </a>
+                        @endif
+                    @endforeach
+
+
+                @endif
+            </div>
+
+
+            <!-- Right side icons -->
+            <div class="flex items-center relative gap-4">
+
+                @if (!in_array($user->role->level, [1, 2]))
+                    <div class="flex">
+                        <a href="{{ route('carts.index') }}" class="material-icons">shopping_cart</a>
+                    </div>
+
+                    <div class="flex">
+                        <span class="material-icons">search</span>
+                    </div>
                 @endif
 
-                {{-- Role 3: tampilkan semua menu lainnya --}}
-                @if ($user->role->level === 3)
-                    <a href="{{ route('products.index') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
+                <div id="dropdownProfileButton" data-dropdown-toggle="dropdownProfile" class="flex cursor-pointer">
+                    <span class="material-icons text-gray-900">person</span>
+                </div>
+
+                <!-- Dropdown menu -->
+                <div id="dropdownProfile"
+                    class="hidden absolute right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
+                    <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownProfileButton">
+                        <li>
+                            <a href="{{ route('profile.show', Auth::user()->id) }}"
+                                class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                                <i class="material-icons">person</i>
+                                Akun Saya
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('logout') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                                <i class="material-icons">logout</i>
+                                Keluar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+
+
+            <!-- Mobile menu - Hidden by default -->
+            <div class="md:hidden hidden" id="mobile-menu">
+
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#"
+                        class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Beranda</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">
                         Produk
+                        <span class="material-icons text-sm ml-1 inline-block">expand_more</span>
                     </a>
-                    <a href="{{ route('track_order') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                        Track Order
-                    </a>
-                    <a href="{{ route('dealers') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                        Dealers
-                    </a>
-                    <a href="{{ route('support') }}" class="text-gray-900 hover:text-gray-600 py-2 text-sm font-medium flex items-center">
-                        Customer Support
-                    </a>
-                @endif
-            @endif
-        </div>
-
-
-        <!-- Right side icons -->
-        <div class="flex items-center relative gap-4">
-
-            @if (!in_array($user->role->level, [1, 2]))
-                <div class="flex">
-                    <a href="{{ route('carts.index') }}" class="material-icons">shopping_cart</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Track
+                        order</a>
+                    <a href="#"
+                        class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Dealers</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Customer
+                        Support</a>
                 </div>
-
-                <div class="flex">
-                    <span class="material-icons">search</span>
-                </div>
-            @endif            
-
-            <div id="dropdownProfileButton" data-dropdown-toggle="dropdownProfile" class="flex cursor-pointer">
-                <span class="material-icons text-gray-900">person</span>
-            </div>
-
-            <!-- Dropdown menu -->
-            <div id="dropdownProfile" class="hidden absolute right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
-                <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownProfileButton">
-                    <li>
-                        <a href="{{ route('profile.show', Auth::user()->id) }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
-                            <i class="material-icons">person</i>
-                            Akun Saya
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('logout') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
-                            <i class="material-icons">logout</i>
-                            Keluar
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            
-        </div>
-
-
-        <!-- Mobile menu - Hidden by default -->
-        <div class="md:hidden hidden" id="mobile-menu">
-            
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Beranda</a>
-                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">
-                    Produk
-                    <span class="material-icons text-sm ml-1 inline-block">expand_more</span>
-                </a>
-                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Track order</a>
-                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Dealers</a>
-                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600">Customer Support</a>
             </div>
         </div>
-    </div>
 </nav>
 
 <!-- Required CSS -->
@@ -144,11 +272,11 @@
 
 <!-- JavaScript for mobile menu toggle -->
 <script>
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+    document.getElementById('mobile-menu-button').addEventListener('click', function () {
         document.getElementById('mobile-menu').classList.toggle('hidden');
     });
 
-    document.getElementById('search-button').addEventListener('click', function() {
+    document.getElementById('search-button').addEventListener('click', function () {
         let searchBar = document.getElementById('search-bar');
         searchBar.classList.toggle('hidden');
         if (!searchBar.classList.contains('hidden')) {
