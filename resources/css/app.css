@@ -2,3 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 @source "../node_modules/flowbite-datepicker";
+
+.text-xs\/sp14 {
+    font-size: 0.75rem;
+    line-height: 0.875rem;
+}
+
+.h-sp14 {
+    height: 0.875rem;
+}
+
+.pt-full {
+    padding-top: 100%;
+}
+
+.text-sp10\/3 {
+    font-size: 0.625rem;
+    line-height: 0.75rem;
+}
+
+.py0\.5 {
+    padding-bottom: 0.125rem;
+    padding-top: 0.125rem;
+}
