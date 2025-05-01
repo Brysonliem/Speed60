@@ -32,6 +32,28 @@
                 </div>                
 
                 <div>
+                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
+                    <select wire:model.defer="form.product_type_id" id="product_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">-- Pilih Tipe Category --</option>
+                        @foreach ($product_types as $type)
+                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                        @endforeach
+                    </select>
+                    {{-- @error('product_type_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                </div>          
+
+                <div>
+                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
+                    <select wire:model.defer="form.product_type_id" id="product_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">-- Pilih Tipe Size --</option>
+                        @foreach ($product_types as $type)
+                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                        @endforeach
+                    </select>
+                    {{-- @error('product_type_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                </div>          
+
+                <div>
                     <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
                     <input wire:model="form.price" id="price" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                     {{-- @error('price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}

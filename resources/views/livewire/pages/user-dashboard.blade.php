@@ -74,6 +74,32 @@
         </div>
     </div>
 
+    <div class="flex flex-wrap justify-center gap-6 p-4">
+        <div class="w-40 text-center">  
+          <img src="images/1.jpg" alt="NMAX - AEROX - XMAX - LEXI" class="w-full rounded-xl">
+          <p class="mt-2 text-sm font-medium">NMAX - AEROX - XMAX - LEXI</p>
+        </div>
+        <div class="w-40 text-center">
+          <img src="images/2.jpg" alt="HONDA VARIO - SCOOPY - BEAT" class="w-full rounded-xl">
+          <p class="mt-2 text-sm font-medium">HONDA VARIO - SCOOPY - BEAT</p>
+        </div>
+        <div class="w-40 text-center">
+          <img src="images/3.jpg" alt="RX KING" class="w-full rounded-xl">
+          <p class="mt-2 text-sm font-medium">RX KING</p>
+        </div>
+        <div class="w-40 text-center">
+          <img src="images/4.jpg" alt="SATRIA FU RAIDER" class="w-full rounded-xl">
+          <p class="mt-2 text-sm font-medium">SATRIA FU RAIDER</p>
+        </div>
+        <div class="w-40 text-center">
+          <img src="images/5.jpg" alt="YAMAHA MIO - FINO - NOUVO" class="w-full rounded-xl">
+          <p class="mt-2 text-sm font-medium">YAMAHA MIO - FINO - NOUVO</p>
+        </div>
+        <div class="w-40 text-center">
+          <img src="images/6.jpg" alt="PCX ADV" class="w-full rounded-xl">
+          <p class="mt-2 text-sm font-medium">PCX ADV</p>
+        </div>
+      </div>         
     
     <div class="flex flex-col gap-4">
         <span class="text-2xl font-bold text-center">Kebijakan Toko</span>
