@@ -8,24 +8,14 @@
             "/images/Slide 6 v1.jpg",
         ]
     ])
-    @livewire('components.carousel',[
-        "images" => [
-            "/images/assets/influence/7.jpg",
-            "/images/assets/influence/8.jpg",
-            "/images/assets/influence/11.jpg",  
-            "/images/assets/influence/12.jpg",
-            "/images/assets/influence/13.jpg",
-            "/images/assets/influence/14.jpg",
-        ]
-    ])
 <div class="flex flex-col gap-4 ">
-<div class="px-40 mt-10">
-    
+<div class=" mt-10">
+   <div class="px-3 lg:px-40"> 
     {{-- information section --}}
-    <div class="grid grid-cols-5 gap-4 mb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-10">
 
         {{-- Ad --}}
-        <div class="col-span-1">
+        <div class="col-span-5 lg:col-span-1">
             <div class="text-center flex flex-col gap-3 max-w-sm p-6 bg-gray-900 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-800">
                 <span class="text-sm font-light text-white">Gratis Gantungan Kunci Min Pembelian</span>
                 <span class="text-xl  text-white">Rp 199.000 - <br> Stok Terbatas</span>
@@ -59,6 +49,39 @@
                         'rating' => round(3, 2),
                         'reviews' => 100 
                     ])
+                    @livewire('components.product-card', [
+                        'product' => [
+                            "id" => 1,
+                        ],
+                        'image' => '/images/product.png',
+                        'title' => "Product Test",
+                        'discount_percentage'=> 55,
+                        'price' =>  number_format(1000000, 0, ',', '.'),
+                        'rating' => round(3, 2),
+                        'reviews' => 100 
+                    ])
+                    @livewire('components.product-card', [
+                        'product' => [
+                            "id" => 1,
+                        ],
+                        'image' => '/images/product.png',
+                        'title' => "Product Test",
+                        'discount_percentage'=> 55,
+                        'price' =>  number_format(1000000, 0, ',', '.'),
+                        'rating' => round(3, 2),
+                        'reviews' => 100 
+                    ])
+                    @livewire('components.product-card', [
+                        'product' => [
+                            "id" => 1,
+                        ],
+                        'image' => '/images/product.png',
+                        'title' => "Product Test",
+                        'discount_percentage'=> 55,
+                        'price' =>  number_format(1000000, 0, ',', '.'),
+                        'rating' => round(3, 2),
+                        'reviews' => 100 
+                    ])
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
@@ -74,33 +97,51 @@
         </div>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-6 p-4">
-        <div class="w-40 text-center">  
-          <img src="images/1.jpg" alt="NMAX - AEROX - XMAX - LEXI" class="w-full rounded-xl">
-          <p class="mt-2 text-sm font-medium">NMAX - AEROX - XMAX - LEXI</p>
-        </div>
-        <div class="w-40 text-center">
-          <img src="images/2.jpg" alt="HONDA VARIO - SCOOPY - BEAT" class="w-full rounded-xl">
-          <p class="mt-2 text-sm font-medium">HONDA VARIO - SCOOPY - BEAT</p>
-        </div>
-        <div class="w-40 text-center">
-          <img src="images/3.jpg" alt="RX KING" class="w-full rounded-xl">
-          <p class="mt-2 text-sm font-medium">RX KING</p>
-        </div>
-        <div class="w-40 text-center">
-          <img src="images/4.jpg" alt="SATRIA FU RAIDER" class="w-full rounded-xl">
-          <p class="mt-2 text-sm font-medium">SATRIA FU RAIDER</p>
-        </div>
-        <div class="w-40 text-center">
-          <img src="images/5.jpg" alt="YAMAHA MIO - FINO - NOUVO" class="w-full rounded-xl">
-          <p class="mt-2 text-sm font-medium">YAMAHA MIO - FINO - NOUVO</p>
-        </div>
-        <div class="w-40 text-center">
-          <img src="images/6.jpg" alt="PCX ADV" class="w-full rounded-xl">
-          <p class="mt-2 text-sm font-medium">PCX ADV</p>
-        </div>
-      </div>         
-    
+    <div class="w-full overflow-x-auto">
+        <div class="flex items-center lg:justify-center gap-6 p-4">
+            <div class="min-w-fit w-24 flex flex-col items-center">  
+                <img src="images/1.jpg" alt="NMAX - AEROX - XMAX - LEXI" class="w-32 lg:w-full rounded-xl">
+                <p class="mt-2 text-sm font-medium">NMAX - AEROX - XMAX - LEXI</p>
+            </div>
+            <div class="min-w-fit w-24 flex flex-col items-center">
+                <img src="images/2.jpg" alt="HONDA VARIO - SCOOPY - BEAT" class="w-32 lg:w-full rounded-xl">
+                <p class="mt-2 text-sm text-center font-medium">HONDA VARIO - SCOOPY - BEAT</p>
+            </div>
+            <div class="min-w-fit w-24 flex flex-col items-center">
+                <img src="images/3.jpg" alt="RX KING" class="w-32 lg:w-full rounded-xl">
+                <p class="mt-2 text-sm font-medium">RX KING</p>
+            </div>
+            <div class="min-w-fit w-24 flex flex-col items-center">
+                <img src="images/4.jpg" alt="SATRIA FU RAIDER" class="w-32 lg:w-full rounded-xl">
+                <p class="mt-2 text-sm font-medium">SATRIA FU RAIDER</p>
+            </div>
+            <div class="min-w-fit w-24 flex flex-col items-center">
+                <img src="images/5.jpg" alt="YAMAHA MIO - FINO - NOUVO" class="w-32 lg:w-full rounded-xl">
+                <p class="mt-2 text-sm font-medium">YAMAHA MIO - FINO - NOUVO</p>
+            </div>
+            <div class="min-w-fit w-24 flex flex-col items-center">
+                <img src="images/6.jpg" alt="PCX ADV" class="w-32 lg:w-full rounded-xl">
+                <p class="mt-2 text-sm font-medium">PCX ADV</p>
+            </div>
+        </div>         
+        </div> 
+    </div>
+
+
+    @livewire('components.carousel',[
+        "images" => [
+            "/images/assets/influence/7.jpg",
+            "/images/assets/influence/8.jpg",
+            "/images/assets/influence/11.jpg",  
+            "/images/assets/influence/12.jpg",
+            "/images/assets/influence/13.jpg",
+            "/images/assets/influence/14.jpg",
+        ]
+    ])
+   
+   <div class="px-5 md:px-40">
+
+
     <div class="flex flex-col gap-4">
         <span class="text-2xl font-bold text-center">Kebijakan Toko</span>
         
@@ -155,23 +196,25 @@
         </div>
     </div>
 
-    <div class="-mx-40 flex flex-col bg-gray-800 text-white px-40 py-6 gap-12">
+
+   </div>
+    
+</div>
+
+    <div class="flex flex-col bg-gray-800 text-white px-5 md:px-40 py-6 gap-12">
         <div class="flex items-center justify-between">
-            {{-- TITLE --}}
             <div class="flex flex-col gap-2">
                 <span class="font-light">Featured Products</span>
                 <span class="text-xl font-bold">BESTSELLER PRODUCTS</span>
             </div>
         
-            {{-- BUTTON TITLE --}}
             <button type="button" 
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Belanja Sekarang
             </button>
         </div>
 
-        <div class="flex justify-between  max-w-6xl mx-auto ">
-            <!-- Hubungi Kami -->
+        <div class="grid grid-cols-1 lg:grid-cols-3  lg:max-w-6xl lg:mx-auto ">
             <div class="flex flex-col gap-3 flex-1">
                 <span class="text-xl font-medium">Hubungi Kami</span>
                 <div class="flex flex-col">
@@ -180,7 +223,6 @@
                 </div>
             </div>
         
-            <!-- Ikuti Kami -->
             <div class="flex flex-col gap-3 flex-1">
                 <span class="text-xl font-medium">Ikuti Kami</span>
                 <div class="flex flex-col">
@@ -201,9 +243,10 @@
         </div>
         
     </div>
-    
-</div>
+
 
 </div>
 
 </div>
+
+

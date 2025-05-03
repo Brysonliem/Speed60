@@ -1,10 +1,10 @@
 <footer class="bg-gray-900 text-white py-10 text-sm">
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto px-10 lg:px-0">
         <!-- Grid Layout -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8">
 
-            <div class="lg:col-span-2">
-                <img src="/images/speed60_resized.png" alt="Logo" class="w-full">
+            <div class="md:col-span-2">
+                <img src="/images/speed60_resized.png" alt="Logo" class="w-3/4 lg:w-full">
             </div>
 
             <!-- Layanan Pelanggan -->
@@ -46,14 +46,14 @@
                 <h3 class="font-bold text-sm">Links</h3>
                 <ul class="mt-3 space-y-2">
                     @if (Auth::check())
-                                        @php
-                                            $dashboardRoute = match (Auth::user()->role->level) {
-                                                1 => route('dashboard.superadmin'),
-                                                2 => route('dashboard.admin'),
-                                                default => route('dashboard.user'),
-                                            };
-                                        @endphp
-                                        <li><a href="{{ $dashboardRoute }}" class="hover:underline">🏠 Beranda</a></li>
+                        @php
+                            $dashboardRoute = match (Auth::user()->role->level) {
+                                1 => route('dashboard.superadmin'),
+                                2 => route('dashboard.admin'),
+                                default => route('dashboard.user'),
+                            };
+                        @endphp
+                        <li><a href="{{ $dashboardRoute }}" class="hover:underline">🏠 Beranda</a></li>
                     @endif
                     <li><a href="{{ route('cart') }}" class="hover:underline">🛒 Cart</a></li>
                     <li><a href="{{ route('support') }}" class="hover:underline">📞 Layanan Customer</a></li>

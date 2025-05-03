@@ -83,7 +83,6 @@
 
                 if ($user->role->level == 3) {
 
-
                     $userLinks = [
                         [
                             "id" => "PRODUCT",
@@ -132,6 +131,12 @@
                             "name" => "Product Type",
                             "link" => route('products.index'),
                             "childrens" => $productTypes,
+                        ],
+                        [
+                            "id" => "CUSTOMER_SERVICE",
+                            "name" => "Customer Service",
+                            "link" => "#",
+                            "childrens" => []
                         ],
                         // [
                         //     "id" => "TRACK_ORDER",
