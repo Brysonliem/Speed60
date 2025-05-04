@@ -135,7 +135,7 @@
                         [
                             "id" => "CUSTOMER_SERVICE",
                             "name" => "Customer Service",
-                            "link" => "#",
+                            "link" => "https://wa.me/6281293886489?text=Halo%2C%20saya%20ingin%20bertanya",
                             "childrens" => []
                         ],
                         // [

@@ -139,7 +139,7 @@
         ]
     ])
    
-   <div class="px-5 md:px-40">
+   <div class="px-5 md:px-40 my-10">
 
 
     <div class="flex flex-col gap-4">
