@@ -23,7 +23,7 @@
                 <div>
                     <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
                     <select wire:model.defer="form.product_type_id" id="product_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option value="">-- Pilih Tipe Produk --</option>
+                        <option value="" disabled selected>-- Pilih Tipe Produk --</option>
                         @foreach ($product_types as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
@@ -32,7 +32,7 @@
                 </div>                
 
                 <div>
-                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
+                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Category</label>
                     <select wire:model.defer="form.product_type_id" id="product_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">-- Pilih Tipe Category --</option>
                         @foreach ($product_types as $type)
@@ -43,7 +43,7 @@
                 </div>          
 
                 <div>
-                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
+                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Size</label>
                     <select wire:model.defer="form.product_type_id" id="product_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">-- Pilih Tipe Size --</option>
                         @foreach ($product_types as $type)

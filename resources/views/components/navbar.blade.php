@@ -77,6 +77,12 @@
                             "link" => route('products.index.admin'),
                             "childrens" => [],
                         ],
+                        [
+                            "id" => "CREATE_VOUCHER",
+                            "name" => "Buat Voucher",
+                            "link" => route('vouchers.index'),
+                            "childrens" => [],
+                        ],
                     ];
                     $links = array_merge($links, $userLinksLevel1_2);
                 }
