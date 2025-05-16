@@ -19,8 +19,13 @@ return new class extends Migration
             $table->boolean('voucher_is_disabled')->default(false);
             $table->string('voucher_description')->nullable();
             $table->double('voucher_discount_percentage');
-            $table->dateTime('voucher_start_date')->default(now());
-            $table->dateTime('voucher_end_date')->nullable();
+            $table->date('voucher_start_date')->default(now());
+            $table->date('voucher_end_date')->nullable();
+            $table
+                ->foreignId('voucher_created_by')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
             $table->timestamps();
         });
     }
