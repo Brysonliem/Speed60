@@ -72,8 +72,11 @@
                                     Toggle modal
                                 </button> --}}
 
-                                <form wire:submit.prevent="deleteVoucher({{ $voucher['id'] }})" class="inline-block"
-                                    onsubmit="return confirm('Yakin ingin menghapus voucher ini?');">
+                                <form
+                                    wire:submit.prevent="deleteVoucher({{ $voucher['id'] }})"
+                                    wire:confirm="Yakin ingin menghapus voucher ini?"
+                                    class="inline-block"
+                                >
                                     <button type="submit"
                                             class="inline-flex items-center px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded hover:bg-red-700">
                                         Hapus
