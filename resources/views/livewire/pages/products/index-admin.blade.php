@@ -61,7 +61,7 @@
                                 {{ $product['product_type']['name'] ?? '-' }}
                             </td>
                             <td class="px-6 py-4">
-                                Rp {{ number_format($product['price'], 0, ',', '.') }}
+                                @idr($product['price'])
                             </td>
                             <td class="px-6 py-4">
                                 {{ number_format($product['reviews_avg_rating_point'] ?? 0, 2) }}

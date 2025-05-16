@@ -28,7 +28,8 @@ class ProductService
         return $this->productRepository->find($id);
     }
 
-    public function getAllType() {
+    public function getAllType()
+    {
         return $this->productRepository->getAllType();
     }
 
@@ -43,7 +44,7 @@ class ProductService
 
     public function updateProduct(int $id, array $data)
     {
-        return DB::transaction(fn() => $this->productRepository->update($id, $data) );
+        return DB::transaction(fn() => $this->productRepository->update($id, $data));
     }
 
     public function deleteProduct(int $id)
