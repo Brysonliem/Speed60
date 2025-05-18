@@ -9,7 +9,7 @@
 
             <!-- Layanan Pelanggan -->
             <div class="col-span-1">
-                <h3 class="font-bold text-sm">Layanan Pelanggan</h3>
+                <h3 class="font-bold text-sm">Customer Service</h3>
                 <p class="mt-2 flex gap-1">
                     <span>📞</span>
                     <span class="flex-1">0821-3345-9876</span>
@@ -29,7 +29,7 @@
 
             <!-- Produk -->
             <div class="col-span-1">
-                <h3 class="font-bold text-sm">Produk</h3>
+                <h3 class="font-bold text-sm">Products</h3>
                 <ul class="mt-3 space-y-2">
                     <li>🚀 PCX · ADV</li>
                     <li>🏍️ Nmax · Aerox · Lexi</li>
@@ -37,7 +37,7 @@
                     <li>🔩 Baut M 4 Drat 6</li>
                     <li>🔩 Baut M 5 Drat 8</li>
                 </ul>
-                <a href="#" class="text-sm font-semibold mt-4 inline-block hover:underline">Lihat Semua Produk
+                <a href="#" class="text-sm font-semibold mt-4 inline-block hover:underline">All Products
                     →</a>
             </div>
 
@@ -53,18 +53,18 @@
                                 default => route('dashboard.user'),
                             };
                         @endphp
-                        <li><a href="{{ $dashboardRoute }}" class="hover:underline">🏠 Beranda</a></li>
+                        <li><a href="{{ $dashboardRoute }}" class="hover:underline">🏠 Home</a></li>
                     @endif
                     <li><a href="{{ route('cart') }}" class="hover:underline">🛒 Cart</a></li>
-                    <li><a href="{{ route('support') }}" class="hover:underline">📞 Layanan Customer</a></li>
-                    <li><a href="{{ route('track_order') }}" class="hover:underline">📦 Track Order</a></li>
+                    <li><a href="{{ route('support') }}" class="hover:underline">📞 Customer Service</a></li>
+                    <li><a href="{{ route('track_order') }}" class="hover:underline">📦 Orders</a></li>
                 </ul>
             </div>
 
             <!-- Ikuti Kami -->
             <div class="lg:col-span-2">
-                <h3 class="font-bold text-sm">Ikuti Kami</h3>
-                <p>Daftar di bawah untuk mendapatkan pemberitahuan tentang penjualan dan rilis produk baru</p>
+                <h3 class="font-bold text-sm">Follow us</h3>
+                <p>Sign up below to get news about our latest sales and releases!</p>
                 <div class="flex items-center gap-2 my-3">
                     <div class="relative">
                         <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
