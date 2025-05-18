@@ -64,7 +64,7 @@
 
                 $links[] = array(
                     "id" => "HOMEPAGE",
-                    "name" => "Beranda",
+                    "name" => "Home",
                     "link" => $dashboardRoute,
                     "childrens" => [],
                 );
@@ -92,7 +92,7 @@
                     $userLinks = [
                         [
                             "id" => "PRODUCT",
-                            "name" => "Vehicle",
+                            "name" => "Products",
                             "link" => route('products.index'),
                             "childrens" => [
                                 [
