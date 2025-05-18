@@ -4,8 +4,8 @@
         ['name' => 'Cart', 'url' => route('carts.index')]
     ]])
 
-    <div class="grid grid-cols-3 gap-3">
-        <div class="col-span-2">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="md:col-span-2">
             <div class="block w-full  bg-white border border-gray-200 rounded-lg ">
 
                 @if (Session::has('success'))
@@ -53,7 +53,7 @@
                             @foreach ($products as $index => $product)
                                 <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
                                     <td class="p-4">
-                                        <img src="{{ asset('storage/'.$product->image_path) }}" class="w-5 md:w-32 max-w-full max-h-full" alt="images">
+                                        <img src="{{ asset('storage/'.$product->image_path) }}" class="w-12 md:w-32 max-w-full max-h-full" alt="images">
                                     </td>
                                     <td class="px-6 py-4 font-semibold text-gray-900">
                                         {{ $product->name }}
@@ -78,7 +78,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 font-semibold text-gray-900">
-                                        Rp {{ $product->price }}
+                                        @idr($product->price)
                                     </td>
                                     <td class="px-6 py-4">
                                         <a href="#" wire:click="deleteFromCart({{ $product->id }})" class="font-medium text-red-600 hover:underline">Remove</a>
@@ -91,13 +91,13 @@
                 
             </div>
         </div>
-        <div class="col-span-1">
+        <div class="md:col-span-1">
             <div class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
                 <div class="flex flex-col gap-3">
                     <span class="text-lg font-medium">Total</span>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Sub-Total</span>
-                        <span class="text-sm font-medium">Rp {{ number_format($sub_total, 0, ',', '.') }}</span>
+                        <span class="text-sm font-medium">@idr($sub_total)</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Shipping</span>
@@ -105,22 +105,22 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Tax</span>
-                        <span class="text-sm font-medium">Rp {{ number_format($tax, 0, ',', '.') }}</span>
+                        <span class="text-sm font-medium">@idr($tax)</span>
                     </div>
 
                     <div class="w-full border-t border-gray-300 my-4"></div>
                     
                     <div class="flex justify-between">
                         <span class="text-lg font-medium text-gray-400">TOTAL</span>
-                        <span class="text-lg font-medium">Rp {{ number_format($grand_total, 0, ',', '.') }}</span>
+                        <span class="text-lg font-medium">@idr($grand_total)</span>
                     </div>
                     <div class="flex">
-                        <button type="button" class="ms-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
+                        <button wire:click="redirectToCheckout" @if ($products->count() <= 0) disabled @endif type="button" class="ms-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
                             BUAT PESANAN
                             <svg class="rtl:rotate-180 w-4 h-full ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                             </svg>
-                        </button>                    
+                        </button>              
                     </div>
                 </div>
             </div>

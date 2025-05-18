@@ -5,8 +5,8 @@
         ['name' => 'Checkout', 'url' => route('products.checkout')]
     ]])
 
-    <div class="grid grid-cols-3 gap-3">
-        <div class="col-span-2">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="md:col-span-2">
             <div class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
                 <span class="text-lg font-medium mb-5">Informasi Pembayaran</span>
                 {{-- forms --}}
@@ -65,22 +65,22 @@
                 </form>
             </div>
         </div>
-        <div class="col-span-1">
+        <div class="md:col-span-1">
             <div class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
                 <div class="flex flex-col gap-3">
                     <span class="text-lg font-medium">Detail Pesanan</span>
-                    {{-- detail product checked out --}}
-                    @for ($i = 0; $i < 3; $i++)
-                        @livewire('components.checked-product', [
-                            'productImage' => 'images/product.png',
-                            'productName' => 'Probold Titanium NT',
-                            'productPrice' => 30000,
-                            'quantity' => 7
-                        ])
-                    @endfor
+                    @foreach ($products as $product)
+                        <div class="flex gap-3 items-center">
+                            <img class="h-auto w-16" src="{{ asset('storage/' . $product->image_path) }}" alt="image description">
+                            <div class="flex flex-col gap-2">
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">{{ $product->name }}</span>
+                                <span>{{ $product->quantity }} x <span class="text-blue-500 font-medium">@idr($product->price)</span></span>
+                            </div>
+                        </div>
+                    @endforeach
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Sub-Total</span>
-                        <span class="text-sm font-medium">Rp 60.000</span>
+                        <span class="text-sm font-medium">@idr($sub_total)</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Shipping</span>
@@ -88,14 +88,26 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Tax</span>
-                        <span class="text-sm font-medium">Rp 12.000</span>
+                        <span class="text-sm font-medium">@idr($tax)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm font-medium text-gray-400">Discount</span>
+                        <span class="text-sm font-medium">@idr($discount ?? 0)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <select wire:model.live="selectedVoucher" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="" selected>Pilih Voucher</option>
+                            @foreach ($vouchers as $voucher)
+                                <option value="{{ $voucher['id'] }}">{{ $voucher['voucher_name'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="w-full border-t border-gray-300 my-4"></div>
                     
                     <div class="flex justify-between">
                         <span class="text-lg font-medium text-gray-400">TOTAL</span>
-                        <span class="text-lg font-medium">Rp 78.000</span>
+                        <span class="text-lg font-medium">@idr($grand_total)</span>
                     </div>
                     <div class="flex">
                         <button wire:click="redirectWhenSuccessCheckout" type="button" class="ms-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">

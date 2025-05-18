@@ -21,56 +21,49 @@
                 </div>
             
                 {{-- Tombol Aksi (Flowbite Button) --}}
-                <a href="{{ route('products.create') }}"
+                <a href="{{ route('vouchers.create') }}"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none 
                            focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center 
                            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    + Tambah Produk
+                    + Tambah Voucher
                 </a>
             </div>
             
             <table class="w-full text-sm text-left text-gray-700">
                 <thead class="text-xs uppercase bg-gray-100 text-gray-600">
                     <tr>
-                        <th class="px-6 py-3 rounded-s-lg">Gambar</th>
-                        <th class="px-6 py-3">Nama Produk</th>
-                        <th class="px-6 py-3">Kategori</th>
-                        <th class="px-6 py-3">Harga</th>
-                        <th class="px-6 py-3">Rating</th>
-                        <th class="px-6 py-3">Ulasan</th>
+                        <th class="px-6 py-3 rounded-s-lg">Code</th>
+                        <th class="px-6 py-3">Name</th>
+                        <th class="px-6 py-3">Description</th>
+                        <th class="px-6 py-3">Active?</th>
+                        <th class="px-6 py-3">Expired at</th>
                         <th class="px-6 py-3 rounded-e-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($products as $product)
+                    @forelse ($vouchers as $voucher)
                         <tr class="bg-white border-b border-gray-200">
-                            <td class="px-6 py-4">
-                                @if (!empty($product['product_images']))
-                                    <img src="{{ asset('storage/' . $product['product_images'][0]['image_path']) }}"
-                                        alt="Product Image"
-                                        class="w-12 h-12 object-cover rounded" />
-                                @else
-                                    <span class="text-gray-400">No image</span>
-                                @endif
-
-                            </td>
                             <td class="px-6 py-4 font-medium text-gray-900">
-                                {{ $product['name'] }}
+                                {{ $voucher['voucher_code'] }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $product['product_type']['name'] ?? '-' }}
+                                {{ $voucher['voucher_name'] }}
                             </td>
                             <td class="px-6 py-4">
-                                @idr($product['price'])
+                                {{ $voucher['voucher_description'] }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ number_format($product['reviews_avg_rating_point'] ?? 0, 2) }}
+                                {{ $voucher['voucher_is_disabled'] ? 'No' : 'Yes' }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $product['reviews_count'] ?? 0 }} ulasan
+                                {{
+                                    $voucher['voucher_end_date'] ?
+                                    \Carbon\Carbon::parse($voucher['voucher_end_date'])->format('d-m-Y') : 
+                                    '-' 
+                                }}
                             </td>
                             <td class="px-6 py-4 space-x-2">
-                                <a href="{{ route('products.edit', $product['id']) }}"
+                                <a href="{{ route('vouchers.edit', $voucher['id']) }}"
                                    class="inline-flex items-center px-3 py-1.5 bg-yellow-500 text-white text-xs font-semibold rounded hover:bg-yellow-600">
                                     Edit
                                 </a>
@@ -80,8 +73,8 @@
                                 </button> --}}
 
                                 <form
-                                    wire:submit.prevent="deleteProduct({{ $product['id'] }})"
-                                    wire:confirm="Yakin ingin menghapus produk ini?"
+                                    wire:submit.prevent="deleteVoucher({{ $voucher['id'] }})"
+                                    wire:confirm="Yakin ingin menghapus voucher ini?"
                                     class="inline-block"
                                 >
                                     <button type="submit"
@@ -94,7 +87,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">Tidak ada produk.</td>
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">Tidak ada voucher.</td>
                         </tr>
                     @endforelse
                 </tbody>
