@@ -15,6 +15,7 @@ class ProductDetail extends BaseComponent
     public $detailProduct;
     public $products;
     public $quantity = 1;
+    public $subTotal = 0;
 
     public function boot(ProductService $productService, CartService $cartService)
     {
@@ -26,17 +27,22 @@ class ProductDetail extends BaseComponent
     {
         $this->products = $this->productService->getAllProducts();
         $this->detailProduct = $this->productService->getProductById((int) $product);
+        $this->subTotal = $this->detailProduct->price * $this->quantity;
     }
 
     public function incrementQuantity()
     {
-        $this->quantity++;
+        // $this->quantity++;
+        if ($this->quantity < $this->detailProduct->current_stock) {
+            $this->subTotal = $this->detailProduct->price * ++$this->quantity;
+        }
     }
 
     public function decrementQuantity()
     {
-        if($this->quantity > 1) {
+        if ($this->quantity > 1) {
             $this->quantity--;
+            $this->subTotal = $this->detailProduct->price * $this->quantity;
         }
     }
 
@@ -49,7 +55,8 @@ class ProductDetail extends BaseComponent
     {
         $this->cartService->addToCart($this->detailProduct->id, $this->quantity);
 
-        session()->flash('success', 'SUCCESS');
+        session()->flash('success', 'Added to cart!');
+
         $this->dispatch('card-added');
     }
 
