@@ -27,4 +27,9 @@ class CartService
     {
         return $this->cartRepository->delete($product_id);
     }
+
+    public function updateQuantity(int $product_id, int $quantity)
+    {
+        return $this->cartRepository->updateQuantity($product_id, $quantity);
+    }
 }

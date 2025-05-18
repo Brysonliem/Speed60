@@ -43,8 +43,8 @@ class VoucherService
         return $this->voucherRepository->all();
     }
 
-    public function getAllActiveVouchers()
+    public function getAllActiveVouchers(?float $grandTotal = null)
     {
-        return $this->voucherRepository->getAllActiveVouchers();
+        return $this->voucherRepository->getAllActiveVouchers($grandTotal);
     }
 }

@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-4 h-screen">
     <!-- Breadcrumb -->
-    @livewire('components.breadcrumb', ['links' => [
+    {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Cart', 'url' => route('carts.index')]
-    ]])
+    ]]) --}}
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div class="md:col-span-2">
@@ -16,8 +16,26 @@
                             </svg>
                             <span class="sr-only">Check icon</span>
                         </div>
-                        <div class="ms-3 text-sm font-normal">Berhasil menambahkan ke cart!</div>
+                        <div class="ms-3 text-sm font-normal">{{ Session::get('success') }}</div>
                         <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
+                @if (Session::has('error'))
+                    <div x-data="{show: true}" x-show="show" id="toast-error" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
+                        <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg ">
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                            </svg>
+                            <span class="sr-only">Check icon</span>
+                        </div>
+                        <div class="ms-3 text-sm font-normal">{{ Session::get('error') }}</div>
+                        <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-error" aria-label="Close">
                             <span class="sr-only">Close</span>
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -48,9 +66,7 @@
                             </tr>
                         </thead>
                         <tbody>
-
-
-                            @foreach ($products as $index => $product)
+                            @forelse ($products as $index => $product)
                                 <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
                                     <td class="p-4">
                                         <img src="{{ asset('storage/'.$product->image_path) }}" class="w-12 md:w-32 max-w-full max-h-full" alt="images">
@@ -60,17 +76,31 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
-                                            <button class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" type="button">
-                                                <span class="sr-only">Quantity button</span>
+                                            <button 
+                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_id }}, {{ $product->quantity - 1 }})"
+                                                class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
+                                                type="button"
+                                            >
+                                                <span class="sr-only">Decrease quantity</span>
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
                                                 </svg>
                                             </button>
                                             <div>
-                                                <input wire:model="products.{{ $index }}.quantity" type="number" class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" placeholder="1" required />
+                                                <input 
+                                                    wire:model="products.{{ $index }}.quantity" 
+                                                    class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" 
+                                                    placeholder="1" 
+                                                    readonly
+                                                    required
+                                                />
                                             </div>
-                                            <button class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" type="button">
-                                                <span class="sr-only">Quantity button</span>
+                                            <button 
+                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_id }}, {{ $product->quantity + 1 }})"
+                                                class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
+                                                type="button"
+                                            >
+                                                <span class="sr-only">Increase quantity</span>
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
                                                 </svg>
@@ -81,10 +111,16 @@
                                         @idr($product->price)
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="#" wire:click="deleteFromCart({{ $product->id }})" class="font-medium text-red-600 hover:underline">Remove</a>
+                                        <a href="#" wire:click="deleteFromCart({{ $product->product_id }})" class="font-medium text-red-600 hover:underline">Remove</a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                                    <td colspan="5" class="text-center p-4">
+                                        <span class="text-sm font-medium text-gray-400">Tidak ada produk di keranjang</span>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

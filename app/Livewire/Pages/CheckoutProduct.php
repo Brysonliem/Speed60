@@ -5,11 +5,13 @@ namespace App\Livewire\Pages;
 use App\Livewire\BaseComponent;
 use App\Services\VoucherService;
 use App\Services\CartService;
+use App\Services\ProductService;
 
 class CheckoutProduct extends BaseComponent
 {
     protected CartService $cartService;
     protected VoucherService $voucherService;
+    protected ProductService $productService;
 
     public $products;
     public $sub_total;
@@ -19,10 +21,11 @@ class CheckoutProduct extends BaseComponent
     public $selectedVoucher;
     public $discount;
 
-    public function boot(CartService $cartService, VoucherService $voucherService)
+    public function boot(CartService $cartService, VoucherService $voucherService, ProductService $productService)
     {
         $this->cartService = $cartService;
         $this->voucherService = $voucherService;
+        $this->productService = $productService;
     }
 
     public function calculateTotals()
@@ -66,24 +69,35 @@ class CheckoutProduct extends BaseComponent
 
     public function loadProductCarts()
     {
-        $this->products = $this->cartService->getAllDataCart();
+        $this->products = $this
+            ->cartService
+            ->getAllDataCart()
+            ->groupBy('cart_id')
+            ->map(fn($item) => $item->first())
+            ->values();
     }
 
     public function loadVouchers()
     {
-        $this->vouchers = $this->voucherService->getAllActiveVouchers();
+        $this->vouchers = $this->voucherService->getAllActiveVouchers($this->grand_total);
     }
 
     public function mount()
     {
         $this->loadProductCarts();
-        $this->loadVouchers();
         $this->calculateTotals();
+        $this->loadVouchers();
     }
 
     public function redirectWhenSuccessCheckout()
     {
         foreach ($this->products as $product) {
+            $productMaster = $this->productService->getProductById($product->product_id);
+            if ($productMaster) {
+                $productMaster->current_stock -= $product->quantity;
+                $productMaster->save();
+            }
+
             $this->cartService->deleteFromCart($product->id);
         }
 
