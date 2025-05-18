@@ -48,16 +48,39 @@ class ProductDetail extends BaseComponent
 
     public function redirectCheckout()
     {
+        if (!$this->canProceed()) {
+            return;
+        }
+
         return redirect()->route('products.checkout');
     }
 
     public function addToCart()
     {
+        if (!$this->canProceed()) {
+            return;
+        }
+
         $this->cartService->addToCart($this->detailProduct->id, $this->quantity);
 
         session()->flash('success', 'Added to cart!');
 
         $this->dispatch('card-added');
+    }
+
+    private function canProceed()
+    {
+        if ($this->quantity === 0) {
+            session()->flash('error', 'Quantity cannot be zero');
+            return false;
+        }
+
+        if ($this->quantity > $this->detailProduct->current_stock) {
+            session()->flash('error', 'Quantity exceeds current stock');
+            return false;
+        }
+
+        return true;
     }
 
     public function render()

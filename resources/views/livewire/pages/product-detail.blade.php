@@ -127,8 +127,8 @@
                             type="button"
                             id="increment-button"
                             data-input-counter-increment="quantity-input"
-                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none @if ($quantity === $detailProduct->current_stock) hover:cursor-not-allowed @endif"
-                            @if ($quantity === $detailProduct->current_stock) disabled @endif
+                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none @if ($quantity >= $detailProduct->current_stock) hover:cursor-not-allowed @endif"
+                            @if ($quantity >= $detailProduct->current_stock) disabled @endif
                         >
                             <svg class="w-3 h-3 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
@@ -164,7 +164,8 @@
                 wire:click="addToCart"
                 wire:loading.attr="disabled"
                 wire:target="addToCart"
-                class="px-5 h-11 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 inline-flex items-center justify-center"
+                class="px-5 h-11 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 inline-flex items-center justify-center @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
+                @if ($detailProduct->current_stock === 0 || $quantity === 0) disabled @endif
             >
                 <svg
                     wire:loading
@@ -189,7 +190,12 @@
                 <span wire:loading wire:target="addToCart">Menambahkan...</span>
             </button>
 
-            <button wire:click="redirectCheckout" type="button" class="px-5 h-11 text-base font-medium text-center text-blue-700 rounded-lg border border-blue-500 hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300">
+            <button
+                wire:click="redirectCheckout"
+                type="button"
+                class="px-5 h-11 text-base font-medium text-center text-blue-700 rounded-lg border border-blue-500 hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300 @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
+                @if ($detailProduct->current_stock === 0 || $quantity === 0) disabled @endif
+            >
                 BELI SEKARANG
             </button>
 
