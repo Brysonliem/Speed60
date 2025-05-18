@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-3 h-screen">
+<div class="flex flex-col gap-3 h-screen p-4 md:p-8">
     <!-- Breadcrumb -->
     {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Product', 'url' => route('products.index.admin')],

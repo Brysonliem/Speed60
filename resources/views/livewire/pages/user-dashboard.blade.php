@@ -8,7 +8,7 @@
             "/images/Slide 6 v1.jpg",
         ]
     ])
-<div class="flex flex-col gap-4 ">
+<div class="flex flex-col gap-4 p-4 md:p-8">
 <div class=" mt-10">
    <div class="px-3 lg:px-40"> 
     {{-- information section --}}

@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 @endphp
 
-<div class="flex flex-col gap-3 h-screen">
+<div class="flex flex-col gap-3 h-screen p-4 md:p-8">
     <!-- Breadcrumb -->
     {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Voucher', 'url' => route('vouchers.index')],

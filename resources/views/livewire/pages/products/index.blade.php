@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 p-4 md:p-8">
     <!-- Breadcrumb -->
     @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Produk', 'url' => route('products.index')],
@@ -98,8 +98,7 @@
                     </div>
                 @endif
 
-                <div class="grid grid-cols-3 gap-3">
-                    
+                <div class="grid md:grid-cols-6 h-full grid-cols-2 gap-2 mt-4">
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
