@@ -55,6 +55,16 @@ class Carts extends Component
         $this->loadProductCarts();
     }
 
+    public function redirectToCheckout()
+    {
+        if ($this->products->count() === 0) {
+            session()->flash('error', 'Cart tidak boleh kosong');
+            return;
+        }
+
+        redirect(route('products.checkout', ['cart' => $this->products[0]->id]));
+    }
+
     public function render()
     {
         return view('livewire.pages.carts');

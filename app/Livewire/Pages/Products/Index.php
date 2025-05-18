@@ -21,7 +21,7 @@ class Index extends BaseComponent
         $this->productService = $productService;
     }
 
-    public function loadProducts() 
+    public function loadProducts()
     {
         $this->products = $this->productService->getAllProducts();
     }

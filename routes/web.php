@@ -13,16 +13,21 @@ use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Products\Edit;
 use App\Livewire\Pages\Profile;
 use App\Livewire\Pages\UserDashboard;
+use App\Livewire\Pages\Vouchers\Index as VoucherIndex;
+use App\Livewire\Pages\Vouchers\Create as VoucherCreate;
+use App\Livewire\Pages\Vouchers\Edit as VoucherEdit;
 
-Route::middleware(['auth','verified'])->name('dashboard.')->group(function() {
+
+
+Route::middleware(['auth', 'verified'])->name('dashboard.')->group(function () {
     Route::get('/dashboard-admin', Admin::class)->name('admin');
     Route::get('/dashboard-superadmin', Home::class)->name('superadmin');
     Route::get('/dashboard', UserDashboard::class)->name('user');
 });
 
-Route::middleware('auth')->group(function() {
-    
-    Route::prefix('products')->name('products.')->group(function() {
+Route::middleware('auth')->group(function () {
+
+    Route::prefix('products')->name('products.')->group(function () {
         Route::get('', Index::class)->name('index');
         Route::get('index-admin', IndexAdmin::class)->name('index.admin');
         Route::get('create', Create::class)->name('create');
@@ -32,14 +37,19 @@ Route::middleware('auth')->group(function() {
         Route::get('checkout/success', CheckoutSuccess::class)->name('checkout.success');
     });
 
-    Route::prefix('carts')->name('carts.')->group(function() {
+    Route::prefix('vouchers')->name('vouchers.')->group(function () {
+        Route::get('', VoucherIndex::class)->name('index');
+        Route::get('create', VoucherCreate::class)->name('create');
+        Route::get('{voucher}/edit', VoucherEdit::class)->name('edit');
+    });
+
+    Route::prefix('carts')->name('carts.')->group(function () {
         Route::get('', Carts::class)->name('index');
     });
 
-    Route::prefix('profile')->name('profile.')->group(function() {
+    Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/{user}', Profile::class)->name('show');
     });
-
 });
 
 // Halaman produk
@@ -74,4 +84,4 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
