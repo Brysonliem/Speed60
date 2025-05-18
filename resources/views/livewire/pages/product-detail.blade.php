@@ -41,7 +41,7 @@
             </div>
         </div>  
 
-        <div class="col-span-3 ">
+        <div class="col-span-3">
             <div class="flex flex-col gap-3">
 
                 {{-- title product --}}
@@ -61,7 +61,7 @@
                     <div class="flex flex-col gap-2">
                         <span class="text-sm text-gray-500">Stock : 
                             <span class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm 
-                                {{ $detailProduct->stock > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                {{ $detailProduct->current_stock > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
                                 TERSEDIA
                             </span>
 
@@ -73,7 +73,7 @@
                 </div>
 
                 {{-- price --}}
-                <span class="text-2xl text-blue-400 font-semibold">{{ 'Rp ' . number_format($detailProduct->price, 0, ',', '.') }}</span>
+                <span class="text-2xl text-blue-400 font-semibold">@idr($detailProduct->price)</span>
 
                 {{-- divider --}}
                 <div class="w-full border-t border-gray-300 my-4"></div>
@@ -251,9 +251,11 @@
             @foreach ($products as $product)
                 @livewire('components.product-card', [
                     'product' => $product,
-                    'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
+                    'image' => $product['product_images'][0]['image_path'] ?
+                               asset('storage/'.$product['product_images'][0]['image_path']) : 
+                               'images/default.png',
                     'title' => $product['name'],
-                    'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),
+                    'price' => 'Rp. ' . number_format($product['price'], 0, ',', '.'),
                     'rating' => round($product['reviews_avg_rating_point'], 2),
                     'reviews' => $product['reviews_count']
                 ])

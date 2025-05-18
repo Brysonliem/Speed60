@@ -55,6 +55,7 @@ class CheckoutProduct extends BaseComponent
             if ($voucher) {
                 $this->discount = $voucher->voucher_discount_percentage / 100 * $this->grand_total;
                 $this->grand_total -= $this->discount;
+                session()->flash('success', "Voucher {$voucher->voucher_code} applied successfully!");
             }
         } else {
             $this->discount = 0;
