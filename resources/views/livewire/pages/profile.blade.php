@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 h-[70rem]">
+<div class="flex flex-col gap-4 h-[75rem]">
     <!-- Breadcrumb -->
     @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Produk', 'url' => route('products.index')],
@@ -177,7 +177,11 @@
                         </div>
                         <div class="hidden p-4 rounded-lg bg-gray-50 shadow-md" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
                             <div class="flex gap-5">
-                                <img class="rounded-full w-52 h-52" src="{{ asset('images/avatar.jpg') }}" alt="image description">
+                                @if ($user_profile)
+                                    <img class="rounded-full w-52 h-52" src="{{ asset('/storage'.$user_profile) }}" alt="image description">
+                                @else
+                                    <img class="rounded-full w-52 h-52" src="{{ asset('images/avatar.jpg') }}" alt="image description">
+                                @endif
 
                                 {{-- FORM PROFILE --}}
                                 <form class="grid grid-cols-2 gap-2 w-full">
@@ -201,7 +205,19 @@
                                         <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Phone</label>
                                         <input type="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required />
                                     </div>
-                                    <div class="col-span-2 mt-3">
+                                    <div class="col-span-2 mt-3 flex gap-2">
+                                        <input 
+                                            type="file" 
+                                            wire:model="newPhoto" 
+                                            id="photoUpload" 
+                                            class="hidden"
+                                        >
+                                        <button 
+                                            type="button"
+                                            onclick="document.getElementById('photoUpload').click()"
+                                            class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
+                                            Change Profile  
+                                        </button>
                                         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Save Changes</button>
                                     </div>
                                 </form>
