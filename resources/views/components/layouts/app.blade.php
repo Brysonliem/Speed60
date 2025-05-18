@@ -16,7 +16,7 @@
     <div class="z-1">
         @include('components.navbar') <!-- Memanggil navbar -->
     </div>
-    <div class="flex-1 z-0 p-4 md:p-8">
+    <div class="flex-1 z-0 p-4 md:p-8 overflow-auto">
         {{ $slot }} <!-- Bagian ini akan diisi oleh Livewire Component -->
     </div>
 
