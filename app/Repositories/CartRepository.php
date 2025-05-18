@@ -16,7 +16,7 @@ class CartRepository implements CartRepositoryInterface
             ->join('products', 'carts.product_id', '=', 'products.id')
             ->join('product_images', function ($join) {
                 $join->on('product_images.product_id', '=', 'products.id')
-                     ->where('product_images.is_main', true);
+                    ->where('product_images.is_main', true);
             })
             ->where('carts.user_id', Auth::user()->id)
             ->select(
@@ -31,8 +31,7 @@ class CartRepository implements CartRepositoryInterface
 
     public function addToCart(int $product_id, int $quantity)
     {
-        return DB::transaction(function() use ($product_id, $quantity) {
-
+        return DB::transaction(function () use ($product_id, $quantity) {
             return Carts::create([
                 'product_id' => $product_id,
                 'user_id' => Auth::user()->id,
@@ -43,7 +42,7 @@ class CartRepository implements CartRepositoryInterface
 
     public function delete(int $product_id)
     {
-        return DB::transaction(function() use ($product_id) {
+        return DB::transaction(function () use ($product_id) {
             return Carts::where('product_id', $product_id)->delete();
         });
     }

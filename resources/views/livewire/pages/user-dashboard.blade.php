@@ -85,7 +85,7 @@
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
-                            'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
+                            'image' => 'storage/'.$product['product_images'][0]['image_path'] ?? 'images/default.png',
                             'title' => $product['name'],
                             'price' => number_format($product['price'], 0, ',', '.'),
                             'rating' => round($product['reviews_avg_rating_point'], 2),

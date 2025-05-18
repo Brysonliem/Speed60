@@ -18,6 +18,11 @@ class VoucherService
         return $this->voucherRepository->create($data);
     }
 
+    public function getVoucherById(int $id)
+    {
+        return $this->voucherRepository->find($id);
+    }
+
     public function updateVoucher(int $id, array $data)
     {
         return $this->voucherRepository->update($id, $data);
@@ -31,5 +36,15 @@ class VoucherService
     public function deleteVoucher(int $id)
     {
         return $this->voucherRepository->delete($id);
+    }
+
+    public function getAllVouchers()
+    {
+        return $this->voucherRepository->all();
+    }
+
+    public function getAllActiveVouchers()
+    {
+        return $this->voucherRepository->getAllActiveVouchers();
     }
 }

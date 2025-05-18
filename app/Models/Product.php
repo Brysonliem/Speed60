@@ -25,14 +25,17 @@ class Product extends Model
     {
         return $this->belongsTo(ProductType::class, 'product_type_id');
     }
+
     public function images(): HasMany
     {
         return $this->hasMany(ProductImages::class, 'product_id');
     }
+
     public function mainImage(): HasOne
     {
         return $this->hasOne(ProductImages::class, 'product_id')->where('is_main', true);
     }
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -46,5 +49,10 @@ class Product extends Model
     public function productImages(): HasMany
     {
         return $this->hasMany(ProductImages::class, 'product_id');
+    }
+
+    public function carts(): BelongsTo
+    {
+        return $this->belongsTo(Carts::class, 'product_id');
     }
 }

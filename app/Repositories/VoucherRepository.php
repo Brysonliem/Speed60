@@ -12,6 +12,20 @@ class VoucherRepository implements VoucherRepositoryInterface
         return Voucher::latest()->get()->toArray();
     }
 
+    public function getAllActiveVouchers()
+    {
+        $now = now();
+        return Voucher::where('voucher_is_disabled', 0)
+            ->whereDate('voucher_start_date', '<=', $now)
+            ->where(function ($q) use ($now) {
+                $q->whereNull('voucher_end_date')            // never expires
+                    ->orWhere('voucher_end_date', '>=', $now); // still valid
+            })
+            ->latest()
+            ->get()
+            ->toArray();
+    }
+
     public function find(int $id)
     {
         return Voucher::find($id);
