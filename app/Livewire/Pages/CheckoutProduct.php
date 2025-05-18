@@ -98,7 +98,7 @@ class CheckoutProduct extends BaseComponent
                 $productMaster->save();
             }
 
-            $this->cartService->deleteFromCart($product->id);
+            $this->cartService->deleteFromCart($product->product_id);
         }
 
         return redirect()->route('products.checkout.success');
