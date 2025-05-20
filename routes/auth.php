@@ -7,11 +7,11 @@ use App\Livewire\Home;
 use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 
-Route::middleware('guest')->group(function() {
+Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)->name('login');
-    Route::get('register',Registration::class)->name('register');
+    Route::get('register', Registration::class)->name('register');
 });
 
-Route::get('logout',Logout::class)
+Route::get('logout', Logout::class)
     ->middleware('auth')
     ->name('logout');

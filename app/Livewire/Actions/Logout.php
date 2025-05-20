@@ -15,6 +15,6 @@ class Logout
         Session::invalidate();
         Session::regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('dashboard.user');
     }
 }

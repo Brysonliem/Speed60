@@ -44,7 +44,7 @@
             <!-- Navigation Links - Desktop -->
             @php
                 $user = Auth::user();
-                $dashboardRoute = match ($user->role->level) {
+                $dashboardRoute = match ($user?->role->level) {
                     1 => route('dashboard.superadmin'),
                     2 => route('dashboard.admin'),
                     default => route('dashboard.user'),
@@ -69,7 +69,7 @@
                     "childrens" => [],
                 );
 
-                if (in_array($user->role->level, [1, 2])) {
+                if (in_array($user?->role->level, [1, 2])) {
                     $userLinksLevel1_2 = [
                         [
                             "id" => "CREATE_PRODUCT",
@@ -87,7 +87,7 @@
                     $links = array_merge($links, $userLinksLevel1_2);
                 }
 
-                if ($user->role->level == 3) {
+                if ($user?->role->level == 3) {
 
                     $userLinks = [
                         [
@@ -218,7 +218,7 @@
             <!-- Right side icons -->
             <div class="flex items-center relative gap-4">
 
-                @if (!in_array($user->role->level, [1, 2]))
+                @if (!in_array($user?->role->level, [1, 2]))
                     <div class="flex">
                         <a href="{{ route('carts.index') }}" class="material-icons">shopping_cart</a>
                     </div>
@@ -236,19 +236,34 @@
                 <div id="dropdownProfile"
                     class="hidden absolute right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
                     <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownProfileButton">
-                        <li>
-                            <a href="{{ route('profile.show', Auth::user()->id) }}"
-                                class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
-                                <i class="material-icons">person</i>
-                                Akun Saya
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('logout') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
-                                <i class="material-icons">logout</i>
-                                Keluar
-                            </a>
-                        </li>
+                        @if (Auth::check())
+                            <li>
+                                <a href="{{ route('profile.show', Auth::user()->id) }}"
+                                    class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                                    <i class="material-icons">person</i>
+                                    Akun Saya
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('logout') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                                    <i class="material-icons">logout</i>
+                                    Keluar
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ route('login') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                                    <i class="material-icons">login</i>
+                                    Login
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('register') }}" class="flex px-4 py-2 hover:bg-gray-100 items-center gap-2">
+                                    <i class="material-icons">menu</i>
+                                    Register
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
 
