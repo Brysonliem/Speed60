@@ -6,10 +6,15 @@ use App\Livewire\BaseComponent;
 use App\Services\VoucherService;
 use App\Services\CartService;
 use App\Services\ProductService;
+use App\Services\TransactionService;
+use Livewire\Attributes\Url;
 
 class CheckoutProduct extends BaseComponent
 {
-    protected CartService $cartService;
+    #[Url]
+    public $trx = '';
+
+    protected TransactionService $transactionService;
     protected VoucherService $voucherService;
     protected ProductService $productService;
 
@@ -21,9 +26,9 @@ class CheckoutProduct extends BaseComponent
     public $selectedVoucher;
     public $discount;
 
-    public function boot(CartService $cartService, VoucherService $voucherService, ProductService $productService)
+    public function boot(TransactionService $transactionService, VoucherService $voucherService, ProductService $productService)
     {
-        $this->cartService = $cartService;
+        $this->transactionService = $transactionService;
         $this->voucherService = $voucherService;
         $this->productService = $productService;
     }
@@ -70,11 +75,8 @@ class CheckoutProduct extends BaseComponent
     public function loadProductCarts()
     {
         $this->products = $this
-            ->cartService
-            ->getAllDataCart()
-            ->groupBy('cart_id')
-            ->map(fn($item) => $item->first())
-            ->values();
+            ->transactionService
+            ->findByTrxNumber($this->trx);
     }
 
     public function loadVouchers()
@@ -92,14 +94,18 @@ class CheckoutProduct extends BaseComponent
     public function redirectWhenSuccessCheckout()
     {
         foreach ($this->products as $product) {
-            $productMaster = $this->productService->getProductById($product->product_id);
-            if ($productMaster) {
-                $productMaster->current_stock -= $product->quantity;
-                $productMaster->save();
+            $variant = $this->productService->getVariantById($product->variant_id);
+            if ($variant) {
+                if ($variant->purchase_unit === 'set') {
+                    $variant->current_stock -= $product->quantity * $variant->unit_per_set;
+                } else {
+                    $variant->current_stock -= $product->quantity;
+                }
+                $variant->save();
             }
-
-            $this->cartService->deleteFromCart($product->product_id);
         }
+
+        $this->transactionService->updateByTrxNumber($this->trx, ['transaction_status' => 'paid']);
 
         return redirect()->route('products.checkout.success');
     }

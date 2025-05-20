@@ -27,7 +27,8 @@ class CartRepository implements CartRepositoryInterface
                 'product_variants.id AS product_variant_id',
                 'products.name',
                 'product_variants.price',
-                'product_images.image_path'
+                'product_images.image_path',
+                'carts.checked'
             )
             ->get();
     }
@@ -75,7 +76,17 @@ class CartRepository implements CartRepositoryInterface
             $cart = Carts::where('product_variant_id', $variant_id)
                 ->where('user_id', Auth::user()->id)
                 ->first();
-            return $cart->delete();
+            return $cart?->delete();
         });
+    }
+
+    public function toggleChecked(int $variant_id, bool $status)
+    {
+        $item = Carts::where('product_variant_id', $variant_id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+        $item->checked = $status;
+        $item->save();
+        return $item;
     }
 }

@@ -32,4 +32,9 @@ class CartService
     {
         return $this->cartRepository->updateQuantity($variant_id, $quantity);
     }
+
+    public function toggleChecked(int $variant_id, bool $status)
+    {
+        return $this->cartRepository->toggleChecked($variant_id, $status);
+    }
 }

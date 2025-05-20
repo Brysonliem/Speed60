@@ -178,7 +178,7 @@
             </button>
 
             <button
-                wire:click="redirectCheckout"
+                wire:click="purchaseNow"
                 type="button"
                 class="px-5 h-11 text-base font-medium text-center text-blue-700 rounded-lg border border-blue-500 hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300 @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
                 @if ($currentVariant->current_stock === 0 || $quantity === 0) disabled @endif

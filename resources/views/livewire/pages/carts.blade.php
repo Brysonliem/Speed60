@@ -48,6 +48,9 @@
                     <table class="w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Check
+                                </th>
                                 <th scope="col" class="px-16 py-3">
                                     <span class="sr-only">Image</span>
                                 </th>
@@ -68,6 +71,14 @@
                         <tbody>
                             @forelse ($products as $index => $product)
                                 <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="px-6 py-4">
+                                        <input
+                                            type="checkbox"
+                                            @if ($product->checked) checked @endif
+                                            {{-- wire:model="product.{{ $index }}.checked" --}}
+                                            wire:change="toggleChecked({{ $index }})"
+                                        />
+                                    </td>
                                     <td class="p-4">
                                         <img src="{{ asset('storage/'.$product->image_path) }}" class="w-12 md:w-32 max-w-full max-h-full" alt="images">
                                     </td>
@@ -116,7 +127,7 @@
                                 </tr>
                             @empty
                                 <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
-                                    <td colspan="5" class="text-center p-4">
+                                    <td colspan="6" class="text-center p-4">
                                         <span class="text-sm font-medium text-gray-400">Tidak ada produk di keranjang</span>
                                     </td>
                                 </tr>
