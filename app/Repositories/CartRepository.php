@@ -13,7 +13,8 @@ class CartRepository implements CartRepositoryInterface
     public function all()
     {
         return DB::table('carts')
-            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->join('product_variants', 'carts.product_variant_id', '=', 'product_variants.id')
+            ->join('products', 'product_variants.product_id', '=', 'products.id')
             ->join('product_images', function ($join) {
                 $join->on('product_images.product_id', '=', 'products.id')
                     ->where('product_images.is_main', true);
@@ -23,17 +24,18 @@ class CartRepository implements CartRepositoryInterface
                 'carts.id AS cart_id',
                 'carts.quantity',
                 'products.id AS product_id',
+                'product_variants.id AS product_variant_id',
                 'products.name',
-                'products.price',
+                'product_variants.price',
                 'product_images.image_path'
             )
             ->get();
     }
 
-    public function addToCart(int $product_id, int $quantity)
+    public function addToCart(int $variant_id, int $quantity)
     {
-        return DB::transaction(function () use ($product_id, $quantity) {
-            $productsInCart = Carts::where('product_id', $product_id)
+        return DB::transaction(function () use ($variant_id, $quantity) {
+            $productsInCart = Carts::where('product_variant_id', $variant_id)
                 ->where('user_id', Auth::user()->id)
                 ->first();
             if ($productsInCart) {
@@ -44,17 +46,17 @@ class CartRepository implements CartRepositoryInterface
             }
 
             return Carts::create([
-                'product_id' => $product_id,
+                'product_variant_id' => $variant_id,
                 'user_id' => Auth::user()->id,
                 'quantity' => $quantity,
             ]);
         });
     }
 
-    public function updateQuantity(int $product_id, int $quantity)
+    public function updateQuantity(int $variant_id, int $quantity)
     {
-        return DB::transaction(function () use ($product_id, $quantity) {
-            $cart = Carts::where('product_id', $product_id)
+        return DB::transaction(function () use ($variant_id, $quantity) {
+            $cart = Carts::where('product_variant_id', $variant_id)
                 ->where('user_id', Auth::user()->id)
                 ->first();
             if (!$cart) {
@@ -67,10 +69,10 @@ class CartRepository implements CartRepositoryInterface
         });
     }
 
-    public function delete(int $product_id)
+    public function delete(int $variant_id)
     {
-        return DB::transaction(function () use ($product_id) {
-            $cart = Carts::where('product_id', $product_id)
+        return DB::transaction(function () use ($variant_id) {
+            $cart = Carts::where('product_variant_id', $variant_id)
                 ->where('user_id', Auth::user()->id)
                 ->first();
             return $cart->delete();

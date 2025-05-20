@@ -14,8 +14,6 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'price',
-        'current_stock',
         'condition',
         'created_by',
         'product_type_id',
@@ -49,11 +47,6 @@ class Product extends Model
     public function productImages(): HasMany
     {
         return $this->hasMany(ProductImages::class, 'product_id');
-    }
-
-    public function carts(): BelongsTo
-    {
-        return $this->belongsTo(Carts::class, 'product_id');
     }
 
     public function variants(): HasMany

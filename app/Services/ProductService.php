@@ -61,4 +61,9 @@ class ProductService
     {
         return $this->productRepository->createVariant($data);
     }
+
+    public function getVariantById(int $id)
+    {
+        return $this->productRepository->getVariantById($id);
+    }
 }

@@ -77,7 +77,7 @@
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
                                             <button 
-                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_id }}, {{ $product->quantity - 1 }})"
+                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_variant_id }}, {{ $product->quantity - 1 }})"
                                                 class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
                                                 type="button"
                                             >
@@ -96,7 +96,7 @@
                                                 />
                                             </div>
                                             <button 
-                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_id }}, {{ $product->quantity + 1 }})"
+                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_variant_id }}, {{ $product->quantity + 1 }})"
                                                 class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
                                                 type="button"
                                             >
@@ -111,7 +111,7 @@
                                         @idr($product->price)
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="#" wire:click="deleteFromCart({{ $product->product_id }})" class="font-medium text-red-600 hover:underline">Remove</a>
+                                        <a href="#" wire:click="deleteFromCart({{ $product->product_variant_id }})" class="font-medium text-red-600 hover:underline">Remove</a>
                                     </td>
                                 </tr>
                             @empty

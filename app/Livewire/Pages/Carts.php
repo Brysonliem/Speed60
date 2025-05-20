@@ -50,7 +50,7 @@ class Carts extends Component
         $this->calculateTotals();
     }
 
-    public function updateQuantity(int $product_id, int $quantity)
+    public function updateQuantity(int $variant_id, int $quantity)
     {
         // Validate quantity
         if ($quantity < 1) {
@@ -58,7 +58,7 @@ class Carts extends Component
             return;
         }
 
-        $product = $this->productService->getProductById($product_id);
+        $product = $this->productService->getVariantById($variant_id);
         if (!$product) {
             session()->flash('error', 'Produk tidak ditemukan');
             return;
@@ -69,7 +69,7 @@ class Carts extends Component
             return;
         }
 
-        $this->cartService->updateQuantity($product_id, $quantity);
+        $this->cartService->updateQuantity($variant_id, $quantity);
         $this->loadProductCarts();
     }
 
@@ -79,9 +79,9 @@ class Carts extends Component
         $this->calculateTotals();
     }
 
-    public function deleteFromCart(int $product_id)
+    public function deleteFromCart(int $variant_id)
     {
-        $this->cartService->deleteFromCart($product_id);
+        $this->cartService->deleteFromCart($variant_id);
 
         session()->flash('success', 'Berhasil menghapus cart');
 
