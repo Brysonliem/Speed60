@@ -102,11 +102,13 @@
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
-                            'image' => $product['product_images'][0]['image_path'] ?
-                               asset('storage/'.$product['product_images'][0]['image_path']) : 
-                               'images/default.png',
+                            'image' => !empty($product['product_images'])
+                                ? asset('storage/'.$product['product_images'][0]['image_path'])
+                                : 'storage/images/default.png',
                             'title' => $product['name'],
-                            'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),
+                            'price' => !empty($product['variants']) 
+                                ? number_format($product['variants'][0]['price'], 0, ',', '.')
+                                : '0',
                             'rating' => round($product['reviews_avg_rating_point'], 2),
                             'reviews' => $product['reviews_count']
                         ])

@@ -16,7 +16,7 @@ class IndexAdmin extends BaseComponent
         $this->productService = $productService;
     }
 
-    public function loadProducts() 
+    public function loadProducts()
     {
         $this->products = $this->productService->getAllProducts();
     }
@@ -32,9 +32,9 @@ class IndexAdmin extends BaseComponent
 
         $this->loadProducts();
 
-        session()->flash('success','Produk Berhasil Dihapus');
+        session()->flash('success', 'Produk Berhasil Dihapus');
     }
-    
+
     public function render()
     {
         return view('livewire.pages.products.index-admin');

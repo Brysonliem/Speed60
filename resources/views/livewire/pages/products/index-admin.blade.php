@@ -61,7 +61,11 @@
                                 {{ $product['product_type']['name'] ?? '-' }}
                             </td>
                             <td class="px-6 py-4">
-                                @idr($product['price'])
+                                @if (!empty($products['variants']))
+                                    @idr($product['variants'][0]['price'])
+                                @else
+                                    @idr(0)
+                                @endif
                             </td>
                             <td class="px-6 py-4">
                                 {{ number_format($product['reviews_avg_rating_point'] ?? 0, 2) }}

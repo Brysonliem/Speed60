@@ -62,43 +62,30 @@
                 </div>
             </div>
             <span class="text-3xl font-bold border-b border-gray-300 pb-2">
-                @idr($detailProduct->price)
+                @idr($currentVariant->price)
             </span>
+
             <div class="flex flex-col gap-4">
                 <div class="flex gap-2 items-center">
                     <span class="font-bold">Choose color:</span>
-                    <span class="text-gray-600">White</span>
+                    <span class="text-gray-600">{{ $currentVariant->color }}</span>
                 </div>
 
                 <div class="flex gap-2 flex-wrap">
-                    <div class="flex items-center me-4">
-                        <input checked id="red-radio" type="radio" name="colored-radio" class="w-6 h-6 scale-150 text-gray-600 bg-gray-100 border-gray-300 focus:ring-gray-500 focus:ring-2">
-                    </div>
-                    <div class="flex items-center me-4">
-                        <input id="green-radio" type="radio" name="colored-radio" class="w-6 h-6 scale-150 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2">
-                    </div>
-                    <div class="flex items-center me-4">
-                        <input id="purple-radio" type="radio" name="colored-radio" class="w-6 h-6 scale-150 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 focus:ring-2">
-                    </div>
+                    @foreach ($variants as $index => $variant)
+                        <div class="flex items-center me-4" wire:key="{{ $variant->id }}">
+                            <input
+                                @if ($variant->id === $currentVariant->id) checked @endif 
+                                id="red-radio"
+                                type="radio"
+                                name="colored-radio"
+                                class="w-6 h-6 scale-150 border-gray-300 focus:ring-gray-500 focus:ring-2"
+                                style="background: {{ $variant->color_code }}; color: {{ $variant->color_code }}"
+                                wire:change="setSelectedVariant({{ $index }})"
+                            >
+                        </div>
+                    @endforeach
                 </div>
-            </div>
-
-            <div class="flex flex-col gap-3 mt-4">
-                <span class="text-gray-500">Choose set:</span>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button" class="text-blue-500 border border-blue-500 hover:bg-blue-200 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        1 Set 2 Baut
-                    </button>
-                    <button type="button" class="text-blue-500 border border-blue-500 hover:bg-blue-200 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        1 Set 2 Baut
-                    </button>
-                    <button type="button" class="text-blue-500 border border-blue-500 hover:bg-blue-200 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        1 Set 2 Baut
-                    </button>
-                    <button type="button" class="text-blue-500 border border-blue-500 hover:bg-blue-200 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        1 Set 2 Baut
-                    </button>
-                </div>                            
             </div>
 
             <p class="mt-2">
@@ -127,8 +114,8 @@
                             type="button"
                             id="increment-button"
                             data-input-counter-increment="quantity-input"
-                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none @if ($quantity >= $detailProduct->current_stock) hover:cursor-not-allowed @endif"
-                            @if ($quantity >= $detailProduct->current_stock) disabled @endif
+                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none @if ($quantity >= $currentVariant->current_stock) hover:cursor-not-allowed @endif"
+                            @if ($quantity >= $currentVariant->current_stock) disabled @endif
                         >
                             <svg class="w-3 h-3 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
@@ -138,17 +125,17 @@
                 </div>
                 <div class="flex flex-1 space-x-1 items-center">
                     <span>Stok Total: </span>
-                    @if ($detailProduct->current_stock === 0)
+                    @if ($currentVariant->current_stock === 0)
                         <span class="text-red-500 font-semibold">
-                            Habis
+                            Out of stock
                         </span>
-                    @elseif ($detailProduct->current_stock <= 10)
+                    @elseif ($currentVariant->current_stock <= 10)
                         <span class="text-orange-400 font-semibold">
-                            Sisa {{ $detailProduct->current_stock }}
+                            {{ $currentVariant->current_stock }} left!
                         </span>
                     @else
                         <span class="font-semibold">
-                            {{ $detailProduct->current_stock }}
+                            {{ $currentVariant->current_stock }}
                         </span>
                     @endif
                 </div>
@@ -165,7 +152,7 @@
                 wire:loading.attr="disabled"
                 wire:target="addToCart"
                 class="px-5 h-11 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 inline-flex items-center justify-center @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
-                @if ($detailProduct->current_stock === 0 || $quantity === 0) disabled @endif
+                @if ($currentVariant->current_stock === 0 || $quantity === 0) disabled @endif
             >
                 <svg
                     wire:loading
@@ -194,7 +181,7 @@
                 wire:click="redirectCheckout"
                 type="button"
                 class="px-5 h-11 text-base font-medium text-center text-blue-700 rounded-lg border border-blue-500 hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300 @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
-                @if ($detailProduct->current_stock === 0 || $quantity === 0) disabled @endif
+                @if ($currentVariant->current_stock === 0 || $quantity === 0) disabled @endif
             >
                 BELI SEKARANG
             </button>
@@ -230,11 +217,13 @@
             @foreach ($products as $product)
                 @livewire('components.product-card', [
                     'product' => $product,
-                    'image' => $product['product_images'][0]['image_path'] ?
-                               asset('storage/'.$product['product_images'][0]['image_path']) : 
-                               'images/default.png',
+                    'image' => !empty($product['product_images'])
+                            ? asset('storage/'.$product['product_images'][0]['image_path'])
+                            : 'storage/images/default.png',
                     'title' => $product['name'],
-                    'price' => 'Rp. ' . number_format($product['price'], 0, ',', '.'),
+                    'price' => !empty($product['variants']) 
+                            ? number_format($product['variants'][0]['price'], 0, ',', '.')
+                            : '0',
                     'rating' => round($product['reviews_avg_rating_point'], 2),
                     'reviews' => $product['reviews_count']
                 ], key(md5('product-'.$product['id'].'-'.$product['name'])))
