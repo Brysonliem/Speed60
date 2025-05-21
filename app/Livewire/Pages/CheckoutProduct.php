@@ -5,11 +5,18 @@ namespace App\Livewire\Pages;
 use App\Livewire\BaseComponent;
 use App\Services\VoucherService;
 use App\Services\CartService;
+use App\Services\ProductService;
+use App\Services\TransactionService;
+use Livewire\Attributes\Url;
 
 class CheckoutProduct extends BaseComponent
 {
-    protected CartService $cartService;
+    #[Url]
+    public $trx = '';
+
+    protected TransactionService $transactionService;
     protected VoucherService $voucherService;
+    protected ProductService $productService;
 
     public $products;
     public $sub_total;
@@ -19,10 +26,11 @@ class CheckoutProduct extends BaseComponent
     public $selectedVoucher;
     public $discount;
 
-    public function boot(CartService $cartService, VoucherService $voucherService)
+    public function boot(TransactionService $transactionService, VoucherService $voucherService, ProductService $productService)
     {
-        $this->cartService = $cartService;
+        $this->transactionService = $transactionService;
         $this->voucherService = $voucherService;
+        $this->productService = $productService;
     }
 
     public function calculateTotals()
@@ -55,6 +63,7 @@ class CheckoutProduct extends BaseComponent
             if ($voucher) {
                 $this->discount = $voucher->voucher_discount_percentage / 100 * $this->grand_total;
                 $this->grand_total -= $this->discount;
+                session()->flash('success', "Voucher {$voucher->voucher_code} applied successfully!");
             }
         } else {
             $this->discount = 0;
@@ -65,26 +74,38 @@ class CheckoutProduct extends BaseComponent
 
     public function loadProductCarts()
     {
-        $this->products = $this->cartService->getAllDataCart();
+        $this->products = $this
+            ->transactionService
+            ->findByTrxNumber($this->trx);
     }
 
     public function loadVouchers()
     {
-        $this->vouchers = $this->voucherService->getAllActiveVouchers();
+        $this->vouchers = $this->voucherService->getAllActiveVouchers($this->grand_total);
     }
 
     public function mount()
     {
         $this->loadProductCarts();
-        $this->loadVouchers();
         $this->calculateTotals();
+        $this->loadVouchers();
     }
 
     public function redirectWhenSuccessCheckout()
     {
         foreach ($this->products as $product) {
-            $this->cartService->deleteFromCart($product->id);
+            $variant = $this->productService->getVariantById($product->variant_id);
+            if ($variant) {
+                if ($variant->purchase_unit === 'set') {
+                    $variant->current_stock -= $product->quantity * $variant->unit_per_set;
+                } else {
+                    $variant->current_stock -= $product->quantity;
+                }
+                $variant->save();
+            }
         }
+
+        $this->transactionService->updateByTrxNumber($this->trx, ['transaction_status' => 'paid']);
 
         return redirect()->route('products.checkout.success');
     }

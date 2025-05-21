@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 p-4 md:p-8">
     <!-- Breadcrumb -->
     @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Produk', 'url' => route('products.index')],
@@ -98,14 +98,17 @@
                     </div>
                 @endif
 
-                <div class="grid grid-cols-3 gap-3">
-                    
+                <div class="grid md:grid-cols-6 h-full grid-cols-2 gap-2 mt-4">
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
-                            'image' => $product['product_images'][0]['image_path'] ?? 'images/default.png',
+                            'image' => !empty($product['product_images'])
+                                ? asset('storage/'.$product['product_images'][0]['image_path'])
+                                : 'storage/images/default.png',
                             'title' => $product['name'],
-                            'price' => 'Rp ' . number_format($product['price'], 0, ',', '.'),
+                            'price' => !empty($product['variants']) 
+                                ? number_format($product['variants'][0]['price'], 0, ',', '.')
+                                : '0',
                             'rating' => round($product['reviews_avg_rating_point'], 2),
                             'reviews' => $product['reviews_count']
                         ])

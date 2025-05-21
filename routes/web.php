@@ -17,12 +17,13 @@ use App\Livewire\Pages\Vouchers\Index as VoucherIndex;
 use App\Livewire\Pages\Vouchers\Create as VoucherCreate;
 use App\Livewire\Pages\Vouchers\Edit as VoucherEdit;
 
-
+Route::prefix('/')->group(function () {
+    Route::get('dashboard', UserDashboard::class)->name('dashboard.user');
+});
 
 Route::middleware(['auth', 'verified'])->name('dashboard.')->group(function () {
     Route::get('/dashboard-admin', Admin::class)->name('admin');
     Route::get('/dashboard-superadmin', Home::class)->name('superadmin');
-    Route::get('/dashboard', UserDashboard::class)->name('user');
 });
 
 Route::middleware('auth')->group(function () {

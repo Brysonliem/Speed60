@@ -14,8 +14,6 @@ protected $table = 'products';
     protected $fillable = [
         'name',
         'description',
-        'price',
-        'current_stock',
         'condition',
         'created_by',
         'product_type_id',
@@ -51,8 +49,8 @@ protected $table = 'products';
         return $this->hasMany(ProductImages::class, 'product_id');
     }
 
-    public function carts(): BelongsTo
+    public function variants(): HasMany
     {
-        return $this->belongsTo(Carts::class, 'product_id');
+        return $this->hasMany(ProductVariant::class, 'product_id');
     }
 }

@@ -12,13 +12,13 @@ class Carts extends Model
 
     protected $fillable = [
         'user_id',
-        'product_id',
+        'product_variant_id',
         'quantity',
     ];
 
-    public function product(): HasMany
+    public function productVariants(): HasMany
     {
-        return $this->hasMany(Product::class, 'product_id');
+        return $this->hasMany(ProductVariant::class, 'product_variant_id');
     }
 
     public function user(): BelongsTo

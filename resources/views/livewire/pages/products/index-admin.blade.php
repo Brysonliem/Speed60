@@ -1,4 +1,4 @@
-<div class="flex flex-col my-3">
+<div class="flex flex-col my-3 p-4 md:p-8">
     <div class="bg-white w-full p-4 border rounded-lg my-4 text-center hover:shadow-lg transition-shadow duration-300">
         <div class="relative overflow-x-auto">
             <div class="flex flex-col sm:flex-row flex-wrap items-center justify-between pb-4 space-y-4 sm:space-y-0 mx-1">
@@ -61,7 +61,11 @@
                                 {{ $product['product_type']['name'] ?? '-' }}
                             </td>
                             <td class="px-6 py-4">
-                                @idr($product['price'])
+                                @if (!empty($products['variants']))
+                                    @idr($product['variants'][0]['price'])
+                                @else
+                                    @idr(0)
+                                @endif
                             </td>
                             <td class="px-6 py-4">
                                 {{ number_format($product['reviews_avg_rating_point'] ?? 0, 2) }}

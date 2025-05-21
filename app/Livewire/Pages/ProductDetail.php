@@ -6,51 +6,120 @@ use App\Livewire\BaseComponent;
 use App\Models\Product;
 use App\Services\CartService;
 use App\Services\ProductService;
+use App\Services\TransactionService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductDetail extends BaseComponent
 {
     protected ProductService $productService;
     protected CartService $cartService;
+    protected TransactionService $transactionService;
 
     public $detailProduct;
     public $products;
     public $quantity = 1;
+    public $subTotal = 0;
+    public $variants;
+    public $currentVariant;
 
-    public function boot(ProductService $productService, CartService $cartService)
-    {
+    public function boot(
+        ProductService $productService,
+        CartService $cartService,
+        TransactionService $transactionService
+    ) {
         $this->productService = $productService;
         $this->cartService = $cartService;
+        $this->transactionService = $transactionService;
     }
 
     public function mount($product)
     {
-        $this->products = $this->productService->getAllProducts();
+        $this->products = $this->productService->allProductMaster();
         $this->detailProduct = $this->productService->getProductById((int) $product);
+        $this->variants = $this->detailProduct->variants;
+        $this->currentVariant = $this->variants[0];
+        $this->subTotal = $this->currentVariant->price * $this->quantity;
     }
 
     public function incrementQuantity()
     {
-        $this->quantity++;
+        // $this->quantity++;
+        if ($this->quantity < $this->currentVariant->current_stock) {
+            $this->subTotal = $this->currentVariant->price * ++$this->quantity;
+        }
     }
 
     public function decrementQuantity()
     {
-        if($this->quantity > 1) {
+        if ($this->quantity > 1) {
             $this->quantity--;
+            $this->subTotal = $this->currentVariant->price * $this->quantity;
         }
     }
 
-    public function redirectCheckout()
+    public function setSelectedVariant(int $index)
     {
-        return redirect()->route('products.checkout');
+        if ($index >= 0 && $index < count($this->variants)) {
+            $this->currentVariant = $this->variants[$index];
+        }
     }
 
     public function addToCart()
     {
-        $this->cartService->addToCart($this->detailProduct->id, $this->quantity);
+        if (!$this->canProceed()) {
+            return;
+        }
 
-        session()->flash('success', 'SUCCESS');
+        $this->cartService->addToCart($this->currentVariant->id, $this->quantity);
+
+        session()->flash('success', 'Added to cart!');
+
         $this->dispatch('card-added');
+    }
+
+    private function canProceed()
+    {
+        if ($this->quantity === 0) {
+            session()->flash('error', 'Quantity cannot be zero');
+            return false;
+        }
+
+        if ($this->quantity > $this->currentVariant->current_stock) {
+            session()->flash('error', 'Quantity exceeds current stock');
+            return false;
+        }
+
+        return true;
+    }
+
+    public function purchaseNow()
+    {
+        if (!$this->canProceed()) {
+            return;
+        }
+
+        $trxId = DB::transaction(function () {
+            $trx = $this->transactionService->create([
+                'transaction_user' => Auth::user()->id
+            ]);
+
+            $this->transactionService->createDetail([
+                'detail_master' => $trx->id,
+                'detail_variant' => $this->currentVariant->id,
+                'detail_qty' => $this->quantity,
+                'detail_subtotal' => $this->quantity * $this->currentVariant->price,
+            ]);
+
+            return $trx->transaction_number;
+        });
+
+        if (!$trxId) {
+            session()->flash('error', 'An unknown error has occured');
+            return;
+        }
+
+        redirect(route('products.checkout', ['trx' => $trxId]));
     }
 
     public function render()

@@ -13,9 +13,9 @@ class CartService
         $this->cartRepository = $cartRepository;
     }
 
-    public function addToCart(int $product_id, int $quantity)
+    public function addToCart(int $variant_id, int $quantity)
     {
-        return $this->cartRepository->addToCart($product_id, $quantity);
+        return $this->cartRepository->addToCart($variant_id, $quantity);
     }
 
     public function getAllDataCart()
@@ -23,8 +23,18 @@ class CartService
         return $this->cartRepository->all();
     }
 
-    public function deleteFromCart(int $product_id)
+    public function deleteFromCart(int $variant_id)
     {
-        return $this->cartRepository->delete($product_id);
+        return $this->cartRepository->delete($variant_id);
+    }
+
+    public function updateQuantity(int $variant_id, int $quantity)
+    {
+        return $this->cartRepository->updateQuantity($variant_id, $quantity);
+    }
+
+    public function toggleChecked(int $variant_id, bool $status)
+    {
+        return $this->cartRepository->toggleChecked($variant_id, $status);
     }
 }

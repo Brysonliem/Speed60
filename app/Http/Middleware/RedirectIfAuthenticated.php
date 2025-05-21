@@ -27,7 +27,7 @@ class RedirectIfAuthenticated
                 });
             }
 
-            return redirect('/login');
+            return redirect('/dashboard');
         }
 
         return $next($request);

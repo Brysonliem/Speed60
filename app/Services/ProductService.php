@@ -23,6 +23,11 @@ class ProductService
         return $this->productRepository->all();
     }
 
+    public function allProductMaster()
+    {
+        return $this->productRepository->allProductMaster();
+    }
+
     public function getProductById(int $id)
     {
         return $this->productRepository->find($id);
@@ -50,5 +55,15 @@ class ProductService
     public function deleteProduct(int $id)
     {
         return $this->productRepository->delete($id);
+    }
+
+    public function createVariant(array $data)
+    {
+        return $this->productRepository->createVariant($data);
+    }
+
+    public function getVariantById(int $id)
+    {
+        return $this->productRepository->getVariantById($id);
     }
 }
