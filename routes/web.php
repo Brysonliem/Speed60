@@ -3,10 +3,18 @@
 use App\Livewire\Pages\Carts;
 use App\Livewire\Pages\CheckoutProduct;
 use App\Livewire\Pages\CheckoutSuccess;
+use App\Livewire\Pages\OurStore;
+use App\Livewire\Pages\OurStory;
+use App\Livewire\Pages\Policies\PrivacyPolicy;
+use App\Livewire\Pages\Policies\RefundPolicy;
+use App\Livewire\Pages\Policies\ShippingInformation;
+use App\Livewire\Pages\Policies\TermsAndCondition;
 use App\Livewire\Pages\Products\Create;
 use App\Livewire\Pages\Products\Index;
 use App\Livewire\Pages\ProductDetail;
 use App\Livewire\Pages\Products\IndexAdmin;
+use App\Livewire\Pages\Reviews;
+use App\Livewire\Pages\Wholesale;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Admin;
 use App\Livewire\Pages\Home;
@@ -24,6 +32,20 @@ Route::prefix('/')->group(function () {
 Route::middleware(['auth', 'verified'])->name('dashboard.')->group(function () {
     Route::get('/dashboard-admin', Admin::class)->name('admin');
     Route::get('/dashboard-superadmin', Home::class)->name('superadmin');
+});
+
+Route::name('policies')->group(function() {
+    Route::get('/term-and-conditions', TermsAndCondition::class)->name('.terms');
+    Route::get('/privacy-policy', PrivacyPolicy::class)->name('.privacy');
+    Route::get('/refund-policy', RefundPolicy::class)->name('.refund');
+    Route::get('/shipping-policy', ShippingInformation::class)->name('.shipping');
+});
+
+Route::name('about')->group(function() {
+    Route::get('/our-store', OurStore::class)->name('.our-store');
+    Route::get('/our-story', OurStory::class)->name('.our-story');
+    Route::get('/wholesale', Wholesale::class)->name('.wholesale');
+    Route::get('/reviews', Reviews::class)->name('.reviews');
 });
 
 Route::middleware('auth')->group(function () {

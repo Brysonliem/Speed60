@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-4 p-4 md:p-8">
     <!-- Breadcrumb -->
-    @livewire('components.breadcrumb', ['links' => [
+    {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Produk', 'url' => route('products.index')],
-    ]])
+    ]]) --}}
 
     <div class="grid grid-cols-5 gap-4 mb-10">
         {{-- menu radio --}}

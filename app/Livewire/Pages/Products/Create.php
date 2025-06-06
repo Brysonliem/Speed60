@@ -14,9 +14,12 @@ use App\Services\ProductImageService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Create extends BaseComponent
+#[Layout('components.layouts.admin')]
+class Create extends Component
 {
     use WithFileUploads;
 

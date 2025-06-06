@@ -5,8 +5,11 @@ namespace App\Livewire\Pages\Vouchers;
 use App\Livewire\BaseComponent;
 use App\Models\Voucher;
 use App\Services\VoucherService;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-class Index extends BaseComponent
+#[Layout('components.layouts.admin')]
+class Index extends Component
 {
     public $vouchers;
 

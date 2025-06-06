@@ -137,6 +137,10 @@ class Carts extends Component
         redirect(route('products.checkout', ['trx' => $trxId]));
     }
 
+    public function redirectToProductsPage() {
+        return redirect()->route('products.index');
+    }
+
     public function toggleChecked(int $index)
     {
         if ($index < 0 || $index >= count($this->products)) {

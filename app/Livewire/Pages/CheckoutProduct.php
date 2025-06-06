@@ -11,7 +11,7 @@ use Livewire\Attributes\Url;
 
 class CheckoutProduct extends BaseComponent
 {
-    #[Url]
+    #[Url]  
     public $trx = '';
 
     protected TransactionService $transactionService;

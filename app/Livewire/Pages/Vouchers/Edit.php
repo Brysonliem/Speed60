@@ -6,8 +6,11 @@ use App\Livewire\Forms\VoucherCreateForm;
 use App\Livewire\BaseComponent;
 use App\Models\Voucher;
 use App\Services\VoucherService;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-class Edit extends BaseComponent
+#[Layout('components.layouts.admin')]
+class Edit extends Component
 {
     protected VoucherService $voucherService;
 

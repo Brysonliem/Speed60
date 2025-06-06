@@ -6,8 +6,11 @@ use App\Livewire\BaseComponent;
 use App\Livewire\Forms\VoucherCreateForm;
 use App\Services\VoucherService;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-class Create extends BaseComponent
+#[Layout('components.layouts.admin')]
+class Create extends Component
 {
     public VoucherCreateForm $form;
     protected VoucherService $voucherService;

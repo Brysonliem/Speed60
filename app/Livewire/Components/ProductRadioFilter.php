@@ -21,37 +21,43 @@ class ProductRadioFilter extends Component
                 "id" => "1",
                 "url" => "/images/assets/vehicles/nm.jpg",
                 "label" => "N-MAX",
-                "value" => "NMAX"
+                "value" => "NMAX",
+                "route" => "products.index"
             ],
             [
                 "id" => "2",
                 "url" => "/images/assets/vehicles/mio.png",
                 "label" => "Mio",
-                "value" => "2"
+                "value" => "2",
+                "route" => "products.index"
             ],
             [
                 "id" => "3",
                 "url" => "/images/assets/vehicles/pcx.png",
                 "label" => "PCX",
-                "value" => "3"
+                "value" => "3",
+                "route" => "products.index"
             ],
             [
                 "id" => "4",
                 "url" => "/images/assets/vehicles/rx_king.png",
                 "label" => "Rx-King",
-                "value" => "4"
+                "value" => "4",
+                "route" => "products.index"
             ],
             [
                 "id" => "5",
                 "url" => "/images/assets/vehicles/satria.png",
                 "label" => "Satria FU",
-                "value" => "5"
+                "value" => "5",
+                "route" => "products.index"
             ],
             [
                 "id" => "6",
                 "url" => "/images/assets/vehicles/vario.png",
                 "label" => "Vario",
-                "value" => "6"
+                "value" => "6",
+                "route" => "products.index"
             ]
         ];
     }

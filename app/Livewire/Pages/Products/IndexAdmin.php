@@ -4,8 +4,11 @@ namespace App\Livewire\Pages\Products;
 
 use App\Services\ProductService;
 use App\Livewire\BaseComponent;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-class IndexAdmin extends BaseComponent
+#[Layout('components.layouts.admin')]
+class IndexAdmin extends Component
 {
     public $products;
 

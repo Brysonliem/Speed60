@@ -7,20 +7,80 @@
     <title>Speed60</title>
 
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+        footer {
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700; /* untuk Futura Bold */
+        }
+
+        .tiktok-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            justify-items: center;
+        }
+
+        .tiktok-embed {
+            width: 100% !important;
+            max-width: 360px;
+        }
+    </style>
 
     @vite('resources/css/app.css')
     @livewireStyles
 </head>
 
+@if (!Auth::check())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const drawerId = 'drawer-top-example';
+
+            // Cek apakah sudah pernah ditampilkan di sessionStorage
+            if (!sessionStorage.getItem('drawerShown')) {
+                const drawerElement = document.getElementById(drawerId);
+
+                if (drawerElement) {
+                    const drawer = new Drawer(drawerElement, {
+                        placement: 'top',
+                        backdrop: false
+                    });
+
+                    drawer.show();
+
+                    // Tandai sudah ditampilkan
+                    sessionStorage.setItem('drawerShown', 'true');
+                }
+            }
+        });
+    </script>
+@endif
+
+
 <body class="bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Header / Navbar -->
     <div class="z-1">
-        @include('components.navbar') <!-- Memanggil navbar -->
-    </div>
-    <div class="flex-1 z-0">
-        {{ $slot }} <!-- Bagian ini akan diisi oleh Livewire Component -->
+        @include('components.navbar')
     </div>
 
-    @include('components.footer')
+    <!-- Main Content (flex-1 untuk mendorong footer ke bawah) -->
+    <main class="flex-1 z-0">
+        {{ $slot }}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow z-10">
+        @include('components.footer')
+    </footer>
+    {{-- @if (!Auth::check() || (Auth::check() && Auth::user()->role->level == 3))
+    @endif --}}
+
 
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

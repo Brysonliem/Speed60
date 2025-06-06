@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Pages;
 
-use App\Livewire\BaseComponent;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-class Admin extends BaseComponent
+#[Layout('components.layouts.admin')]
+class Admin extends Component
 {
     public function render()
     {

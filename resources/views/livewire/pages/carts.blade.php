@@ -45,95 +45,111 @@
                 @endif
 
                 <div class="relative overflow-x-auto sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    Check
-                                </th>
-                                <th scope="col" class="px-16 py-3">
-                                    <span class="sr-only">Image</span>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Product
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Qty
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Price
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($products as $index => $product)
-                                <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="px-6 py-4">
-                                        <input
-                                            type="checkbox"
-                                            @if ($product->checked) checked @endif
-                                            {{-- wire:model="product.{{ $index }}.checked" --}}
-                                            wire:change="toggleChecked({{ $index }})"
-                                        />
-                                    </td>
-                                    <td class="p-4">
-                                        <img src="{{ asset('storage/'.$product->image_path) }}" class="w-12 md:w-32 max-w-full max-h-full" alt="images">
-                                    </td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900">
-                                        {{ $product->name }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center">
-                                            <button 
-                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_variant_id }}, {{ $product->quantity - 1 }})"
-                                                class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
-                                                type="button"
-                                            >
-                                                <span class="sr-only">Decrease quantity</span>
-                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
-                                                </svg>
-                                            </button>
-                                            <div>
-                                                <input 
-                                                    wire:model="products.{{ $index }}.quantity" 
-                                                    class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" 
-                                                    placeholder="1" 
-                                                    readonly
-                                                    required
-                                                />
+                    @if ($products->count() > 0)
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Check
+                                    </th>
+                                    <th scope="col" class="px-16 py-3">
+                                        <span class="sr-only">Image</span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Product
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Qty
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Price
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($products as $index => $product)
+                                    <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <input
+                                                type="checkbox"
+                                                @if ($product->checked) checked @endif
+                                                {{-- wire:model="product.{{ $index }}.checked" --}}
+                                                wire:change="toggleChecked({{ $index }})"
+                                            />
+                                        </td>
+                                        <td class="p-4">
+                                            <img src="{{ asset('storage/'.$product->image_path) }}" class="w-12 md:w-32 max-w-full max-h-full" alt="images">
+                                        </td>
+                                        <td class="px-6 py-4 font-semibold text-gray-900">
+                                            {{ $product->name }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center">
+                                                <button 
+                                                    wire:click.debounce.200ms="updateQuantity({{ $product->product_variant_id }}, {{ $product->quantity - 1 }})"
+                                                    class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
+                                                    type="button"
+                                                >
+                                                    <span class="sr-only">Decrease quantity</span>
+                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                                    </svg>
+                                                </button>
+                                                <div>
+                                                    <input 
+                                                        wire:model="products.{{ $index }}.quantity" 
+                                                        class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" 
+                                                        placeholder="1" 
+                                                        readonly
+                                                        required
+                                                    />
+                                                </div>
+                                                <button 
+                                                    wire:click.debounce.200ms="updateQuantity({{ $product->product_variant_id }}, {{ $product->quantity + 1 }})"
+                                                    class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
+                                                    type="button"
+                                                >
+                                                    <span class="sr-only">Increase quantity</span>
+                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                                    </svg>
+                                                </button>
                                             </div>
-                                            <button 
-                                                wire:click.debounce.200ms="updateQuantity({{ $product->product_variant_id }}, {{ $product->quantity + 1 }})"
-                                                class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" 
-                                                type="button"
-                                            >
-                                                <span class="sr-only">Increase quantity</span>
-                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900">
-                                        @idr($product->price)
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <a href="#" wire:click="deleteFromCart({{ $product->product_variant_id }})" class="font-medium text-red-600 hover:underline">Remove</a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
-                                    <td colspan="6" class="text-center p-4">
-                                        <span class="text-sm font-medium text-gray-400">Tidak ada produk di keranjang</span>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td class="px-6 py-4 font-semibold text-gray-900">
+                                            @idr($product->price)
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <a href="#" wire:click="deleteFromCart({{ $product->product_variant_id }})" class="font-medium text-red-600 hover:underline">Remove</a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                                        <td colspan="6" class="text-center p-4">
+                                            <span class="text-sm font-medium text-gray-400">Tidak ada produk di keranjang</span>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        @else
+                            <div class="flex flex-col items-center justify-center text-center space-y-4 p-3">
+                                <img src="{{ asset('/images/empty-cart.svg') }}" alt="Empty cart illustration" class="w-40 sm:w-52 md:w-60" />
+                                <span class="text-gray-600 text-sm sm:text-xl mt-3">Your cart is empty, start shopping!</span>
+
+                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 
+                                focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full 
+                                text-sm px-5 py-2.5 text-center me-2 mb-2" wire:click="redirectToProductsPage">
+                                    Start Shopping
+                                </button>
+
+                            </div>
+                        @endif
+
+                    
                 </div>
                 
             </div>
