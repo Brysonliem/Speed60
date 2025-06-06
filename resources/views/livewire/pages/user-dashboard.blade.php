@@ -211,16 +211,6 @@
     <script async src="https://www.tiktok.com/embed.js"></script>
 
 
-    {{-- @livewire('components.carousel',[
-        "images" => [
-            "/images/assets/influence/7.jpg",
-            "/images/assets/influence/8.jpg",
-            "/images/assets/influence/11.jpg",  
-            "/images/assets/influence/12.jpg",
-            "/images/assets/influence/13.jpg",
-            "/images/assets/influence/14.jpg",
-        ]
-    ]) --}}
    
 </div>
 </div>

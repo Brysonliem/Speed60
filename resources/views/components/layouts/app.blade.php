@@ -22,7 +22,7 @@
         .tiktok-wrapper {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            gap: 20px;
             justify-items: center;
         }
 
