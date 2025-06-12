@@ -41,210 +41,375 @@
             </div>
         </div>  
 
-        <div class="flex flex-col flex-wrap col-span-1">
-            <span class="text-lg font-semibold">
-                {{ $detailProduct->name }}
-            </span>
-            <div class="flex space-x-1 text-sm">
-                <div class="flex space-x-1">
-                    <span>Terjual</span>
-                    <span class="text-gray-400 font-semibold">4</span>
-                </div>
-                <span aria-hidden="true">•</span>
-                <div class="flex">
-                    <span>
-                        <svg class="unf-icon" viewBox="0 0 24 24" width="16" height="16" fill="var(--YN300, #FFD45F)" style="display: inline-block; margin-right: 5px; vertical-align: middle;" aria-hidden="true">
-                            <path d="M21.57 9.14a2.37 2.37 0 0 0-1.93-1.63L15.9 7l-1.68-3.4a2.38 2.38 0 0 0-4.27 0L8.27 7l-3.75.54a2.39 2.39 0 0 0-1.32 4.04l2.71 2.64L5.27 18a2.38 2.38 0 0 0 2.35 2.79 2.42 2.42 0 0 0 1.11-.27l3.35-1.76 3.35 1.76a2.41 2.41 0 0 0 2.57-.23 2.369 2.369 0 0 0 .89-2.29l-.64-3.73L21 11.58a2.38 2.38 0 0 0 .57-2.44Z"></path>
+        <div class="col-span-1 space-y-4">
+            <div class="bg-white p-5 space-y-4 rounded-md border">
+                {{-- Product Title --}}
+                <h1 class="text-2xl font-bold text-gray-900">
+                    {{ Str::upper($detailProduct->name)  }}
+                </h1>
+    
+                {{-- Sold & Rating Info --}}
+                <div class="flex flex-wrap items-center gap-x-4 text-sm text-gray-700">
+                    <div class="flex items-center gap-1">
+                        <span>Sold</span>
+                        <span class="font-semibold text-gray-800">4</span>
+                    </div>
+                    <span class="text-gray-300">|</span>
+                    <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21.57 9.14a2.37 2.37 0 0 0-1.93-1.63L15.9 7l-1.68-3.4a2.38 2.38 0 0 0-4.27 0L8.27 7l-3.75.54a2.39 2.39 0 0 0-1.32 4.04l2.71 2.64L5.27 18a2.38 2.38 0 0 0 2.35 2.79 2.42 2.42 0 0 0 1.11-.27l3.35-1.76 3.35 1.76a2.41 2.41 0 0 0 2.57-.23 2.369 2.369 0 0 0 .89-2.29l-.64-3.73L21 11.58a2.38 2.38 0 0 0 .57-2.44Z"/>
                         </svg>
-                    </span>
-                    <span class="font-semibold mr-1">5</span>
-                    <span class="text-gray-400 font-semibold">&#40;100 rating&#41;</span>
+                        <span class="font-semibold text-gray-800">5</span>
+                        <span class="text-gray-500 font-medium">(100 rating)</span>
+                    </div>
+                </div>
+    
+                {{-- Price --}}
+                <div class="text-3xl font-extrabold border-b pb-3">
+                    @idr($currentVariant->price)
+                </div>
+    
+                {{-- Variant Color --}}
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">Choosen Color :</span>
+                        <span class="text-gray-600">{{ $currentVariant->color }}</span>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        @foreach ($variants as $index => $variant)
+                            <label class="relative inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="color"
+                                    @if ($variant->id === $currentVariant->id) checked @endif
+                                    wire:change="setSelectedVariant({{ $index }})"
+                                    class="sr-only peer"
+                                >
+                                <div
+                                    class="w-8 h-8 rounded-full border-2 border-gray-300 peer-checked:ring-2 peer-checked:ring-blue-500 peer-checked:border-blue-500"
+                                    style="background-color: {{ $variant->color_code }}"
+                                    title="{{ $variant->color }}"
+                                ></div>
+                            </label>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-            <span class="text-3xl font-bold border-b border-gray-300 pb-2">
-                @idr($currentVariant->price)
-            </span>
 
-            <div class="flex flex-col gap-4">
-                <div class="flex gap-2 items-center">
-                    <span class="font-bold">Choose color:</span>
-                    <span class="text-gray-600">{{ $currentVariant->color }}</span>
+
+            
+
+            <div 
+                x-data="{
+                    activeTab: '{{ request()->query('tab', 'description') }}',
+                    switchTab(tab) {
+                        this.activeTab = tab;
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('tab', tab);
+                        history.replaceState(null, '', url.toString());
+
+                        // trigger Livewire jika perlu
+                        if (tab === 'reviews') {
+                            Livewire.dispatch('loadReviews');
+                        }
+                    }
+                }"
+            >
+                <div class="mb-4 border-b border-gray-200">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+                        <li class="me-2">
+                            <button
+                                :class="activeTab === 'description' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'"
+                                class="inline-block p-4 border-b-2 rounded-t-lg"
+                                @click="switchTab('description')"
+                            >Description</button>
+                        </li>
+                        <li class="me-2">
+                            <button
+                                :class="activeTab === 'reviews' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'"
+                                class="inline-block p-4 border-b-2 rounded-t-lg"
+                                @click="switchTab('reviews')"
+                            >Reviews</button>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="flex gap-2 flex-wrap">
-                    @foreach ($variants as $index => $variant)
-                        <div class="flex items-center me-4" wire:key="{{ $variant->id }}">
-                            <input
-                                @if ($variant->id === $currentVariant->id) checked @endif 
-                                id="red-radio"
-                                type="radio"
-                                name="colored-radio"
-                                class="w-6 h-6 scale-150 border-gray-300 focus:ring-gray-500 focus:ring-2"
-                                style="background: {{ $variant->color_code }}; color: {{ $variant->color_code }}"
-                                wire:change="setSelectedVariant({{ $index }})"
-                            >
-                        </div>
-                    @endforeach
+                <div id="default-tab-content">
+                    <div 
+                        x-show="activeTab === 'description'" 
+                        class="border p-4 rounded bg-white"
+                    >
+                        {!! $detailProduct->description !!}
+                    </div>
+
+                    <div 
+                        x-show="activeTab === 'reviews'" 
+                        class="border p-4 rounded bg-white"
+                    >
+                        @if (!empty($reviews))
+                            @foreach ($reviews as $review)
+                                                                
+                                <div class="flex items-start gap-2.5" >
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('/images/avatar.jpg') }}" alt="User Image">
+                                    <div class="flex flex-col gap-1">
+                                        <div class="flex flex-col w-full max-w-[326px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">
+                                            <div class="flex flex-col gap-2 mb-2">
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse mb-2">
+                                                    <span class="text-sm font-semibold text-gray-900">{{ $review->user->name }}</span>
+                                                    <span class="text-sm font-normal text-gray-500 ">11:46</span>
+                                                </div>
+
+                                                <div class="flex items-center">
+                                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                                    </svg>
+                                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                                    </svg>
+                                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                                    </svg>
+                                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                                    </svg>
+                                                    <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                                    </svg>
+                                                    <p class="ms-1 text-sm font-medium text-gray-500">4.95</p>
+                                                    <p class="ms-1 text-sm font-medium text-gray-500">out of</p>
+                                                    <p class="ms-1 text-sm font-medium text-gray-500">5</p>
+                                                </div>
+                                            </div>
+
+                                            <p class="text-sm font-normal text-gray-900">{{ $review->content }}</p>
+                                            <div class="grid gap-4 grid-cols-2 my-2.5" x-data="{ open: false, selectedImage: null }">
+                                                <!-- Loop Item -->
+                                                <template x-for="(image, index) in [
+                                                    '{{ asset('/images/dashboard-imgs.jpg') }}',
+                                                    '{{ asset('/images/dashboard-imgs.jpg') }}',
+                                                    '{{ asset('/images/dashboard-imgs.jpg') }}',
+                                                    '{{ asset('/images/dashboard-imgs.jpg') }}'
+                                                ]" :key="index">
+                                                    <div class="group relative">
+                                                        <!-- Overlay & Button -->
+                                                        <div class="absolute w-full h-full bg-gray-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                                                            <button 
+                                                                @click="selectedImage = image; open = true"
+                                                                class="inline-flex items-center justify-center rounded-full h-8 w-8 bg-white/30 hover:bg-white/50 focus:ring-4 focus:outline-none focus:ring-gray-50"
+                                                            >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-white">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <img :src="image" class="rounded-lg" />
+                                                    </div>
+                                                </template>
+
+                                                <!-- Komponen Modal -->
+                                                <x-modal title="Preview Image">
+                                                    <x-slot:slot>
+                                                        <div class="w-full max-h-[75vh] md:max-h-[90vh] overflow-auto flex justify-center">
+                                                            <img :src="selectedImage" class="max-w-full h-auto object-contain rounded-lg" />
+                                                        </div>
+
+                                                    </x-slot:slot>
+
+                                                    <x-slot:footer>
+                                                        <div class="ms-auto">
+                                                            <button @click="open = false" class="bg-red-500 text-white px-4 py-4 rounded">
+                                                                Tutup
+                                                            </button>
+                                                        </div>
+                                                    </x-slot:footer>
+                                                </x-modal>
+                                            </div>
+
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-sm font-normal text-gray-500 ">Delivered</span>
+                                                <button class="text-sm text-blue-700-medium inline-flex items-center hover:underline">
+                                                    <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
+                                                    </svg>
+                                                Save all</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-sm text-gray-500">Belum ada review.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
-
-            <p class="mt-2">
-                {{ $detailProduct->description }}
-            </p>
         </div>
 
-        <div class="sticky top-2 flex flex-col gap-3 col-span-1 px-2 py-4 bg-white rounded-lg shadow-md border border-gray-200 w-full md:max-w-fit h-fit">
-            <div class="flex gap-2">
-                <div class="max-w-xs">
-                    <div class="relative flex items-center max-w-[8rem]">
+
+        <div
+            class="md:sticky top-2 flex flex-col gap-4 col-span-1 px-4 py-5 bg-white rounded-lg shadow-md border border-gray-200 w-full max-w-full md:max-w-[380px] h-fit"
+        >
+            {{-- Quantity + Stock Info --}}
+            <div class="flex flex-col gap-2">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
                         <button
+                            type="button"
                             wire:click="decrementQuantity"
-                            type="button" id="decrement-button"
-                            data-input-counter-decrement="quantity-input"
-                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none @if ($quantity === 1) hover:cursor-not-allowed @endif"
-                            @if ($quantity === 1) disabled @endif
+                            aria-label="Kurangi jumlah"
+                            @disabled($quantity === 1)
+                            class="h-11 w-11 flex items-center justify-center rounded-l-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
                         >
-                            <svg class="w-3 h-3 text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                            <svg class="w-3 h-3 text-gray-700" viewBox="0 0 18 2" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
                             </svg>
                         </button>
-                        <input wire:model.live="quantity" type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 " placeholder="999" required />
+
+                        <input
+                            type="number"
+                            wire:model.lazy="quantity"
+                            inputmode="numeric"
+                            min="1"
+                            max="{{ $currentVariant->current_stock }}"
+                            class="h-11 flex-grow text-center text-gray-900 bg-gray-50 border-t border-b border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none px-2"
+                        />
+
                         <button
-                            wire:click="incrementQuantity"
                             type="button"
-                            id="increment-button"
-                            data-input-counter-increment="quantity-input"
-                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none @if ($quantity >= $currentVariant->current_stock) hover:cursor-not-allowed @endif"
-                            @if ($quantity >= $currentVariant->current_stock) disabled @endif
+                            wire:click="incrementQuantity"
+                            aria-label="Tambah jumlah"
+                            @disabled($quantity >= $currentVariant->current_stock)
+                            class="h-11 w-11 flex items-center justify-center rounded-r-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
                         >
-                            <svg class="w-3 h-3 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                            <svg class="w-3 h-3 text-gray-700" viewBox="0 0 18 18" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
                             </svg>
                         </button>
                     </div>
+
+                    <div class="flex-1 flex items-center ps-4">
+                        <span class="text-sm text-gray-600 mr-1">Stok:</span>
+                        @if($currentVariant->current_stock === 0)
+                            <span class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Habis</span>
+                        @elseif($currentVariant->current_stock <= 10)
+                            <span class="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">Sisa {{ $currentVariant->current_stock }}</span>
+                        @else
+                            <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">{{ $currentVariant->current_stock }}</span>
+                        @endif
+                    </div>
                 </div>
-                <div class="flex flex-1 space-x-1 items-center">
-                    <span>Stok Total: </span>
-                    @if ($currentVariant->current_stock === 0)
-                        <span class="text-red-500 font-semibold">
-                            Out of stock
-                        </span>
-                    @elseif ($currentVariant->current_stock <= 10)
-                        <span class="text-orange-400 font-semibold">
-                            {{ $currentVariant->current_stock }} left!
-                        </span>
-                    @else
-                        <span class="font-semibold">
-                            {{ $currentVariant->current_stock }}
-                        </span>
-                    @endif
+
+                {{-- Subtotal --}}
+                <div class="flex justify-between items-center py-2 border-t">
+                    <span class="text-gray-500">Subtotal</span>
+                    <span class="text-2xl font-bold">@idr($subTotal)</span>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400">Subtotal</span>
-                <span class="text-2xl font-bold">@idr($subTotal)</span>
-            </div>
-
-            <button
-                type="button"
-                wire:click="addToCart"
-                wire:loading.attr="disabled"
-                wire:target="addToCart"
-                class="px-5 h-11 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 inline-flex items-center justify-center @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
-                @if ($currentVariant->current_stock === 0 || $quantity === 0) disabled @endif
-            >
-                <svg
-                    wire:loading
+            {{-- Buttons --}}
+            <div class="flex flex-col gap-3">
+                <button
+                    type="button"
+                    wire:click="addToCart"
+                    wire:loading.attr="disabled"
                     wire:target="addToCart"
-                    aria-hidden="true"
-                    role="status"
-                    class="inline w-4 h-4 me-2 text-white animate-spin"
-                    viewBox="0 0 100 101"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-11 flex items-center justify-center bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 transition-colors"
+                    @disabled($currentVariant->current_stock === 0 || $quantity < 1)
                 >
-                    <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="#E5E7EB"
-                    />
-                    <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentColor"
-                    />
-                </svg>
-                <span wire:loading.remove wire:target="addToCart">ADD TO CART</span>
-                <span wire:loading wire:target="addToCart">Menambahkan...</span>
-            </button>
+                    <svg wire:loading wire:target="addToCart" class="w-5 h-5 me-2 text-white animate-spin" viewBox="0 0 100 101" fill="none">
+                        <!-- loader SVG -->
+                    </svg>
+                    <span wire:loading.remove wire:target="addToCart">ADD TO CART</span>
+                    <span wire:loading wire:target="addToCart">Menambahkan...</span>
+                </button>
 
-            <button
-                wire:click="purchaseNow"
-                type="button"
-                class="px-5 h-11 text-base font-medium text-center text-blue-700 rounded-lg border border-blue-500 hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300 @if ($detailProduct->current_stock === 0 || $quantity === 0) hover:cursor-not-allowed @endif"
-                @if ($currentVariant->current_stock === 0 || $quantity === 0) disabled @endif
-            >
-                BELI SEKARANG
-            </button>
+                <button
+                    type="button"
+                    wire:click="purchaseNow"
+                    wire:loading.attr="disabled"
+                    wire:target="purchaseNow"
+                    class="h-11 flex items-center justify-center border border-blue-500 text-blue-700 font-semibold rounded-lg hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300 transition-colors"
+                    @disabled($currentVariant->current_stock === 0 || $quantity < 1)
+                >
+                    BELI SEKARANG
+                </button>
+            </div>
 
-            <span class="text-lg font-semibold">Feature</span>
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center gap-2">
-                    <span class="material-icons text-blue-400">workspace_premium</span>
-                    Garansi 1 Bulan
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="material-icons text-blue-400">local_shipping</span>
-                    Jaminan Pengiriman Di Hari Yang Sama
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="material-icons text-blue-400">headset_mic</span>
-                    24/7 Layanan Customer
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="material-icons text-blue-400">verified_user</span>
-                    Pembayaran Terjamin
-                </div>
+            {{-- Product Features --}}
+            <div class="space-y-2 pt-3 border-t">
+                <span class="text-lg font-semibold">Fitur</span>
+                <ul class="space-y-1">
+                    <li class="flex items-center gap-2 text-gray-700">
+                        <span class="material-icons text-blue-400">workspace_premium</span>
+                        Garansi 1 Bulan
+                    </li>
+                    <li class="flex items-center gap-2 text-gray-700">
+                        <span class="material-icons text-blue-400">local_shipping</span>
+                        Pengiriman Hari Sama
+                    </li>
+                    <li class="flex items-center gap-2 text-gray-700">
+                        <span class="material-icons text-blue-400">headset_mic</span>
+                        24/7 Bantuan Pelanggan
+                    </li>
+                    <li class="flex items-center gap-2 text-gray-700">
+                        <span class="material-icons text-blue-400">verified_user</span>
+                        Pembayaran Terjamin
+                    </li>
+                </ul>
             </div>
         </div>
+
 
         {{-- <div class="flex flex-col w-full items-center gap-4 col-span-1 md:col-span-2">
             REVIEW
         </div> --}}
 
-    <div class="flex flex-col gap-2">
-        <span class="text-lg font-semibold">Produk Lainnya</span>
-        <div class="grid grid-cols-4 gap-3">
-            @foreach ($products as $product)
-                @livewire('components.product-card', [
-                    'product' => $product,
-                    'image' => !empty($product['product_images'])
-                            ? asset('storage/'.$product['product_images'][0]['image_path'])
-                            : 'storage/images/default.png',
-                    'title' => $product['name'],
-                    'price' => !empty($product['variants']) 
-                            ? number_format($product['variants'][0]['price'], 0, ',', '.')
-                            : '0',
-                    'rating' => round($product['reviews_avg_rating_point'], 2),
-                    'reviews' => $product['reviews_count']
-                ], key(md5('product-'.$product['id'].'-'.$product['name'])))
-            @endforeach
+        <div class="flex flex-col gap-2 lg:col-span-2 border-t-2 pt-5">
+            <div class="flex justify-between">
+                <span class="text-lg font-semibold">Produk Lainnya</span>
+                
+                <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center text-base font-medium text-gray-500">
+                    <span class="w-full">Lihat semua</span>
+                    <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a> 
+
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                @foreach ($products as $product)
+                    @livewire('components.product-card', [
+                        'product' => $product,
+                        'image' => !empty($product['product_images'])
+                                ? asset('storage/'.$product['product_images'][0]['image_path'])
+                                : 'storage/images/default.png',
+                        'title' => $product['name'],
+                        'price' => !empty($product['variants']) 
+                                ? number_format($product['variants'][0]['price'], 0, ',', '.')
+                                : '0',
+                        'rating' => round($product['reviews_avg_rating_point'], 2),
+                        'reviews' => $product['reviews_count']
+                    ], key(md5('product-'.$product['id'].'-'.$product['name'])))
+                @endforeach
+            </div>
         </div>
+        @if (Session::has('success'))
+            <div x-data="{show: true}" x-show="show" id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
+                <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg ">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                    </svg>
+                    <span class="sr-only">Check icon</span>
+                </div>
+                <div class="ms-3 text-sm font-normal">{{ Session::get('success') }}</div>
+                <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+            </div>
+        @endif
     </div>
-    @if (Session::has('success'))
-    <div x-data="{show: true}" x-show="show" id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
-        <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg ">
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-            </svg>
-            <span class="sr-only">Check icon</span>
-        </div>
-        <div class="ms-3 text-sm font-normal">{{ Session::get('success') }}</div>
-        <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-        </button>
-    </div>
-@endif
 </div>

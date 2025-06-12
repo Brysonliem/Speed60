@@ -43,4 +43,15 @@ class ProductVariantCreateForm extends Form
         $this->purchase_unit = $variant->purchase_unit;
         $this->unit_per_set = $variant->unit_per_set;
     }
+
+    public function fillFromModel(ProductVariant $variant)
+    {
+        $this->color = $variant->color;
+        $this->color_code = $variant->color_code;
+        $this->current_stock = $variant->current_stock;
+        $this->price = $variant->price;
+        $this->purchase_unit = $variant->purchase_unit;
+        $this->unit_per_set = $variant->unit_per_set;
+    }
+
 }

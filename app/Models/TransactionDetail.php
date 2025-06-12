@@ -19,4 +19,9 @@ class TransactionDetail extends Model
     {
         return $this->hasMany(ProductVariant::class, 'detail_variant');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Reviews::class, 'transaction_detail_id');
+    }
 }

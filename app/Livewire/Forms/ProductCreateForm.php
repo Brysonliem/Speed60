@@ -19,6 +19,10 @@ class ProductCreateForm extends Form
     #[Validate('required|string|in:new,used')] // contoh enum: "new" atau "used"
     public string $condition = 'NEW';
 
+    #[Validate('required|string|in:STAINLESS,TITANIUM')]
+    public string $material = '';
+
+
     #[Validate('required|integer|exists:product_types,id')]
     public int $product_type_id;
 
@@ -32,6 +36,7 @@ class ProductCreateForm extends Form
         $this->name = $product->name;
         $this->description = $product->description;
         $this->condition = $product->condition;
+        $this->material = $product->material;
         $this->product_type_id = $product->product_type_id;
     }
 }

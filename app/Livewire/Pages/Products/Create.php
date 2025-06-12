@@ -4,16 +4,13 @@ namespace App\Livewire\Pages\Products;
 
 use App\Livewire\Forms\ProductCreateForm;
 use App\Models\ProductType;
+use App\Services\MotorCategoryService;
 use App\Services\ProductService;
-use App\Livewire\BaseComponent;
-use App\Livewire\Forms\ProductEditForm;
 use App\Livewire\Forms\ProductVariantCreateForm;
-use App\Models\Product;
-use App\Models\ProductImages;
 use App\Services\ProductImageService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -25,23 +22,32 @@ class Create extends Component
 
     protected ProductService $productService;
     protected ProductImageService $productImageService;
+    protected MotorCategoryService $motorCategoryService;
 
     public ProductCreateForm $form;
     public array $variantForms = [];
     public array $images = [];
     public array $imagePreviews = [];
     public $product_types;
+    public $motorCategories;
+    public array $selectedMotorCategoryIds = [];
 
-    public function boot(ProductService $productService, ProductImageService $productImageService)
+    public function boot(
+        ProductService $productService, 
+        ProductImageService $productImageService,
+        MotorCategoryService $motorCategoryService
+    )
     {
         $this->productImageService = $productImageService;
         $this->productService = $productService;
+        $this->motorCategoryService = $motorCategoryService;
     }
 
     public function mount()
     {
         $types = ProductType::all();
-
+        
+        $this->motorCategories = $this->motorCategoryService->getAllCategory();
         $this->product_types = $types;
         $this->form->product_type_id = $types[0]->id;
         $this->variantForms[] = $this->makeVariantForm(0);
@@ -93,7 +99,6 @@ class Create extends Component
     public function store()
     {
         // $this->validate(); // ini line 54
-        info("CALLED!");
 
         DB::transaction(function () {
             $createdProduct = $this->productService->createProduct([
@@ -103,8 +108,11 @@ class Create extends Component
                 'created_by' => Auth::user()->id,
                 'product_type_id' => $this->form->product_type_id,
                 'images' => $this->images,
+                'material' => $this->form->material
             ]);
 
+            //attaching the motor categories
+            $createdProduct->motorCategories()->attach($this->selectedMotorCategoryIds);
 
             foreach ($this->images as $index => $image) {
                 $path = $image->store('product_images', 'public');

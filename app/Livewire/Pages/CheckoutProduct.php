@@ -3,10 +3,14 @@
 namespace App\Livewire\Pages;
 
 use App\Livewire\BaseComponent;
+use App\Livewire\Forms\TransactionAddressForm;
+use App\Models\Transaction;
+use App\Services\TransactionAddressService;
 use App\Services\VoucherService;
 use App\Services\CartService;
 use App\Services\ProductService;
 use App\Services\TransactionService;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 
 class CheckoutProduct extends BaseComponent
@@ -15,22 +19,31 @@ class CheckoutProduct extends BaseComponent
     public $trx = '';
 
     protected TransactionService $transactionService;
+    protected TransactionAddressService $transactionAddressService;
     protected VoucherService $voucherService;
     protected ProductService $productService;
 
+    public TransactionAddressForm $address_form;
     public $products;
     public $sub_total;
     public $tax;
     public $grand_total;
     public $vouchers;
     public $selectedVoucher;
+    public $voucher;
     public $discount;
 
-    public function boot(TransactionService $transactionService, VoucherService $voucherService, ProductService $productService)
+    public function boot(
+        TransactionService $transactionService, 
+        VoucherService $voucherService, 
+        ProductService $productService,
+        TransactionAddressService $transactionAddressService
+    )
     {
         $this->transactionService = $transactionService;
         $this->voucherService = $voucherService;
         $this->productService = $productService;
+        $this->transactionAddressService = $transactionAddressService;
     }
 
     public function calculateTotals()
@@ -59,11 +72,11 @@ class CheckoutProduct extends BaseComponent
         $this->calculateTotals();
 
         if (!empty($this->selectedVoucher)) {
-            $voucher = $this->voucherService->getVoucherById($this->selectedVoucher);
-            if ($voucher) {
-                $this->discount = $voucher->voucher_discount_percentage / 100 * $this->grand_total;
+            $this->voucher = $this->voucherService->getVoucherById($this->selectedVoucher);
+            if ($this->voucher) {
+                $this->discount = $this->voucher->voucher_discount_percentage / 100 * $this->grand_total;
                 $this->grand_total -= $this->discount;
-                session()->flash('success', "Voucher {$voucher->voucher_code} applied successfully!");
+                session()->flash('success', "Voucher {$this->voucher->voucher_code} applied successfully!");
             }
         } else {
             $this->discount = 0;
@@ -93,6 +106,20 @@ class CheckoutProduct extends BaseComponent
 
     public function redirectWhenSuccessCheckout()
     {
+        $this->checkout();
+
+        return redirect()->route('products.checkout.success');
+    }
+
+    public function checkout()
+    {
+        $this->savingVariant($this->products);
+        $this->createTransactionAddress();
+        $this->updateTransaction($this->trx);
+    }
+
+    public function savingVariant($products)
+    {
         foreach ($this->products as $product) {
             $variant = $this->productService->getVariantById($product->variant_id);
             if ($variant) {
@@ -104,10 +131,55 @@ class CheckoutProduct extends BaseComponent
                 $variant->save();
             }
         }
+    }
 
-        $this->transactionService->updateByTrxNumber($this->trx, ['transaction_status' => 'paid']);
+    private function createTransactionAddress(): void
+    {
+        $current_transaction = Transaction::where('transaction_number', '=', $this->trx)->first();
+        // TODO : ADA BUG, BAGIAN ADDRESS KEBAWAH GAK MASUK DATANYA.
 
-        return redirect()->route('products.checkout.success');
+        $this->transactionAddressService->createAddress([
+            'transaction_id' => $current_transaction->id,
+            'first_name'     => $this->address_form->first_name,
+            'last_name'      => $this->address_form->last_name,
+            // 'company_name'   => $this->address_form->company_name,
+            'address'        => $this->address_form->address,
+            'province'       => $this->address_form->province,
+            'city'           => $this->address_form->city,
+            'postal_code'    => $this->address_form->postal_code,
+            'email'          => $this->address_form->email,
+            'phone'          => $this->address_form->phone,
+            'description'    => $this->address_form->description,
+        ]);
+    }
+
+
+    private function updateTransaction(string $transaction_number)
+    {
+        $data = [
+            // 'transaction_status' => 'paid',
+            'sub_total' => $this->sub_total,
+            'shipping_price' => 0, // default before integration
+            'tax_price' => $this->tax,
+            'discount_price' => $this->discount,
+            'grand_total' => $this->grand_total,
+        ];
+
+        if ($this->voucher) {
+            $data['voucher_id'] = $this->voucher->id;
+        }
+
+        $this->transactionService->updateByTrxNumber($transaction_number, $data);
+    }
+
+
+    public function cancelTransaction()
+    {
+        DB::transaction(function() {
+            $this->transactionService->deleteByTransactionNumber($this->trx);
+        });
+
+        return redirect()->route('products.index');
     }
 
     public function render()

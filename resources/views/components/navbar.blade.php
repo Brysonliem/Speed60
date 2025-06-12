@@ -1,7 +1,6 @@
 <!-- Header -->
-<div id="sticky-banner" tabindex="-1" class="fixed top-0 start-0 z-50 w-full border-b border-gray-200 bg-black text-white">
+{{-- <div id="sticky-banner" tabindex="-1" class="fixed top-0 start-0 z-50 w-full border-b border-gray-200 bg-black text-white">
     <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
-        <!-- Kiri: Icon + Telepon -->
         <div class="flex items-center">
             <svg class="w-4 h-4 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1v3.61a1 1 0 0 1-1 1A17 17 0 0 1 3 6a1 1 0 0 1 1-1h3.61a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.56 1 1 0 0 1-.24 1l-2.32 2.23Z"/>
@@ -9,12 +8,10 @@
             <span>0821-3345-9876</span>
         </div>
 
-        <!-- Tengah: Promo Teks -->
         <div class="text-center">
             Follow Us and get a chance to win <strong class="text-yellow-400">50% off</strong>
         </div>
 
-        <!-- Kanan: Sosial Media -->
         <div class="flex items-center gap-3">
             <span class="hidden sm:inline">Follow us:</span>
             <a href="#" class="text-white hover:text-gray-300"><i class="fab fa-tiktok"></i></a>
@@ -30,7 +27,7 @@
             <span class="sr-only">Close banner</span>
         </button>
     </div>
-</div>
+</div> --}}
 
 
 @php

@@ -1,15 +1,22 @@
-<div class="flex flex-col gap-3 h-screen p-4 md:p-8 overflow-auto">
+{{-- @dd($motorCategories) --}}
+
+<div class="mt-14">
     <!-- Breadcrumb (omitted) -->
 
+    <x-page-header title="Tambah Produk">
+        <a href="{{ route('products.index.admin') }}"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg">
+            Daftar Produk
+        </a>
+    </x-page-header>
+
     <div class="bg-white w-full p-4 border rounded-lg my-4 hover:shadow-lg transition-shadow duration-300">
-        <h2 class="text-xl font-semibold text-gray-800">Create Product</h2>
-        <p class="text-sm text-gray-500 mt-1">Fill the forms below.</p>
 
         <form wire:submit.prevent="store" class="mt-4">
             @csrf
 
-            <div class="grid grid-cols-4 gap-4">
-                <div class="col-span-2">
+            <div class="grid grid-cols-6 gap-4">
+                <div class="col-span-3">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Product Name</label>
                     <input
                         wire:model="form.name"
@@ -24,7 +31,7 @@
                     @enderror
                 </div>
 
-                <div class="col-span-2">
+                <div class="col-span-1">
                     <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
                     <select
                         wire:model="form.product_type_id"
@@ -42,28 +49,91 @@
                     @enderror
                 </div>
 
-                <div class="col-span-4">
+                <div class="col-span-1">
+                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Motor</label>
+                    <button id="dropdownCheckboxButton" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center w-full" type="button">
+                        Tipe Motor
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownDefaultCheckbox"
+                        class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm max-h-60 overflow-y-auto">
+                        <ul class="p-3 space-y-3 text-sm text-gray-700" aria-labelledby="dropdownCheckboxButton">
+
+                            @foreach($motorCategories as $motor)
+                                <li>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" wire:model="selectedMotorCategoryIds" value="{{ $motor->id }}"
+                                            id="motor-{{ $motor->id }}"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+                                        <label for="motor-{{ $motor->id }}"
+                                            class="ms-2 text-sm font-medium text-gray-900">{{ $motor->name }}</label>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="col-span-1">
+                    <label for="material" class="block mb-2 text-sm font-medium text-gray-900">Material</label>
+                    <select
+                        wire:model="form.material"
+                        id="material"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                               focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    >
+                        <option disabled value="">-- PILIH MATERIAL --</option>
+                        <option value="STAINLESS">STAINLESS</option>
+                        <option value="TITANIUM">TITANIUM</option>
+                    </select>
+                    @error('form.material') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="col-span-6">
                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Product Description</label>
-                    <textarea
-                        id="description"
-                        rows="4"
-                        wire:model="form.description"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg
-                               border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter product description…"
-                    ></textarea>
+                    
+                    <div
+                        wire:ignore
+                        x-data
+                        x-init="
+                            const quill = new Quill($refs.quillEditor, {
+                                theme: 'snow'
+                            });
+
+                            quill.on('text-change', function () {
+                                @this.set('form.description', quill.root.innerHTML);
+                            });
+
+                            // Inisialisasi awal dari server jika ada
+                            $watch('form.description', value => {
+                                if (quill.root.innerHTML !== value) {
+                                    quill.root.innerHTML = value;
+                                }
+                            });
+                        "
+                    >
+                        <div x-ref="quillEditor" style="height: 200px;"></div>
+                    </div>
+
                     @error('form.description')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <div class="col-span-4 mt-4">
+                <div class="col-span-6 mt-4">
                     <h3 class="text-lg font-medium text-gray-700">Variants</h3>
                     <p class="text-sm text-gray-500 mb-2">Add one or more variants below.</p>
                 </div>
 
                 @foreach ($variantForms as $i => $variant)
-                    <div class="col-span-4 border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
+                    <div class="col-span-6 border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="font-semibold text-gray-800">Variant #{{ $i + 1 }}</h4>
                             <button
@@ -178,7 +248,7 @@
                 @endforeach
 
                 <!-- “Add Variant” button spans all columns -->
-                <div class="col-span-4">
+                <div class="col-span-6">
                     <button
                         type="button"
                         wire:click.prevent="addVariant"
@@ -219,7 +289,7 @@
                     @endif
                 </div>
 
-                <div class="col-span-4 flex">
+                <div class="col-span-6 flex">
                     <div class="ms-auto">
                         <button
                             type="submit"

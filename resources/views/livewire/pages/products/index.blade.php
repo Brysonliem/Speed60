@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 p-4 md:p-8">
+<div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen">
     <!-- Breadcrumb -->
     {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Produk', 'url' => route('products.index')],
@@ -6,47 +6,37 @@
 
     <div class="grid grid-cols-5 gap-4 mb-10">
         {{-- menu radio --}}
-        <div class="col-span-1">
-            <div class="flex flex-col gap-3 max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-                <span class="text-lg font-semibold">Produk</span>
-                <div class="flex items-center">
-                    <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 ">Semua Produk</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Vario - Scoopy - Beat</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">PCX - ADV</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Mio - Nouvo - Freego</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Baut M 4 Drat 6</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Baut M 5 Drat 8</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Baut M 6 Drat 10</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Baut M 8 Drat 12</label>
-                </div>
-                <div class="flex items-center">
-                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Baut M 10 Drat 14</label>
-                </div>
+        <div class="flex flex-col gap-3 max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow-sm max-h-[400px] overflow-y-scroll relative">
+            <span class="text-lg font-semibold">Produk</span>
+
+            <div class="flex items-center">
+                <input wire:model="selectedCategoryCode" type="radio" id="all" value="" class="w-4 h-4">
+                <label for="all" class="ms-2 text-sm font-medium">Semua Produk</label>
             </div>
+
+            @foreach($motorCategories as $category)
+                <div class="flex items-center">
+                    <input wire:model="selectedCategoryCode" type="radio" id="cat-{{ $category->id }}" value="{{ $category->code }}" class="w-4 h-4">
+                    <label for="cat-{{ $category->id }}" class="ms-2 text-sm font-medium">{{ $category->name }}</label>
+                </div>
+            @endforeach
+
+            <!-- Tombol Sticky -->
+            <div class="sticky bottom-0 bg-white py-2 mt-3">
+                <button wire:click="loadProducts"
+                        wire:loading.attr="disabled"
+                        class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow relative">
+                    <!-- Default Text -->
+                    <span wire:loading.remove wire:target="loadProducts">Terapkan Filter</span>
+
+                    <!-- Loading Text -->
+                    <span wire:loading wire:target="loadProducts">Menerapkan Filter...</span>
+                </button>
+            </div>
+
         </div>
+
+
 
         <div class="col-span-4">
             <div class="flex flex-col gap-2">

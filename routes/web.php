@@ -3,6 +3,7 @@
 use App\Livewire\Pages\Carts;
 use App\Livewire\Pages\CheckoutProduct;
 use App\Livewire\Pages\CheckoutSuccess;
+use App\Livewire\Pages\IndexTransactions;
 use App\Livewire\Pages\OurStore;
 use App\Livewire\Pages\OurStory;
 use App\Livewire\Pages\Policies\PrivacyPolicy;
@@ -20,6 +21,8 @@ use App\Livewire\Pages\Admin;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Products\Edit;
 use App\Livewire\Pages\Profile;
+use App\Livewire\Pages\Refunds\Index as RefundsIndex;
+use App\Livewire\Pages\Reviews\Index as ReviewsIndex;
 use App\Livewire\Pages\UserDashboard;
 use App\Livewire\Pages\Vouchers\Index as VoucherIndex;
 use App\Livewire\Pages\Vouchers\Create as VoucherCreate;
@@ -72,6 +75,18 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/{user}', Profile::class)->name('show');
+    });
+
+    Route::prefix('transactions')->name('transaction.')->group(function() {
+        Route::get('', IndexTransactions::class)->name('index');
+    });
+
+    Route::prefix('refunds')->name('refunds.')->group(function() {
+        Route::get('', RefundsIndex::class)->name('index');
+    });
+
+    Route::prefix('reviews')->name('reviews.')->group(function() {
+        Route::get('index', ReviewsIndex::class)->name('index');
     });
 });
 

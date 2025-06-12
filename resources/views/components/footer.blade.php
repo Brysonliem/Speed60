@@ -87,7 +87,7 @@
                         <li><a href="{{ route('about.our-story') }}" class="hover:underline">Our Story</a></li>
                         <li><a href="{{ route('about.wholesale') }}" class="hover:underline">Wholesale</a></li>
                         <li><a href="{{ route('about.our-store') }}" class="hover:underline">Our Store</a></li>
-                        <li><a href="{{ route('about.reviews') }}" class="hover:underline">Reviews</a></li>
+                        <li><a href="#" class="hover:underline">Reviews</a></li>
                     </ul>
                 </div>
     

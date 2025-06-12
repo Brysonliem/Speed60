@@ -4,6 +4,7 @@ namespace App\Livewire\Pages;
 
 use App\Livewire\BaseComponent;
 use App\Models\Product;
+use App\Models\Reviews;
 use App\Services\CartService;
 use App\Services\ProductService;
 use App\Services\TransactionService;
@@ -22,6 +23,10 @@ class ProductDetail extends BaseComponent
     public $subTotal = 0;
     public $variants;
     public $currentVariant;
+    public $reviews = [];
+
+    #listeners
+    protected $listeners = ['loadReviews' => 'loadReviews'];
 
     public function boot(
         ProductService $productService,
@@ -35,11 +40,18 @@ class ProductDetail extends BaseComponent
 
     public function mount($product)
     {
-        $this->products = $this->productService->allProductMaster();
+        $this->products = $this->productService->allProductMaster(5);
         $this->detailProduct = $this->productService->getProductById((int) $product);
         $this->variants = $this->detailProduct->variants;
         $this->currentVariant = $this->variants[0];
         $this->subTotal = $this->currentVariant->price * $this->quantity;
+    }
+
+    public function loadReviews() 
+    {
+        if(empty($this->reviews)) {
+            $this->reviews = Reviews::all();
+        }
     }
 
     public function incrementQuantity()
@@ -100,6 +112,8 @@ class ProductDetail extends BaseComponent
         }
 
         $trxId = DB::transaction(function () {
+            // DB::statement('LOCK TABLES transactions WRITE');
+
             $trx = $this->transactionService->create([
                 'transaction_user' => Auth::user()->id
             ]);
@@ -109,7 +123,10 @@ class ProductDetail extends BaseComponent
                 'detail_variant' => $this->currentVariant->id,
                 'detail_qty' => $this->quantity,
                 'detail_subtotal' => $this->quantity * $this->currentVariant->price,
+                'product_id' => $this->detailProduct->id
             ]);
+
+            // DB::statement('UNLOCK TABLES');
 
             return $trx->transaction_number;
         });

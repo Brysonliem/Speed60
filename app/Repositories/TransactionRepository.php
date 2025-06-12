@@ -69,4 +69,13 @@ class TransactionRepository implements TransactionRepositoryInterface
             return $trx?->delete();
         });
     }
+
+    public function deleteByTransactionNumber(string $trx_number)
+    {
+        return DB::transaction(function() use ($trx_number) {
+            $trx = Transaction::where('transaction_number', '=',$trx_number)->first();
+
+            return $trx?->delete();
+        });
+    }
 }

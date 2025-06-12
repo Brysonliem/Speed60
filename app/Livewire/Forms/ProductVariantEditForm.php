@@ -2,39 +2,32 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\ProductVariant;
-use Livewire\Form;
-use Livewire\Attributes\Validate;
+use Livewire\Component;
+use Illuminate\Validation\Rule;
 
-class ProductVariantCreateForm extends Form
+class ProductVariantEditForm
 {
-    public ?ProductVariant $variant = null;
+    public ?int $id = null;
+    public ?int $product_id = null;
+    public string $color = '';
+    public string $color_code = '';
+    public int $current_stock = 0;
+    public float $price = 0;
+    public string $purchase_unit = 'pcs';
+    public ?int $unit_per_set = null;
 
-    #[Validate('required|integer|exists:products,id')]
-    public int $product_id;
+    protected Component $parent;
+    protected string $formPath;
 
-    #[Validate('required|string')]
-    public string $color;
-
-    #[Validate('required|string')]
-    public string $color_code;
-
-    #[Validate('required|integer|min:0')]
-    public int $current_stock;
-
-    #[Validate('required|numeric|min:0')]
-    public float $price;
-
-    #[Validate('required|string|in:set,pcs')]
-    public string $purchase_unit;
-
-    #[Validate('numeric|min:0')]
-    public ?float $unit_per_set;
-
-    public function setProductVariant(ProductVariant $variant)
+    public function __construct(Component $parent, string $formPath)
     {
-        $this->variant = $variant;
+        $this->parent = $parent;
+        $this->formPath = $formPath;
+    }
 
+    public function setVariant($variant): void
+    {
+        $this->id = $variant->id;
         $this->product_id = $variant->product_id;
         $this->color = $variant->color;
         $this->color_code = $variant->color_code;
@@ -42,5 +35,31 @@ class ProductVariantCreateForm extends Form
         $this->price = $variant->price;
         $this->purchase_unit = $variant->purchase_unit;
         $this->unit_per_set = $variant->unit_per_set;
+    }
+
+    public function rules(): array
+    {
+        return [
+            "{$this->formPath}.color" => ['required', 'string', 'max:255'],
+            "{$this->formPath}.color_code" => ['required', 'string', 'max:255'],
+            "{$this->formPath}.current_stock" => ['required', 'integer', 'min:0'],
+            "{$this->formPath}.price" => ['required', 'numeric', 'min:0'],
+            "{$this->formPath}.purchase_unit" => ['required', Rule::in(['set', 'pcs'])],
+            "{$this->formPath}.unit_per_set" => ['nullable', 'integer', 'min:1'],
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'product_id' => $this->product_id,
+            'color' => $this->color,
+            'color_code' => $this->color_code,
+            'current_stock' => $this->current_stock,
+            'price' => $this->price,
+            'purchase_unit' => $this->purchase_unit,
+            'unit_per_set' => $this->unit_per_set,
+        ];
     }
 }

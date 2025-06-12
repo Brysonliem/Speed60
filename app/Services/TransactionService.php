@@ -46,6 +46,11 @@ class TransactionService
         return $this->transactionRepository->delete($id);
     }
 
+    public function deleteByTransactionNumber(string $trx_number)
+    {
+        return $this->transactionRepository->deleteByTransactionNumber($trx_number);
+    }
+
     public function createDetail(array $data)
     {
         return $this->transactionDetailRepository->create($data);

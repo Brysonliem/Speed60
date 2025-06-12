@@ -30,15 +30,15 @@
                             <div
                                 class="flex-shrink min-w-0 mr-1 truncate text-shopee-primary flex items-center font-medium">
                                 <div class="truncate flex items-baseline">
-                                    <span class="text-xs/sp14 font-medium mr-px">Rp</span>
+                                    <span class="text-lg/sp14 font-medium mr-px">Rp. </span>
                                     <span class="font-medium text-base/5 truncate">{{ $price }}</span>
                                     <span class="text-xs/sp14 font-medium mr-px"></span>
                                 </div>
                             </div>
-                            <div
+                            {{-- <div
                                 class="text-red-500 font-medium bg-red-100 py-0.5 px-1 text-sp10/3 h-4 rounded-[2px] shrink-0 mr-1">
                                 -41%
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="flex-1 flex flex-col justify-between">

@@ -1,89 +1,341 @@
-<div class="flex flex-col gap-3 h-screen p-4 md:p-8">
-    <!-- Breadcrumb -->
-    {{-- @livewire('components.breadcrumb', ['links' => [
-        ['name' => 'Product', 'url' => route('products.index.admin')],
-        ['name' => 'Update Product', 'url' => route('products.edit', $form->product->id)],
-    ]]) --}}
+<div class="mt-14">
+    <x-page-header title="Tambah Produk">
+        <a href="{{ route('products.index.admin') }}"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg">
+            Daftar Produk
+        </a>
+    </x-page-header>
 
     <div class="bg-white w-full p-4 border rounded-lg my-4 hover:shadow-lg transition-shadow duration-300">
-        <h2 class="text-xl font-semibold text-gray-800">Update Product</h2>
-        <p class="text-sm text-gray-500 mt-1">Fill the forms below.</p>
 
         <form wire:submit.prevent="update" class="mt-4">
-            <div class="grid grid-cols-4 gap-4">
-                <div>
+            @csrf
+
+            <div class="grid grid-cols-6 gap-4">
+                <div class="col-span-3">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Product Name</label>
-                    <input wire:model="form.name" id="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                    {{-- @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                    <input
+                        wire:model="form.name"
+                        id="name"
+                        type="text"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                               focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        required
+                    />
+                    @error('form.name') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <div>
+                <div class="col-span-1">
                     <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Produk</label>
-                    <select wire:model.defer="form.product_type_id" id="product_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option value="">-- Pilih Tipe Produk --</option>
+                    <select
+                        wire:model="form.product_type_id"
+                        id="product_type_id"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                               focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    >
+                        <option value="" disabled selected>-- Pilih Tipe Produk --</option>
                         @foreach ($product_types as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
                     </select>
-                    {{-- @error('product_type_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
-                </div>                
-
-                <div>
-                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
-                    <input wire:model="form.price" id="price" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                    {{-- @error('price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                    @error('form.product_type_id') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <div>
-                    <label for="stock" class="block mb-2 text-sm font-medium text-gray-900">Stock</label>
-                    <input wire:model="form.current_stock" id="stock" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                    {{-- @error('current_stock') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                <div class="col-span-1">
+                    <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Motor</label>
+                    <button id="dropdownCheckboxButton" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center w-full" type="button">
+                        Tipe Motor
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownDefaultCheckbox"
+                        class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm max-h-60 overflow-y-auto">
+                        <ul class="p-3 space-y-3 text-sm text-gray-700" aria-labelledby="dropdownCheckboxButton">
+
+                            @foreach($motorCategories as $motor)
+                                <li>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" wire:model="selectedMotorCategoryIds" value="{{ $motor->id }}"
+                                            id="motor-{{ $motor->id }}"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+                                        <label for="motor-{{ $motor->id }}"
+                                            class="ms-2 text-sm font-medium text-gray-900">{{ $motor->name }}</label>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
                 </div>
 
-                <div class="col-span-2">                    
-                    <label class="block mb-2 text-sm font-medium text-gray-900 " for="multiple_files">Upload Picture Product</label>
-                    <input wire:model="newImages" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
-                    focus:outline-none " id="multiple_files" type="file" multiple>
-                    {{-- @error('images.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                <div class="col-span-1">
+                    <label for="material" class="block mb-2 text-sm font-medium text-gray-900">Material</label>
+                    <select
+                        wire:model="form.material"
+                        id="material"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                               focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    >
+                        <option disabled value="">-- PILIH MATERIAL --</option>
+                        <option value="STAINLESS">STAINLESS</option>
+                        <option value="TITANIUM">TITANIUM</option>
+                    </select>
+                    @error('form.material') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
-                
-                <div class="col-span-2">
-                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Product Description</label>
-                    <textarea id="message" rows="4" wire:model="form.description" class="
-                        block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 
-                        focus:ring-blue-500 focus:border-blue-500 " placeholder=""></textarea>
-                    {{-- @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+
+                <div class="col-span-6">
+                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Product Description</label>
+                    
+                    <div
+                        wire:ignore
+                        x-data
+                        x-init="
+                            const quill = new Quill($refs.quillEditor, {
+                                theme: 'snow'
+                            });
+
+                            // Set initial content
+                            quill.root.innerHTML = @this.get('form.description') || '';
+
+                            quill.on('text-change', function () {
+                                @this.set('form.description', quill.root.innerHTML);
+                            });
+
+                            $watch('form.description', value => {
+                                if (quill.root.innerHTML !== value) {
+                                    quill.root.innerHTML = value;
+                                }
+                            });
+                        "
+
+                    >
+                        <div x-ref="quillEditor" style="height: 200px;"></div>
+                    </div>
+
+                    @error('form.description')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
-        
-                <!-- Preview gambar lama -->
-                <div class="col-span-4 flex gap-3 flex-wrap">
-                    @foreach ($form->product->images as $image)
-                        <div class="relative">
-                            <img src="{{ asset('storage/' . $image->image_path) }}" class="w-24 h-24 object-cover rounded-lg">
-                            {{-- Tombol hapus (optional) --}}
-                            <button wire:click.prevent="deleteImage({{ $image->id }})" class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center">×</button>
+
+                <div class="col-span-6 mt-4">
+                    <h3 class="text-lg font-medium text-gray-700">Variants</h3>
+                    <p class="text-sm text-gray-500 mb-2">Add one or more variants below.</p>
+                </div>
+
+                @foreach ($variantForms as $i => $variant)
+                    <div class="col-span-6 border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-gray-800">Variant #{{ $i + 1 }}</h4>
+                            <button
+                                type="button"
+                                wire:click.prevent="removeVariant({{ $i }})"
+                                class="text-red-600 hover:underline text-sm"
+                            >
+                                Remove
+                            </button>
                         </div>
-                    @endforeach
+
+                        <div class="grid grid-cols-6 gap-4">
+                            <!-- Color -->
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Color</label>
+                                <input
+                                    wire:model="variantForms.{{ $i }}.color"
+                                    type="text"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    placeholder="E.g. Red"
+                                    required
+                                />
+                                @error("variantForms.$i.color")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Color Code -->
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Color Code</label>
+                                <input
+                                    wire:model="variantForms.{{ $i }}.color_code"
+                                     type="color"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    placeholder="#FF0000"
+                                    required
+                                />
+                                @error("variantForms.$i.color_code")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Current Stock for Variant -->
+                            <div class="col-span-1">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Stock</label>
+                                <input
+                                    wire:model="variantForms.{{ $i }}.current_stock"
+                                    type="number"
+                                    min="0"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    required
+                                />
+                                @error("variantForms.$i.current_stock")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Price for Variant -->
+                            <div class="col-span-1">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                                <input
+                                    wire:model="variantForms.{{ $i }}.price"
+                                    type="number"
+                                    step="0.01"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    required
+                                />
+                                @error("variantForms.$i.price")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Purchase Unit -->
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Purchase Unit</label>
+                                <select
+                                    wire:model="variantForms.{{ $i }}.purchase_unit"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    required
+                                >
+                                    <option value="" disabled selected>-- Select Unit --</option>
+                                    <option value="set">set</option>
+                                    <option value="pcs">pcs</option>
+                                </select>
+                                @error("variantForms.$i.purchase_unit")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Units Per Set (optional) -->
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Unit Per Set (if any)</label>
+                                <input
+                                    wire:model="variantForms.{{ $i }}.unit_per_set"
+                                    type="number"
+                                    step="0.01"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    placeholder="e.g. 10"
+                                />
+                                @error("variantForms.$i.unit_per_set")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                <!-- “Add Variant” button spans all columns -->
+                <div class="col-span-6">
+                    <button
+                        type="button"
+                        wire:click.prevent="addVariant"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                        + Add Another Variant
+                    </button>
                 </div>
-        
-                <!-- Preview upload baru -->
-                <div class="col-span-4 flex gap-3 flex-wrap">
+
+                <div class="col-span-2">
+                    <label for="multiple_files" class="block mb-2 text-sm font-medium text-gray-900">Upload Picture Product</label>
+                    <input
+                        wire:model="newImages"
+                        id="multiple_files"
+                        type="file"
+                        multiple
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg
+                               cursor-pointer bg-gray-50 focus:outline-none"
+                    >
+                    @error('newImages.*')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="col-span-4 flex flex-wrap mt-2 gap-3">
+                    <!-- Loading indicator -->
+                    <div
+                        wire:loading.delay
+                        wire:target="newImages"
+                        class="flex items-center justify-center w-32 h-2w-32 border border-gray-200 rounded-lg bg-gray-50"
+                    >
+                        <div class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse">
+                            UPLOADING...
+                        </div>
+                    </div>
                     @if (!empty($previewNewImages))
-                        @foreach ($previewNewImages as $image)
-                            <img src="{{ $image }}" class="w-24 h-24 object-cover rounded-lg">
+                        @foreach ($previewNewImages as $index => $image)
+
+                            <div class="relative w-24 h-24 me-2 mb-2">
+                                <img
+                                    src="{{ $image }}"
+                                    alt="Preview"
+                                    class="object-cover w-full h-full rounded-lg"
+                                />
+                                <button
+                                    type="button"
+                                    wire:click="removeImage({{ $index }})"
+                                    class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                                    title="Hapus"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            
                         @endforeach
                     @endif
+
+                    @if (!empty($existingImages))
+                        @foreach ($existingImages as $image)
+                            <div class="relative w-24 h-24 me-2 mb-2">
+                                <img
+                                    src="{{ asset('storage/' . $image['image_path']) }}"
+                                    alt="Existing Image"
+                                    class="object-cover w-full h-full rounded-lg"
+                                />
+                                <button
+                                    type="button"
+                                    wire:click="removeExistingImage({{ $image['id'] }})"
+                                    class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                                    title="Hapus"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        @endforeach
+                    @endif
+
                 </div>
-        
-                <!-- Tombol Submit -->
-                <div class="col-span-4 flex">
+
+                <div class="col-span-6 flex">
                     <div class="ms-auto">
-                        {{-- <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Submit</button> --}}
                         <button
                             type="submit"
                             wire:loading.attr="disabled"
                             wire:target="update"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
+                                   focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600
+                                   dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
                         >
                             <svg
                                 wire:loading
@@ -96,21 +348,74 @@
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591
+                                       C50 100.591C22.3858 100.591 0 78.2051 0 50.5908
+                                       C0 22.9766 22.3858 0.59082 50 0.59082
+                                       C77.6142 0.59082 100 22.9766 100 50.5908
+                                       Z"
                                     fill="#E5E7EB"
                                 />
                                 <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624
+                                       35.9116 97.0079 33.5539C95.2932 28.8227
+                                       92.871 24.3692 89.8167 20.348C85.8452
+                                       15.1192 80.8826 10.7238 75.2124 7.41289
+                                       C69.5422 4.10194 63.2754 1.94025 56.7698
+                                       1.05124C51.7666 0.367541 46.6976 0.446843
+                                       41.7345 1.27873C39.2613 1.69328 37.813
+                                       4.19778 38.4501 6.62326C39.0873 9.04874
+                                       41.5694 10.4717 44.0505 10.1071C47.8511
+                                       9.54855 51.7191 9.52689 55.5402 10.0491
+                                       C60.8642 10.7766 65.9928 12.5457 70.6331
+                                       15.2552C75.2735 17.9648 79.3347 21.5619
+                                       82.5849 25.841C84.9175 28.9121 86.7997
+                                       32.2913 88.1811 35.8758C89.083 38.2158
+                                       91.5421 39.6781 93.9676 39.0409Z"
                                     fill="currentColor"
                                 />
                             </svg>
-                            <span wire:loading.remove wire:target="update">Simpan</span>
+                            <span wire:loading.remove wire:target="update">Perbarui</span>
                             <span wire:loading wire:target="update">Memperbarui...</span>
                         </button>
                     </div>
                 </div>
             </div>
         </form>
-        
     </div>
+
+    @if (Session::has('success'))
+        <div x-data="{show: true}" x-show="show" id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
+            <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg ">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                </svg>
+                <span class="sr-only">Check icon</span>
+            </div>
+            <div class="ms-3 text-sm font-normal">{{ Session::get('success') }}</div>
+            <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+            </button>
+        </div>
+    @endif
+
+    @if (Session::has('error'))
+        <div x-data="{show: true}" x-show="show" id="toast-error" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
+            <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg ">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                </svg>
+                <span class="sr-only">Check icon</span>
+            </div>
+            <div class="ms-3 text-sm font-normal">{{ Session::get('error') }}</div>
+            <button x-on:click="show = false" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-error" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+            </button>
+        </div>
+    @endif
 </div>

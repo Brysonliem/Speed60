@@ -18,14 +18,14 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getAllProducts()
+    public function getAllProducts(?string $motorCategoryCode = null)
     {
-        return $this->productRepository->all();
+        return $this->productRepository->all($motorCategoryCode);
     }
 
-    public function allProductMaster()
+    public function allProductMaster(?int $limit)
     {
-        return $this->productRepository->allProductMaster();
+        return $this->productRepository->allProductMaster($limit);
     }
 
     public function getProductById(int $id)

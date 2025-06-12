@@ -9,8 +9,7 @@ use App\Models\ProductVariant;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    // TODO: clean up these 2 methods below to avoid redundancy
-    public function all()
+    private function baseProductQuery()
     {
         return Product::latest()
             ->with([
@@ -19,33 +18,42 @@ class ProductRepository implements ProductRepositoryInterface
                 'productImages' => function ($query) {
                     $query->where('is_main', 1);
                 },
+                'motorCategories:id,name,code'
             ])
             ->withCount('reviews')
             ->withCount('variants')
+            ->withSum('variants','current_stock')
             ->withAvg('reviews', 'rating_point')
-            ->having('variants_count', '>', 0) // a product cannot be displayed if it doesn't have any variant
-            ->get()
-            ->toArray();
+            ->having('variants_count', '>', 0);
     }
 
-    public function allProductMaster()
+
+    public function all(?string $motorCategoryCode = null)
     {
-        return Product::latest()
-            ->with([
-                'variants',
-                'productType',
-                'productImages' => function ($query) {
-                    $query->where('is_main', 1);
-                },
-            ])
-            ->withCount('reviews')
-            ->withCount('variants')
-            ->withAvg('reviews', 'rating_point')
-            ->having('variants_count', '>', 0) // a product cannot be displayed if it doesn't have any variant
-            ->groupBy('id', 'name', 'description', 'condition', 'created_by', 'product_type_id', 'created_at', 'updated_at')
-            ->get()
-            ->toArray();
+        $query = $this->baseProductQuery();
+
+        if($motorCategoryCode) {
+            $query->whereHas('motorCategories', function($subQuery) use ($motorCategoryCode) {
+                $subQuery->where('code', $motorCategoryCode);
+            });
+        }
+
+        return $query->get()->toArray();
     }
+
+
+    public function allProductMaster(?int $limit = null)
+    {
+        $query = $this->baseProductQuery()
+            ->groupBy('id', 'name', 'description', 'condition', 'created_by', 'product_type_id', 'created_at', 'updated_at');
+
+        if ($limit) {
+            $query->limit($limit);
+        }
+
+        return $query->get()->toArray();
+    }
+
 
     public function getAllType()
     {

@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
-protected $table = 'products';
+    protected $table = 'products';
 
     protected $fillable = [
         'name',
@@ -17,6 +18,7 @@ protected $table = 'products';
         'condition',
         'created_by',
         'product_type_id',
+        'material'
     ];
 
     public function productType(): BelongsTo
@@ -52,5 +54,10 @@ protected $table = 'products';
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class, 'product_id');
+    }
+
+    public function motorCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(MotorCategory::class);
     }
 }
