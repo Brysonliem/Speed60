@@ -42,7 +42,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             ->get();
     }
 
-    public function getDetailTransactions(?string $filter)
+    public function getTransactionDetails(?string $status)
     {
         $query = DB::table('transactions as tx')
             ->select([
@@ -61,7 +61,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             ->join('users as u', 'u.id', '=', 'tx.transaction_user')
             ->leftJoin('vouchers as vc', 'vc.id', '=', 'tx.voucher_id')
             ->join('transaction_details as td', 'td.detail_master', '=', 'tx.id')
-            ->where('tx.proceed_at','!=','null')
+            ->where('tx.proceed_at','!=',null)
             ->groupBy(
                 'tx.id',
                 'tx.transaction_number',
@@ -75,8 +75,8 @@ class TransactionRepository implements TransactionRepositoryInterface
                 'tx.proceed_at'
             );
 
-        if($filter) {
-            $query->where('tx.transaction_status','=',$filter);
+        if($status) {
+            $query->where('tx.transaction_status','=',$status);
         }
 
         return $query->get()->toArray();

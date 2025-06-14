@@ -56,8 +56,8 @@ class TransactionService
         return $this->transactionDetailRepository->create($data);
     }
 
-    public function getDetailTransactions(?string $filter)
+    public function getTransactionDetails(?string $status)
     {
-        return $this->transactionRepository->getDetailTransactions($filter);
+        return $this->transactionRepository->getTransactionDetails($status);
     }
 }

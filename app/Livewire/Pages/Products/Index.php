@@ -19,6 +19,12 @@ class Index extends BaseComponent
     public CartCreateForm $cartForm;
 
     public $motorCategories = [];
+    public $materialProducts = [
+        ['name' => 'Stainless', 'code' => 'STAINLESS'],
+        ['name' => 'Titanium', 'code' => 'TITANIUM'],
+        ['name' => 'Other', 'code' => 'OTHER'],
+    ];
+    
     public $selectedCategoryCode = '';
 
     protected $queryString = [

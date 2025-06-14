@@ -1,94 +1,138 @@
 <div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen">
-    <!-- Breadcrumb -->
-    {{-- @livewire('components.breadcrumb', ['links' => [
-        ['name' => 'Produk', 'url' => route('products.index')],
-    ]]) --}}
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <!-- Drawer filter untuk mobile & sidebar untuk desktop -->
+        <div id="drawer-filter"
+            class="fixed top-0 left-0 z-50 w-72 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white border-r md:relative md:translate-x-0 md:block md:h-auto md:border md:rounded-lg"
+            tabindex="-1" aria-labelledby="drawer-filter-label">
 
-    <div class="grid grid-cols-5 gap-4 mb-10">
-        {{-- menu radio --}}
-        <div class="flex flex-col gap-3 max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow-sm max-h-[400px] overflow-y-scroll relative">
-            <span class="text-lg font-semibold">Produk</span>
+            <!-- Header drawer -->
+            <h5 id="drawer-filter-label"
+                class="mb-6 text-base font-semibold text-gray-500 uppercase md:hidden">
+                Filter
+            </h5>
+            <button type="button" data-drawer-hide="drawer-filter" aria-controls="drawer-filter"
+                class="md:hidden text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1 absolute top-4 right-4">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </button>
 
-            <div class="flex items-center">
-                <input wire:model="selectedCategoryCode" type="radio" id="all" value="" class="w-4 h-4">
-                <label for="all" class="ms-2 text-sm font-medium">Semua Produk</label>
-            </div>
+            <!-- Form Filter -->
+            <div class="flex flex-col gap-6">
 
-            @foreach($motorCategories as $category)
-                <div class="flex items-center">
-                    <input wire:model="selectedCategoryCode" type="radio" id="cat-{{ $category->id }}" value="{{ $category->code }}" class="w-4 h-4">
-                    <label for="cat-{{ $category->id }}" class="ms-2 text-sm font-medium">{{ $category->name }}</label>
+                <!-- Filter Tipe Motor -->
+                <div class="flex flex-col">
+                    <span class="text-lg font-semibold mb-2">Tipe Motor</span>
+
+                    <div class="flex flex-col gap-2 overflow-y-auto max-h-[50vh] pe-2">
+                        <div class="flex items-center">
+                            <input wire:model="selectedCategoryCode" type="radio" id="all" value="" class="w-4 h-4">
+                            <label for="all" class="ms-2 text-sm font-medium">Semua Tipe</label>
+                        </div>
+
+                        @foreach($motorCategories as $category)
+                            <div class="flex items-center">
+                                <input wire:model="selectedCategoryCode" type="radio" id="cat-{{ $category->id }}" value="{{ $category->code }}" class="w-4 h-4">
+                                <label for="cat-{{ $category->id }}" class="ms-2 text-sm font-medium">{{ $category->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            @endforeach
 
-            <!-- Tombol Sticky -->
-            <div class="sticky bottom-0 bg-white py-2 mt-3">
-                <button wire:click="loadProducts"
-                        wire:loading.attr="disabled"
-                        class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow relative">
-                    <!-- Default Text -->
-                    <span wire:loading.remove wire:target="loadProducts">Terapkan Filter</span>
+                <!-- Filter Tipe Bahan -->
+                <div class="flex flex-col space-y-3">
+                    <span class="text-lg font-semibold mb-2">Tipe Bahan</span>
 
-                    <!-- Loading Text -->
-                    <span wire:loading wire:target="loadProducts">Menerapkan Filter...</span>
-                </button>
+                    @foreach ($materialProducts as $index => $material)
+                        <div class="flex items-center">
+                            <input id="mat-{{ $index }}" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                            <label for="mat-{{ $index }}" class="ms-2 text-sm font-medium text-gray-900">{{ $material['name'] }}</label>
+                        </div>    
+                    @endforeach
+
+                </div>
+
+                
+                <!-- Tombol Terapkan -->
+                <div class="sticky bottom-0 bg-white py-2 mt-2">
+                    <div class="flex flex-col gap-1">
+                        <button wire:click="loadProducts"
+                                wire:loading.attr="disabled"
+                                class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow relative">
+                            <span wire:loading.remove wire:target="loadProducts">Terapkan Filter</span>
+                            <span wire:loading wire:target="loadProducts">Menerapkan Filter...</span>
+                        </button>
+
+                        <button class="w-full px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md shadow relative">
+                            <span wire:loading.remove wire:target="loadProducts">Hapus Filter</span>
+                            <span wire:loading wire:target="loadProducts">Menghapus Filter...</span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
-
         </div>
 
-
-
-        <div class="col-span-4">
+        <!-- Produk -->
+        <div class="md:col-span-4">
             <div class="flex flex-col gap-2">
-                {{-- Filter search --}}
-                <div class="flex items-center">
-                    {{-- Search input --}}
+                <!-- Tombol Filter (mobile) -->
+                <div class="md:hidden">
+                    <button data-drawer-target="drawer-filter" data-drawer-show="drawer-filter" aria-controls="drawer-filter"
+                        class="inline-flex items-center px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4 6h16M4 12h8m-8 6h16"></path>
+                        </svg>
+                        Filter
+                    </button>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                     <form class="w-full max-w-md">
                         <label for="search-input" class="sr-only">Search</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="search" id="search-input" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." required />
-                            <button type="submit" class="text-white absolute end-2.5 bottom-1 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
+                            <input type="search" id="search-input"
+                                class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Search Product" required />
+                            <button type="submit"
+                                class="text-white absolute end-2.5 bottom-1 bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                                 Search
                             </button>
                         </div>
                     </form>
-        
-                    {{-- Select Sort By --}}
-                    <div class="ms-auto">
-                        <select id="sort-by" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
-                            <option value="latest">Sort by: Latest</option>
-                            <option value="popular">Sort by: Popular</option>
-                            <option value="price_low">Sort by: Price (Low to High)</option>
-                            <option value="price_high">Sort by: Price (High to Low)</option>
-                        </select>
-                    </div>
                 </div>
-                <span class="text-lg font-semibold">Semua Produk</span>
+
+                <span class="text-lg font-semibold mt-4">Semua Produk</span>
 
                 @if (Session::has('success'))
                     <div id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
                         <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg ">
-                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                             </svg>
-                            <span class="sr-only">Check icon</span>
                         </div>
                         <div class="ms-3 text-sm font-normal">Berhasil menambahkan ke cart!</div>
-                        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
-                            <span class="sr-only">Close</span>
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        <button type="button" class="ms-auto bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100"
+                            data-dismiss-target="#toast-success" aria-label="Close">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 14 14">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
                             </svg>
                         </button>
                     </div>
                 @endif
 
-                <div class="grid md:grid-cols-6 h-full grid-cols-2 gap-2 mt-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mt-4">
                     @foreach ($products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
@@ -104,11 +148,7 @@
                         ])
                     @endforeach
                 </div>
-                
             </div>
         </div>
-        
-
     </div>
-  
 </div>

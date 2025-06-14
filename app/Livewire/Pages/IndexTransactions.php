@@ -15,6 +15,14 @@ class IndexTransactions extends Component
 
     public array $transactions = [];
 
+    public array $transaction_status = [
+        ['code' => 'ALL'],
+        ['code' => 'PENDING'],
+        ['code' => 'PAID'],
+        ['code' => 'CANCELLED'],
+        ['code' => 'REFUND'],
+    ];
+
     protected $queryString = [
         'selectedStatusFilter' => [
             'except' => '',
@@ -29,10 +37,10 @@ class IndexTransactions extends Component
 
     public function loadTransactions()
     {
-        if($this->selectedStatusFilter) {
-            $this->transactions = $this->transactionService->getDetailTransactions($this->selectedStatusFilter);
+        if($this->selectedStatusFilter !== 'ALL') {
+            $this->transactions = $this->transactionService->getTransactionDetails($this->selectedStatusFilter);
         } else {
-            $this->transactions = $this->transactionService->getDetailTransactions(null);
+            $this->transactions = $this->transactionService->getTransactionDetails(null);
         }
     }
 
