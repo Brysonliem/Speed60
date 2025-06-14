@@ -42,6 +42,46 @@ class TransactionRepository implements TransactionRepositoryInterface
             ->get();
     }
 
+    public function getDetailTransactions(?string $filter)
+    {
+        $query = DB::table('transactions as tx')
+            ->select([
+                'tx.id',
+                'tx.transaction_number',
+                DB::raw('UPPER(tx.transaction_status) as transaction_status'),
+                'tx.sub_total',
+                'tx.shipping_price',
+                'tx.discount_price',
+                'tx.grand_total',
+                'u.name as buyer_name',
+                DB::raw('CASE WHEN tx.voucher_id IS NOT NULL THEN true ELSE false END as has_voucher'),
+                DB::raw('SUM(td.detail_qty) as total_quantity'),
+                'tx.proceed_at',
+            ])
+            ->join('users as u', 'u.id', '=', 'tx.transaction_user')
+            ->leftJoin('vouchers as vc', 'vc.id', '=', 'tx.voucher_id')
+            ->join('transaction_details as td', 'td.detail_master', '=', 'tx.id')
+            ->where('tx.proceed_at','!=','null')
+            ->groupBy(
+                'tx.id',
+                'tx.transaction_number',
+                'tx.transaction_status',
+                'tx.sub_total',
+                'tx.shipping_price',
+                'tx.discount_price',
+                'tx.grand_total',
+                'u.name',
+                'tx.voucher_id',
+                'tx.proceed_at'
+            );
+
+        if($filter) {
+            $query->where('tx.transaction_status','=',$filter);
+        }
+
+        return $query->get()->toArray();
+    }
+
     public function create(array $data)
     {
         return Transaction::create($data);

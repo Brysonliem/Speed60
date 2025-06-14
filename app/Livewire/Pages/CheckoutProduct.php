@@ -136,7 +136,6 @@ class CheckoutProduct extends BaseComponent
     private function createTransactionAddress(): void
     {
         $current_transaction = Transaction::where('transaction_number', '=', $this->trx)->first();
-        // TODO : ADA BUG, BAGIAN ADDRESS KEBAWAH GAK MASUK DATANYA.
 
         $this->transactionAddressService->createAddress([
             'transaction_id' => $current_transaction->id,
@@ -163,6 +162,7 @@ class CheckoutProduct extends BaseComponent
             'tax_price' => $this->tax,
             'discount_price' => $this->discount,
             'grand_total' => $this->grand_total,
+            'proceed_at' => now()
         ];
 
         if ($this->voucher) {

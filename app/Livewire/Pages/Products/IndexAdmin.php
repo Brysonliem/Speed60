@@ -14,6 +14,7 @@ class IndexAdmin extends Component
 
     protected ProductService $productService;
 
+
     public function boot(ProductService $productService)
     {
         $this->productService = $productService;
