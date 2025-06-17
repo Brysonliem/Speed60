@@ -7,66 +7,59 @@ use App\Livewire\Forms\CartCreateForm;
 use App\Services\CartService;
 use App\Services\MotorCategoryService;
 use App\Services\ProductService;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 
 class Index extends BaseComponent
 {
-    public $products;
-
     protected ProductService $productService;
     protected MotorCategoryService $motorCategoryService;
 
     public CartCreateForm $cartForm;
 
-    public $motorCategories = [];
-    public $materialProducts = [
+    public string $search = '';
+    public string $selectedCategoryCode = '';
+    public string $selectedMaterial = '';
+
+    public array $materialProducts = [
         ['name' => 'Stainless', 'code' => 'STAINLESS'],
         ['name' => 'Titanium', 'code' => 'TITANIUM'],
-        ['name' => 'Other', 'code' => 'OTHER'],
+        ['name' => 'Other', 'code' => ''],
     ];
-    
-    public $selectedCategoryCode = '';
 
     protected $queryString = [
-        'selectedCategoryCode' => [
-            'as' => 'motor_type',
-            'except' => ''
-        ]
+        'selectedCategoryCode' => ['as' => 'motor_type', 'except' => ''],
+        'search' => ['except' => ''],
+        'selectedMaterial' => ['as' => 'material', 'except' => ''],
     ];
 
     public function boot(
-        ProductService $productService, 
+        ProductService $productService,
         MotorCategoryService $motorCategoryService
-    )
-    {
+    ) {
         $this->productService = $productService;
         $this->motorCategoryService = $motorCategoryService;
     }
 
-    public function loadMotorCategories()
+    #[Computed]
+    public function products(): array
     {
-        $this->motorCategories = $this->motorCategoryService->getAllCategory();
+        return $this->productService->getAllProducts(
+            $this->selectedCategoryCode ?: null,
+            $this->selectedMaterial ?: null,
+            $this->search ?: null
+        );
     }
 
-    public function loadProducts()
+    #[Computed]
+    public function motorCategories(): array
     {
-        if($this->selectedCategoryCode) {
-            $this->products = $this->productService->getAllProducts($this->selectedCategoryCode);
-        } else {
-            $this->products = $this->productService->getAllProducts(null);
-        }
+        return $this->motorCategoryService->getAllCategory();
     }
 
-    public function updatedSelectedCategoryCode()
+    public function resetFilter(): void
     {
-        $this->loadProducts();
-    }
-
-
-    public function mount()
-    {
-        $this->loadProducts();
-        $this->loadMotorCategories();
+        $this->reset(['search', 'selectedCategoryCode', 'selectedMaterial']);
     }
 
     public function render()

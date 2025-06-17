@@ -19,7 +19,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->onDelete('cascade');
             $table
-                ->enum('transaction_status', ['pending', 'cancelled', 'paid','refund'])
+                ->enum('transaction_status', ['pending', 'cancelled', 'paid','refund','completed'])
                 ->default('pending');
             $table->timestamps();
         });

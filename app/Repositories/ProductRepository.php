@@ -28,7 +28,7 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
-    public function all(?string $motorCategoryCode = null)
+    public function all(?string $motorCategoryCode = null, ?string $material, ?string $searchName = null)
     {
         $query = $this->baseProductQuery();
 
@@ -36,6 +36,14 @@ class ProductRepository implements ProductRepositoryInterface
             $query->whereHas('motorCategories', function($subQuery) use ($motorCategoryCode) {
                 $subQuery->where('code', $motorCategoryCode);
             });
+        }
+
+        if($material) {
+            $query->where('material','=',$material);
+        }
+
+        if ($searchName) {
+            $query->where('name', 'like', "%{$searchName}%");
         }
 
         return $query->get()->toArray();

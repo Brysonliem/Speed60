@@ -97,7 +97,7 @@
         ],
         [
             "id" => "ORDERS",
-            "name" => "Orders",
+            "name" => "My Orders",
             "link" => route('products.index'),
             "childrens" => [],
         ],
@@ -127,7 +127,7 @@
                 data-drawer-show="sidebar-drawer" 
                 data-drawer-placement="top" 
                 aria-controls="sidebar-drawer"
-            >`
+            >
                 <span class="material-icons text-3xl">menu</span>
             </button>
 

@@ -34,6 +34,7 @@ class MotorCategorySeeder extends Seeder
             ['name' => 'SATRIA FU',   'code' => 'satria-fu'],
             ['name' => 'KLX 150',     'code' => 'klx-150'],
             ['name' => 'W175',        'code' => 'w175'],
+            ['name' => 'RX KING',     'code' => 'rx-king'],
         ];
 
         collect($data_list)->each(function($data) {

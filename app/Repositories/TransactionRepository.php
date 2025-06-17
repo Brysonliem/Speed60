@@ -118,4 +118,49 @@ class TransactionRepository implements TransactionRepositoryInterface
             return $trx?->delete();
         });
     }
+
+    public function countTransactionByUser(int $userId)
+    {
+        return Transaction::where('transaction_user', '=', $userId)->count();
+    }
+
+    public function countTransactionByStatusAndUser(string $status, int $userId)
+    {
+        return Transaction::where('transaction_user', '=', $userId)
+            ->where('transaction_status','=',$status)
+            ->count();
+    }
+
+    public function getTransactionsByUser(int $userId, ?string $status = null, bool $exclude = false)
+    {
+        $query = DB::table('transactions', 'tx')
+            ->join('transaction_details as td', 'td.detail_master', '=', 'tx.id')
+            ->select(
+                'tx.id',
+                'tx.transaction_number',
+                DB::raw('UPPER(tx.transaction_status) as transaction_status'),
+                'tx.created_at as transaction_date',
+                'tx.grand_total',
+                DB::raw('COUNT(td.id) as total_product')
+            )
+            ->where('tx.transaction_user', $userId)
+            ->groupBy(
+                'tx.id',
+                'tx.transaction_number',
+                'tx.transaction_status',
+                'tx.created_at',
+                'tx.grand_total'
+            );
+
+        if ($status) {
+            if ($exclude) {
+                $query->where('tx.transaction_status', '!=', $status);
+            } else {
+                $query->where('tx.transaction_status', '=', $status);
+            }
+        }
+
+        return $query->get()->toArray();
+    }
+
 }

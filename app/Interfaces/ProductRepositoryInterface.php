@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface ProductRepositoryInterface
 {
-    public function all(?string $motorCategoryCode = null);
+    public function all(?string $motorCategoryCode = null, ?string $material, ?string $searchName);
     public function allProductMaster(?int $limit = null);
     public function find(int $id);
     public function create(array $data);

@@ -156,17 +156,17 @@
             <div class="flex items-center lg:justify-center gap-3 sm:gap-4 p-3">
                 @php
                     $vehicles = [
-                        ['src' => 'images/1.jpg', 'alt' => 'NMAX', 'label' => 'NMAX '],
-                        ['src' => 'images/2.jpg', 'alt' => 'HONDA VARIO', 'label' => 'HONDA VARIO'],
-                        ['src' => 'images/3.jpg', 'alt' => 'RX KING', 'label' => 'RX KING'],
-                        ['src' => 'images/4.jpg', 'alt' => 'SATRIA FU RAIDER', 'label' => 'SATRIA FU RAIDER'],
-                        ['src' => 'images/5.jpg', 'alt' => 'YAMAHA MIO', 'label' => 'YAMAHA MIO'],
-                        ['src' => 'images/6.jpg', 'alt' => 'PCX ADV', 'label' => 'PCX ADV'],
+                        ['src' => 'images/1.jpg', 'alt' => 'NMAX', 'label' => 'NMAX', 'code' => 'nmax'],
+                        ['src' => 'images/2.jpg', 'alt' => 'HONDA VARIO', 'label' => 'HONDA VARIO 160', 'code' => 'vario-160'],
+                        ['src' => 'images/3.jpg', 'alt' => 'RX KING', 'label' => 'RX KING', 'code' => 'rx-king'],
+                        ['src' => 'images/4.jpg', 'alt' => 'SATRIA FU RAIDER', 'label' => 'SATRIA FU', 'code' => 'satria-fu'],
+                        ['src' => 'images/5.jpg', 'alt' => 'YAMAHA MIO', 'label' => 'YAMAHA MIO M3', 'code' => 'mio-m3'],
+                        ['src' => 'images/6.jpg', 'alt' => 'PCX ADV', 'label' => 'PCX 160', 'code' => 'pcx-160'],
                     ];
                 @endphp
 
                 @foreach ($vehicles as $vehicle)
-                    <a href="{{ route('products.index') }}" class="min-w-fit flex flex-col items-center">
+                    <a href="{{ route('products.index', ['motor_type' => $vehicle['code']]) }}" class="min-w-fit flex flex-col items-center">
                         <div class="w-24 sm:w-28 md:w-32 lg:w-36 aspect-square rounded-md overflow-hidden bg-gray-100">
                             <img src="{{ asset($vehicle['src']) }}" alt="{{ $vehicle['alt'] }}"
                                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">

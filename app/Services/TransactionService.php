@@ -60,4 +60,19 @@ class TransactionService
     {
         return $this->transactionRepository->getTransactionDetails($status);
     }
+
+    public function countTransactionByUser(int $userId)
+    {
+        return $this->transactionRepository->countTransactionByUser($userId);
+    }
+
+    public function countTransactionByStatusAndUser(string $status, int $userId)
+    {
+        return $this->transactionRepository->countTransactionByStatusAndUser($status, $userId);
+    }
+
+    public function getTransactionsByUser(int $userId, ?string $status = null, bool $exclude = false)
+    {
+        return $this->transactionRepository->getTransactionsByUser($userId, $status, $exclude);
+    }
 }

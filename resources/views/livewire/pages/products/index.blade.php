@@ -1,5 +1,6 @@
 <div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen">
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+
         <!-- Drawer filter untuk mobile & sidebar untuk desktop -->
         <div id="drawer-filter"
             class="fixed top-0 left-0 z-50 w-72 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white border-r md:relative md:translate-x-0 md:block md:h-auto md:border md:rounded-lg"
@@ -33,7 +34,7 @@
                             <label for="all" class="ms-2 text-sm font-medium">Semua Tipe</label>
                         </div>
 
-                        @foreach($motorCategories as $category)
+                        @foreach($this->motorCategories as $category)
                             <div class="flex items-center">
                                 <input wire:model="selectedCategoryCode" type="radio" id="cat-{{ $category->id }}" value="{{ $category->code }}" class="w-4 h-4">
                                 <label for="cat-{{ $category->id }}" class="ms-2 text-sm font-medium">{{ $category->name }}</label>
@@ -48,7 +49,7 @@
 
                     @foreach ($materialProducts as $index => $material)
                         <div class="flex items-center">
-                            <input id="mat-{{ $index }}" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                            <input wire:model="selectedMaterial" id="mat-{{ $index }}" type="radio" value="{{ $material['code'] }}" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
                             <label for="mat-{{ $index }}" class="ms-2 text-sm font-medium text-gray-900">{{ $material['name'] }}</label>
                         </div>    
                     @endforeach
@@ -59,17 +60,23 @@
                 <!-- Tombol Terapkan -->
                 <div class="sticky bottom-0 bg-white py-2 mt-2">
                     <div class="flex flex-col gap-1">
-                        <button wire:click="loadProducts"
-                                wire:loading.attr="disabled"
-                                class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow relative">
-                            <span wire:loading.remove wire:target="loadProducts">Terapkan Filter</span>
-                            <span wire:loading wire:target="loadProducts">Menerapkan Filter...</span>
+                        <button 
+                            wire:click="$refresh"
+                            wire:loading.attr="disabled"
+                            class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow relative">
+                            <span wire:loading.remove wire:target="$refresh">Terapkan Filter</span>
+                            <span wire:loading wire:target="$refresh">Menerapkan Filter...</span>
                         </button>
 
-                        <button class="w-full px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md shadow relative">
-                            <span wire:loading.remove wire:target="loadProducts">Hapus Filter</span>
-                            <span wire:loading wire:target="loadProducts">Menghapus Filter...</span>
+
+                        <button 
+                            wire:click="resetFilter"
+                            wire:loading.attr="disabled"
+                            class="w-full px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md shadow relative">
+                            <span wire:loading.remove wire:target="resetFilter">Hapus Filter</span>
+                            <span wire:loading wire:target="resetFilter">Menghapus Filter...</span>
                         </button>
+
                     </div>
                 </div>
 
@@ -92,7 +99,7 @@
                     </button>
                 </div>
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                    <form class="w-full max-w-md">
+                    <form class="w-full max-w-md" wire:submit.prevent="loadProducts">
                         <label for="search-input" class="sr-only">Search</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -102,13 +109,22 @@
                                         d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="search" id="search-input"
+                            <input 
+                                type="search" 
+                                id="search-input"
+                                wire:model.debounce.500ms="search"
                                 class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search Product" required />
-                            <button type="submit"
+                                placeholder="Search Product"
+                            />
+                            <button 
+                                type="submit"
+                                wire:click="$refresh"
+                                wire:loading.attr="disabled"
                                 class="text-white absolute end-2.5 bottom-1 bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
-                                Search
+                                <span wire:loading.remove wire:target="$refresh">Search</span>
+                                <span wire:loading wire:target="$refresh">Mencari...</span>
                             </button>
+
                         </div>
                     </form>
                 </div>
@@ -133,7 +149,7 @@
                 @endif
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mt-4">
-                    @foreach ($products as $product)
+                    @foreach ($this->products as $product)
                         @livewire('components.product-card', [
                             'product' => $product,
                             'image' => !empty($product['product_images'])

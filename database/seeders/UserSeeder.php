@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::create([
+        User::create([
             'name' => 'Admin',
             'username' => 'admin',
             'email' => 'admin@gmail.com',
@@ -26,24 +26,8 @@ class UserSeeder extends Seeder
             'block' => 'Earth',
             'rt' => '000',
             'rw' => '111',
-            'role_id' => Role::where('level', '2')->first()->id,
-            'password' => password_hash('password', PASSWORD_DEFAULT),
-        ]);
-
-        $user = User::create([
-            'name' => 'User',
-            'username' => 'user',
-            'email' => 'user@gmail.com',
-            'phone_number' => '088811112222',
-            'address' => 'Earth',
-            'province' => 'Earth',
-            'city' => 'Earth',
-            'district' => 'Earth',
-            'block' => 'Earth',
-            'rt' => '000',
-            'rw' => '111',
-            'role_id' => Role::where('level', '3')->first()->id,
-            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'role_id' => Role::where('level', 2)->first()->id,
+            'password' => '123456',
         ]);
     }
 }
