@@ -77,7 +77,7 @@
         [
             "id" => "ORDERS",
             "name" => "My Orders",
-            "link" => route('products.index'),
+            "link" => route('profile.show', ['user' => $user->id,'tab' => 'my-orders']),
             "childrens" => [],
         ],
         [

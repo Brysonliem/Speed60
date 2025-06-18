@@ -192,9 +192,8 @@
                     @endforeach
                 </div>
             </div>
-            <div class="flex items-center  ms-auto">
+            {{-- <div class="flex items-center  ms-auto">
                 
-                {{-- User profile --}}
                 <div class="flex items-center">
                     <div>
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 " aria-expanded="false" data-dropdown-toggle="dropdown-user">
@@ -218,7 +217,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </nav>
@@ -292,6 +291,18 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Request Refunds</span>
 
                         <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-red-800 bg-red-100 rounded-full">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('logout') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {{ request()->routeIs('refunds.*') ? 'bg-red-600 font-semibold text-white hover:bg-red-400' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+                        </svg>
+
+
+                        <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
+
+                        {{-- <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-red-800 bg-red-100 rounded-full">3</span> --}}
                     </a>
                 </li>
             </ul>
