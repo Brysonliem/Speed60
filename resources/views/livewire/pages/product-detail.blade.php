@@ -377,7 +377,7 @@
                 </a> 
 
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {{-- <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
                 @foreach ($products as $product)
                     @livewire('components.product-card', [
                         'product' => $product,
@@ -392,7 +392,7 @@
                         'reviews' => $product['reviews_count']
                     ], key(md5('product-'.$product['id'].'-'.$product['name'])))
                 @endforeach
-            </div>
+            </div> --}}
         </div>
         @if (Session::has('success'))
             <div x-data="{show: true}" x-show="show" id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm " role="alert">
