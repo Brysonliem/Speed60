@@ -112,7 +112,7 @@ class ProductSampleSeeder extends Seeder
 
             ProductImages::create([
                 'product_id' => $product->id,
-                'image_path' => 'products/' . $productData['image'], // simpan path relatif (tanpa storage/app/public)
+                'image_path' => 'product_images/' . $productData['image'], // simpan path relatif (tanpa storage/app/public)
                 'is_main' => true,
             ]);
 
