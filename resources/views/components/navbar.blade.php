@@ -126,12 +126,7 @@
                 ]
             ],
         ],
-        [
-            "id" => "ORDERS",
-            "name" => "My Orders",
-            "link" => route('profile.show', ['user' => $user->id,'tab' => 'my-orders']),
-            "childrens" => [],
-        ],
+        
         [
             "id" => "CUSTOMER_SERVICE",
             "name" => "Customer Service",
@@ -139,6 +134,15 @@
             "childrens" => [],
         ],
     ];
+
+    if(Auth::check()) {
+        $links[5] = [
+            "id" => "ORDERS",
+            "name" => "My Orders",
+            "link" => route('profile.show', ['user' => $user->id,'tab' => 'my-orders']),
+            "childrens" => [],
+        ];
+    }
 
     // if (in_array($userLevel, [1, 2])) {
     //     $links = array_merge($links, [
