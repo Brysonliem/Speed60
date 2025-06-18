@@ -55,27 +55,6 @@
                 "link" => $dashboardRoute,
                 "childrens" => [],
             ],
-        ];
-
-        if (in_array($userLevel, [1, 2])) {
-            $links = array_merge($links, [
-                [
-                    "id" => "CREATE_PRODUCT",
-                    "name" => "Buat Produk",
-                    "link" => route('products.index.admin'),
-                    "childrens" => [],
-                ],
-                [
-                    "id" => "CREATE_VOUCHER",
-                    "name" => "Buat Voucher",
-                    "link" => route('vouchers.index'),
-                    "childrens" => [],
-                ],
-            ]);
-        }
-
-        // Menu tambahan untuk user level 3 (pengunjung biasa)
-        $userLinks = [
             [
                 "id" => "PRODUCT",
                 "name" => "Products",
@@ -108,14 +87,65 @@
             ],
         ];
 
+        // if (in_array($userLevel, [1, 2])) {
+        //     $links = array_merge($links, [
+        //         [
+        //             "id" => "CREATE_PRODUCT",
+        //             "name" => "Buat Produk",
+        //             "link" => route('products.index.admin'),
+        //             "childrens" => [],
+        //         ],
+        //         [
+        //             "id" => "CREATE_VOUCHER",
+        //             "name" => "Buat Voucher",
+        //             "link" => route('vouchers.index'),
+        //             "childrens" => [],
+        //         ],
+        //     ]);
+        // }
+
+        // Menu tambahan untuk user level 3 (pengunjung biasa)
+        // $userLinks = [
+        //     [
+        //         "id" => "PRODUCT",
+        //         "name" => "Products",
+        //         "link" => route('products.index'),
+        //         "childrens" => [],
+        //     ],
+        //     [
+        //         "id" => "STAINLESS",
+        //         "name" => "Stainless",
+        //         "link" => route('products.index'),
+        //         "childrens" => [],
+        //     ],
+        //     [
+        //         "id" => "TITANIUM",
+        //         "name" => "Titanium",
+        //         "link" => route('products.index'),
+        //         "childrens" => [],
+        //     ],
+        //     [
+        //         "id" => "ORDERS",
+        //         "name" => "My Orders",
+        //         "link" => route('products.index'),
+        //         "childrens" => [],
+        //     ],
+        //     [
+        //         "id" => "CUSTOMER_SERVICE",
+        //         "name" => "Customer Service",
+        //         "link" => "https://wa.me/6281293886489?text=Halo%2C%20saya%20ingin%20bertanya",
+        //         "childrens" => [],
+        //     ],
+        // ];
+
         // Tambahkan jika bukan level 1 atau 2
-        if (!in_array($userLevel, [1, 2])) {
-            $links = array_merge($links, $userLinks);
-        }
+        // if (!in_array($userLevel, [1, 2])) {
+        //     $links = array_merge($links, $userLinks);
+        // }
     @endphp
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 h-16">
-        <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+        <div class="px-3 lg:px-5 lg:pl-3 min-h-20 flex items-center">
             <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 ">
@@ -162,10 +192,10 @@
                     @endforeach
                 </div>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center  ms-auto">
                 
                 {{-- User profile --}}
-                <div class="flex items-center ms-3">
+                <div class="flex items-center">
                     <div>
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 " aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>

@@ -56,27 +56,6 @@
             "link" => $dashboardRoute,
             "childrens" => [],
         ],
-    ];
-
-    if (in_array($userLevel, [1, 2])) {
-        $links = array_merge($links, [
-            [
-                "id" => "CREATE_PRODUCT",
-                "name" => "Buat Produk",
-                "link" => route('products.index.admin'),
-                "childrens" => [],
-            ],
-            [
-                "id" => "CREATE_VOUCHER",
-                "name" => "Buat Voucher",
-                "link" => route('vouchers.index'),
-                "childrens" => [],
-            ],
-        ]);
-    }
-
-    // Menu tambahan untuk user level 3 (pengunjung biasa)
-    $userLinks = [
         [
             "id" => "PRODUCT",
             "name" => "Products",
@@ -109,10 +88,61 @@
         ],
     ];
 
-    // Tambahkan jika bukan level 1 atau 2
-    if (!in_array($userLevel, [1, 2])) {
-        $links = array_merge($links, $userLinks);
-    }
+    // if (in_array($userLevel, [1, 2])) {
+    //     $links = array_merge($links, [
+    //         [
+    //             "id" => "CREATE_PRODUCT",
+    //             "name" => "Buat Produk",
+    //             "link" => route('products.index.admin'),
+    //             "childrens" => [],
+    //         ],
+    //         [
+    //             "id" => "CREATE_VOUCHER",
+    //             "name" => "Buat Voucher",
+    //             "link" => route('vouchers.index'),
+    //             "childrens" => [],
+    //         ],
+    //     ]);
+    // }
+
+    // Menu tambahan untuk user level 3 (pengunjung biasa)
+    // $userLinks = [
+    //     [
+    //         "id" => "PRODUCT",
+    //         "name" => "Products",
+    //         "link" => route('products.index'),
+    //         "childrens" => [],
+    //     ],
+    //     [
+    //         "id" => "STAINLESS",
+    //         "name" => "Stainless",
+    //         "link" => route('products.index'),
+    //         "childrens" => [],
+    //     ],
+    //     [
+    //         "id" => "TITANIUM",
+    //         "name" => "Titanium",
+    //         "link" => route('products.index'),
+    //         "childrens" => [],
+    //     ],
+    //     [
+    //         "id" => "ORDERS",
+    //         "name" => "My Orders",
+    //         "link" => route('products.index'),
+    //         "childrens" => [],
+    //     ],
+    //     [
+    //         "id" => "CUSTOMER_SERVICE",
+    //         "name" => "Customer Service",
+    //         "link" => "https://wa.me/6281293886489?text=Halo%2C%20saya%20ingin%20bertanya",
+    //         "childrens" => [],
+    //     ],
+    // ];
+
+    // // Tambahkan jika bukan level 1 atau 2
+    // if (!in_array($userLevel, [1, 2])) {
+    //     $links = array_merge($links, $userLinks);
+    // }
 @endphp
 
 
