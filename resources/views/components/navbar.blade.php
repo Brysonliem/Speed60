@@ -66,13 +66,65 @@
             "id" => "STAINLESS",
             "name" => "Stainless",
             "link" => route('products.index'),
-            "childrens" => [],
+            "childrens" => [
+                [
+                    "id" => "BAUT_STAINLESS",
+                    "name" => "Baut",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "MUR_STAINLESS",
+                    "name" => "Mur",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "ASRODA_STAINLESS",
+                    "name" => "As Roda",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "SELANG_REM_STAINLESS",
+                    "name" => "Baut",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "AKSESORIS_REM_STAINLESS",
+                    "name" => "Aksesoris",
+                    "link" => "#"
+                ]
+            ],
         ],
         [
             "id" => "TITANIUM",
             "name" => "Titanium",
             "link" => route('products.index'),
-            "childrens" => [],
+            "childrens" => [
+                [
+                    "id" => "BAUT_STAINLESS",
+                    "name" => "Baut",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "MUR_STAINLESS",
+                    "name" => "Mur",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "ASRODA_STAINLESS",
+                    "name" => "As Roda",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "SELANG_REM_STAINLESS",
+                    "name" => "Baut",
+                    "link" => "#"
+                ],
+                [
+                    "id" => "AKSESORIS_REM_STAINLESS",
+                    "name" => "Aksesoris",
+                    "link" => "#"
+                ]
+            ],
         ],
         [
             "id" => "ORDERS",
