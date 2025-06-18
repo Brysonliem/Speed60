@@ -53,7 +53,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function allProductMaster(?int $limit = null)
     {
         $query = $this->baseProductQuery()
-            ->groupBy('id', 'name', 'description', 'condition', 'created_by', 'product_type_id', 'created_at', 'updated_at');
+            ->groupBy('id', 'name', 'description', 'condition', 'created_by', 'product_type_id', 'created_at', 'updated_at','material');
 
         if ($limit) {
             $query->limit($limit);
