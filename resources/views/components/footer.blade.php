@@ -174,3 +174,10 @@
         </div>
     </footer>
 </div>
+
+      <!-- Kotak Identitas Perusahaan -->
+<div class="bg-white py-2">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <p class="text-black text-sm font-medium">CV Sesuai Nusantara Jaya</p>
+    </div>
+</div>
