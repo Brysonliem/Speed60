@@ -99,7 +99,7 @@
                     </button>
                 </div>
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                    <form class="w-full max-w-md" wire:submit.prevent="loadProducts">
+                    <form class="w-full max-w-md">
                         <label for="search-input" class="sr-only">Search</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">

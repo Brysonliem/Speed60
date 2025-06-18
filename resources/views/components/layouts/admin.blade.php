@@ -29,8 +29,92 @@
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
+    @php
+        $user = Auth::user();
+        $userLevel = $user?->role->level;
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+        $dashboardRoute = match ($userLevel) {
+            1 => route('dashboard.superadmin'),
+            2 => route('dashboard.admin'),
+            default => route('dashboard.user'),
+        };
+
+        $productTypes = \App\Models\ProductType::get()->map(function ($type) {
+            return [
+                "id" => $type->id,
+                "name" => $type->name,
+                "link" => route('products.index'),
+                "childrens" => [],
+            ];
+        })->toArray();
+
+        $links = [
+            [
+                "id" => "HOMEPAGE",
+                "name" => "Home",
+                "link" => $dashboardRoute,
+                "childrens" => [],
+            ],
+        ];
+
+        if (in_array($userLevel, [1, 2])) {
+            $links = array_merge($links, [
+                [
+                    "id" => "CREATE_PRODUCT",
+                    "name" => "Buat Produk",
+                    "link" => route('products.index.admin'),
+                    "childrens" => [],
+                ],
+                [
+                    "id" => "CREATE_VOUCHER",
+                    "name" => "Buat Voucher",
+                    "link" => route('vouchers.index'),
+                    "childrens" => [],
+                ],
+            ]);
+        }
+
+        // Menu tambahan untuk user level 3 (pengunjung biasa)
+        $userLinks = [
+            [
+                "id" => "PRODUCT",
+                "name" => "Products",
+                "link" => route('products.index'),
+                "childrens" => [],
+            ],
+            [
+                "id" => "STAINLESS",
+                "name" => "Stainless",
+                "link" => route('products.index'),
+                "childrens" => [],
+            ],
+            [
+                "id" => "TITANIUM",
+                "name" => "Titanium",
+                "link" => route('products.index'),
+                "childrens" => [],
+            ],
+            [
+                "id" => "ORDERS",
+                "name" => "My Orders",
+                "link" => route('products.index'),
+                "childrens" => [],
+            ],
+            [
+                "id" => "CUSTOMER_SERVICE",
+                "name" => "Customer Service",
+                "link" => "https://wa.me/6281293886489?text=Halo%2C%20saya%20ingin%20bertanya",
+                "childrens" => [],
+            ],
+        ];
+
+        // Tambahkan jika bukan level 1 atau 2
+        if (!in_array($userLevel, [1, 2])) {
+            $links = array_merge($links, $userLinks);
+        }
+    @endphp
+
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 h-16">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
@@ -40,11 +124,47 @@
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
                 </button>
-                <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+                <a href="https://flowbite.com" class="flex ms-2 md:me-14">
                     <img src="{{ asset('/images/speed60_resized.png') }}" class="h-10 me-3" alt="FlowBite Logo" />
                 </a>
+                {{-- Menu admin --}}
+                <div class="hidden lg:flex lg:justify-center h-full">
+                    @foreach($links as $link)
+                        @if(is_array($link['childrens']) && count($link["childrens"]) > 0)
+                            <!-- Link with dropdown -->
+                            <div class="relative group">
+                                <a href="{{ $link['link'] }}"
+                                    class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 mr-0 text-sm font-medium h-full flex items-center">
+                                    {{ $link['name'] }}
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </a>
+                                <div class="absolute left-0 hidden group-hover:block z-10">
+                                    <div class="bg-white border-x border-b w-48">
+                                        @foreach($link['childrens'] as $child)
+                                            <a href="{{ $child['link'] }}"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white">
+                                                {{ $child['name'] }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <!-- Regular link without dropdown -->
+                            <a href="{{ $link['link'] }}"
+                                class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 mr-0 text-sm font-medium h-full flex items-center">
+                                {{ $link['name'] }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
             </div>
             <div class="flex items-center">
+                
+                {{-- User profile --}}
                 <div class="flex items-center ms-3">
                     <div>
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 " aria-expanded="false" data-dropdown-toggle="dropdown-user">
@@ -61,15 +181,15 @@
                                 {{ Auth::user()->email }}
                             </p>
                         </div>
-                            <ul class="py-1" role="none">
-                                <li>
-                                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="py-1" role="none">
+                            <li>
+                                <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+
         </div>
     </nav>
 
