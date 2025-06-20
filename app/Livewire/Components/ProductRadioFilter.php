@@ -37,7 +37,7 @@ class ProductRadioFilter extends Component
             [
                 "id" => "4",
                 "url" => "/images/assets/vehicles/rx_king.png",
-                "label" => "Rx-King",
+                "label" => "RX King",
                 "value" => "rx-king",
                 "route" => "products.index"
             ],
