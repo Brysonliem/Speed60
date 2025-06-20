@@ -1,3 +1,23 @@
+<style>
+    .checkmark-circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        animation: stroke 0.6s ease forwards;
+    }
+
+    .checkmark-check {
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.4s 0.6s ease forwards;
+    }
+
+    @keyframes stroke {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+</style>
+
 <div class="flex flex-col gap-4 p-4 md:p-8">
     <!-- Breadcrumb -->
     {{-- @livewire('components.breadcrumb', ['links' => [
@@ -7,7 +27,10 @@
 
     <div class="block w-full py-20 bg-white rounded-lg shadow-sm">
         <div class="flex flex-col justify-center items-center w-auto h-full">
-            <img class="h-auto max-w-xs" src="{{ asset('images/success-checkout.png') }}" alt="image description">
+            <svg class="w-24 h-24 text-green-600 mb-6" viewBox="0 0 52 52">
+    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path class="checkmark-check" fill="none" stroke="currentColor" stroke-width="5" d="M14 27l7 7 16-16"/>
+</svg>
             <span class="text-center text-xl font-semibold">
                 Yeay, Pesanan anda berhasil!
             </span>
