@@ -94,34 +94,6 @@
     {{-- information section --}}
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-10">
 
-            {{-- Ad --}}
-            <div class="col-span-5 lg:col-span-1">
-                <div
-                    class="flex flex-row lg:flex-col items-center gap-3 w-full max-w-xs lg:max-w-[200px] p-4 sm:p-6 bg-gray-900 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-800 mx-auto"
-                >
-                    <!-- Gambar -->
-                    <img
-                    class="w-24 sm:w-full h-auto rounded-lg"
-                    src="{{ asset('images/ad.png') }}"
-                    alt="image description"
-                    />
-
-                    <!-- Konten -->
-                    <div class="flex flex-col text-white text-sm text-left lg:text-center flex-1">
-                    <span class="font-light">Gratis Gantungan Kunci Min Pembelian</span>
-                    <span class="text-lg sm:text-xl">Rp 199.000 - <br class="hidden sm:block" />Stok Terbatas</span>
-
-                    <button
-                        type="button"
-                        class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                    >
-                        Belanja Sekarang
-                    </button>
-                    </div>
-                </div>
-            </div>
-
-
 
             {{-- content --}}
             <div class="col-span-4">

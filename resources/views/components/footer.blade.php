@@ -95,7 +95,7 @@
                 <div class="space-y-2">
                     <h3 class="font-bold text-xl">Contact Us</h3>
                     <ul class="space-y-4">
-                        <li>0821-3345-9876</li>
+                        <li>+62 821 9388 6489</li>
                         <li>JL Pangeran Tubagus Angke No 20, Ruko Angke Megah Blok B 15-16</li>
                         <li>Speed60@gmail.com</li>
                     </ul>
@@ -173,11 +173,4 @@
             </div>
         </div>
     </footer>
-</div>
-
-      <!-- Kotak Identitas Perusahaan -->
-<div class="bg-white py-2">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-        <p class="text-black text-sm font-medium">CV Sesuai Nusantara Jaya</p>
-    </div>
 </div>
