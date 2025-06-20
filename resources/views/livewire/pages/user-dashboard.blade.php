@@ -123,8 +123,11 @@
                 </div>
             </div>
         </div>
-
+            
         <div class="w-full overflow-x-auto">
+            <h2 class="font-bold text-[30px] mb-4 text-center">
+                Category Motorcycle
+            </h2>
             <div class="flex items-center lg:justify-center gap-3 sm:gap-4 p-3">
                 @php
                     $vehicles = [
@@ -151,42 +154,38 @@
                 @endforeach
             </div>
         </div>
-
-
-    </div>
-    <div class="tiktok-wrapper">
-        <blockquote 
-            class="tiktok-embed" 
-            cite="https://www.tiktok.com/@speed60_id/video/7497188594050747653" 
-            data-video-id="7497188594050747653" > 
-                <section></section>
-        </blockquote> 
-        
-        <blockquote 
-            class="tiktok-embed" 
-            cite="https://www.tiktok.com/@speed60_id/video/7512035906648296710" 
-            data-video-id="7512035906648296710" 
-            > 
-            <section> 
-            </section>
-        </blockquote>
-        
-        <blockquote 
-            class="tiktok-embed" 
-            cite="https://www.tiktok.com/@speed60_id/video/7486055971479883063" 
-            data-video-id="7486055971479883063" 
-        > 
-            <section></section>
-        </blockquote> 
     </div>
 
-    <script async src="https://www.tiktok.com/embed.js"></script>
+    <div class="video">
+        <video autoplay muted loop playsinline class="rounded-xl shadow-md w-full h-auto">
+            <source src="{{ asset('videos/slideshooww.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
+<div class="relative rounded-3xl overflow-hidden shadow-lg mt-6 mx-4 md:mx-16">
+  <!-- Gambar background -->
+  <img src="/images/kawasakis60.png" alt="Kawasaki Display" class="w-full h-[400px] md:h-[500px] object-cover object-center">
 
-   
+  <!-- Overlay hitam 60% -->
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <!-- Overlay Text dan Button -->
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4 md:p-6 z-10">
+    <h2 class="text-xl sm:text-2xl md:text-4xl font-bold mb-3 md:mb-4">
+      Elevate Your Ride with Premium Motorcycle Parts
+    </h2>
+    <p class="text-xs sm:text-sm md:text-lg mb-4 md:mb-6 max-w-sm sm:max-w-md md:max-w-xl">
+      Discover high-performance components that bring out the best in your machine. Quality, precision, and speed—all in one place.
+    </p>
+    <a href="{{ route('category', ['category' => 'kawasaki']) }}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 md:py-3 md:px-6 rounded-full transition duration-300 text-sm md:text-base">
+      Get Your Bolts Now →
+    </a>
+  </div>
 </div>
-</div>
 
+
+</div>
 </div>
 
 
