@@ -16,6 +16,15 @@ class ProductCard extends Component
     public $discount_percentage;
     public $rating;
     public $reviews;
+
+    public $variants;
+
+    public function mount($product)
+    {
+        $this->product = $product;
+
+        $this->variants = $product['variants'] ?? [];
+    }
     
     public function render()
     {

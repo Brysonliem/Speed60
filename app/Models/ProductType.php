@@ -9,7 +9,7 @@ class ProductType extends Model
 {
     protected $table = 'product_types';
 
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
     public function products(): HasMany
     {

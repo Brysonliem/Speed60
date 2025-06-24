@@ -11,7 +11,7 @@
         @endforeach
     </div>
     <!-- Slider controls -->
-    <button type="button"
+    {{-- <button type="button"
         class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
         data-carousel-prev>
         <span
@@ -36,5 +36,5 @@
             </svg>
             <span class="sr-only">Next</span>
         </span>
-    </button>
+    </button> --}}
 </div>

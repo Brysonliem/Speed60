@@ -1,5 +1,4 @@
-
-<div>
+<div x-data x-on:open-modal.window="$store.modal.show($event.detail)">
     <!-- Drawer Component -->
     <div id="drawer-top-example"
         class="fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-lg transition-transform -translate-y-full"
@@ -92,12 +91,46 @@
 <div class="">
     <div class="px-3 lg:px-40"> 
     {{-- information section --}}
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-10">
+        <div class="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-10">
 
 
             {{-- content --}}
-            <div class="col-span-4">
+            <div class="col-span-6">
                 <div class="flex flex-col gap-2">
+                    
+                    {{-- Voucher Section --}}
+                    <div class="overflow-x-auto sm:overflow-visible scrollbar-hide">
+                        <div class="flex sm:grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            @for ($i = 0; $i < 3; $i++)
+                                <div class="min-w-[240px] sm:min-w-0 flex border border-red-500 rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow duration-200">
+                                    {{-- Kiri (diskon) --}}
+                                    <div class="bg-red-500 text-white px-4 py-6 flex flex-col items-center justify-center w-24 sm:w-28">
+                                        <span class="text-base sm:text-xl font-bold leading-5">20%</span>
+                                        <span class="text-xs sm:text-sm font-medium">OFF</span>
+                                    </div>
+
+                                    {{-- Kanan (deskripsi) --}}
+                                    <div class="flex-1 p-3 sm:p-4 flex flex-col justify-between">
+                                        <div class="text-gray-800 text-xs sm:text-sm font-medium mb-1">
+                                            Promo Potongan Semua Produk
+                                        </div>
+                                        <div class="text-gray-500 text-[10px] sm:text-xs mb-2">
+                                            Min. belanja Rp50.000 • Berlaku s/d 30 Jun
+                                        </div>
+                                        <div>
+                                            <button class="text-xs sm:text-sm font-semibold text-red-500 border border-red-500 rounded px-2 py-1 sm:px-3 hover:bg-red-50 transition">
+                                                Gunakan
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+
+
+
+
                     {{-- tab --}}
                     
                     @livewire('components.product-radio-filter')
@@ -119,12 +152,14 @@
                                 'reviews' => $product['reviews_count']
                             ])
                         @endforeach
-                    </div>                
+                    </div>        
+                    
+                    <x-cart-modal />
                 </div>
             </div>
         </div>
 
-        <div class="w-full overflow-x-auto">
+        <div class="w-full overflow-x-auto px-3 lg:px-40">
             <div class="flex items-center lg:justify-center gap-3 sm:gap-4 p-3">
                 @php
                     $vehicles = [

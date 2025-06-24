@@ -36,6 +36,26 @@
     @livewireStyles
 </head>
 
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('modal', {
+            open: false,
+            product: null,
+            quantity: 1,
+            show(product) {
+                this.product = product
+                this.quantity = 1
+                this.open = true
+            },
+            hide() {
+                this.open = false
+                this.product = null
+            }
+        });
+    });
+</script>
+
+
 @if (!Auth::check())
     <script>
         document.addEventListener("DOMContentLoaded", function () {

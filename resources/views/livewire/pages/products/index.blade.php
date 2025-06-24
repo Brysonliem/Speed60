@@ -1,4 +1,6 @@
-<div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen">
+{{-- @dd($this->productTypes) --}}
+<div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen" 
+    >
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
         <!-- Drawer filter untuk mobile & sidebar untuk desktop -->
@@ -26,7 +28,7 @@
 
                 <!-- Filter Tipe Motor -->
                 <div class="flex flex-col">
-                    <span class="text-lg font-semibold mb-2">Tipe Motor</span>
+                    <span class="text-lg font-semibold mb-2">Motor Type</span>
 
                     <div class="flex flex-col gap-2 overflow-y-auto max-h-[50vh] pe-2">
                         <div class="flex items-center">
@@ -43,9 +45,24 @@
                     </div>
                 </div>
 
+                {{-- kategori Produk --}}
+                <div class="flex flex-col space-y-3 overflow-y-auto max-h-[30vh]">
+                    <div class="flex items-center">
+                        <input wire:model="selectedCategoryCode" type="radio" id="all" value="" class="w-4 h-4">
+                        <label for="all" class="ms-2 text-sm font-medium">Semua Tipe</label>
+                    </div>
+                    @foreach ($this->productTypes as $index => $types)
+                        <div class="flex items-center">
+                            <input wire:model="selectedMaterial" id="mat-{{ $index }}" type="radio" value="{{ $types['name'] }}" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                            <label for="mat-{{ $index }}" class="ms-2 text-sm font-medium text-gray-900">{{ $types['name'] }}</label>
+                        </div>    
+                    @endforeach
+
+                </div>
+
                 <!-- Filter Tipe Bahan -->
                 <div class="flex flex-col space-y-3">
-                    <span class="text-lg font-semibold mb-2">Tipe Bahan</span>
+                    <span class="text-lg font-semibold mb-2">Material Type</span>
 
                     @foreach ($materialProducts as $index => $material)
                         <div class="flex items-center">
@@ -55,7 +72,6 @@
                     @endforeach
 
                 </div>
-
                 
                 <!-- Tombol Terapkan -->
                 <div class="sticky bottom-0 bg-white py-2 mt-2">
@@ -148,6 +164,7 @@
                     </div>
                 @endif
 
+                {{-- products index --}}
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mt-4">
                     @foreach ($this->products as $product)
                         @livewire('components.product-card', [

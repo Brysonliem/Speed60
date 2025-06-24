@@ -10,13 +10,12 @@
                 <label for="{{ $vehicle['id'] }}"
                     class="block w-full cursor-pointer">
                     <a href="{{ route($vehicle['route'], ['motor_type' => $vehicle['value']]) }}"
-                    class="flex flex-col gap-3 items-center justify-between p-5 text-gray-500 border-b-2 peer-checked:border-blue-600 peer-checked:text-blue-600">
-                        {{-- <img src="{{ asset($vehicle['url']) }}"
-                            class="h-40 object-contain group-hover:scale-110 transition duration-75" /> --}}
+                        class="flex flex-col gap-3 items-center justify-between p-5 text-gray-500 border-b-2 border-transparent peer-checked:border-red-600 peer-checked:text-red-600 group-hover:text-red-600 group-hover:border-red-600">
                         <p class="text-uppercase font-medium peer-checked:font-semibold">
                             {{ $vehicle['label'] }}
                         </p>
                     </a>
+
                 </label>
             </li>
         @endforeach

@@ -10,6 +10,7 @@ use App\Services\ProductService;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 
 class ProductDetail extends BaseComponent
 {
@@ -26,7 +27,10 @@ class ProductDetail extends BaseComponent
     public $reviews = [];
 
     #listeners
-    protected $listeners = ['loadReviews' => 'loadReviews'];
+    protected $listeners = [
+        'loadReviews' => 'loadReviews',
+        'add-to-cart-from-modal' => 'handleAddToCartFromModal',
+    ];
 
     public function boot(
         ProductService $productService,
@@ -89,6 +93,35 @@ class ProductDetail extends BaseComponent
 
         $this->dispatch('card-added');
     }
+
+    #[On('add-to-cart-from-modal')]
+    public function handleAddToCartFromModal($payload)
+    {
+        $variantId = $payload['variantId'] ?? null;
+        $quantity = $payload['quantity'] ?? 1;
+
+        $variant = $this->findVariant($variantId);
+        if (!$variant) {
+            session()->flash('error', 'Variant tidak ditemukan');
+            return;
+        }
+
+        if ($quantity > $variant->current_stock) {
+            session()->flash('error', 'Stok tidak cukup');
+            return;
+        }
+
+        $this->cartService->addToCart($variant->id, $quantity);
+        session()->flash('success', 'Produk berhasil ditambahkan ke keranjang');
+
+        $this->dispatch('cart-updated');
+    }
+
+    private function findVariant($variantId)
+    {
+        return collect($this->variants)->firstWhere('id', $variantId);
+    }
+
 
     private function canProceed()
     {

@@ -70,27 +70,27 @@
                 [
                     "id" => "BAUT_STAINLESS",
                     "name" => "Baut",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])
                 ],
                 [
                     "id" => "MUR_STAINLESS",
                     "name" => "Mur",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Mur'])
                 ],
                 [
                     "id" => "ASRODA_STAINLESS",
                     "name" => "As Roda",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'As Roda'])
                 ],
                 [
                     "id" => "SELANG_REM_STAINLESS",
-                    "name" => "Baut",
-                    "link" => "#"
+                    "name" => "Selang Rem",
+                    "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Selang Rem'])
                 ],
                 [
                     "id" => "AKSESORIS_REM_STAINLESS",
                     "name" => "Aksesoris",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Aksesoris'])
                 ]
             ],
         ],
@@ -102,27 +102,27 @@
                 [
                     "id" => "BAUT_STAINLESS",
                     "name" => "Baut",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'TITANIUM','product_type' => 'Baut'])
                 ],
                 [
                     "id" => "MUR_STAINLESS",
                     "name" => "Mur",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'TITANIUM','product_type' => 'Mur'])
                 ],
                 [
                     "id" => "ASRODA_STAINLESS",
                     "name" => "As Roda",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'TITANIUM','product_type' => 'As Roda'])
                 ],
                 [
                     "id" => "SELANG_REM_STAINLESS",
-                    "name" => "Baut",
-                    "link" => "#"
+                    "name" => "Selang Rem",
+                    "link" => route('products.index', ['material' => 'TITANIUM','product_type' => 'Selang Rem'])
                 ],
                 [
                     "id" => "AKSESORIS_REM_STAINLESS",
                     "name" => "Aksesoris",
-                    "link" => "#"
+                    "link" => route('products.index', ['material' => 'TITANIUM','product_type' => 'Aksesoris'])
                 ]
             ],
         ],

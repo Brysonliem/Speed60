@@ -1,9 +1,9 @@
 <div x-show="activeTab === 'my-account'" class="p-4 rounded-lg bg-gray-50 shadow-md" id="my-account" role="tabpanel" aria-labelledby="my-account-tab">
     <div class="flex flex-col md:flex-row gap-5">
         {{-- AVATAR --}}
-        <div class="flex justify-center md:justify-start">
+        {{-- <div class="flex justify-center md:justify-start">
             <img class="rounded-full w-40 h-4w-40 md:w-52 md:h-52 object-cover" src="{{ asset('images/avatar.jpg') }}" alt="image description">
-        </div>
+        </div> --}}
 
         {{-- FORM PROFILE --}}
         <form class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
