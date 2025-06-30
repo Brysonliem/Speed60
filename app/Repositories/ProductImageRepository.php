@@ -33,4 +33,9 @@ class ProductImageRepository implements ProductImageRepositoryInterface
 
         return DB::transaction(fn() => $productImage->delete());
     }
+
+    public function getAllImagesByProductId(int $productId)
+    {
+        return ProductImages::where('product_id', $productId)->get()->toArray();
+    }
 }

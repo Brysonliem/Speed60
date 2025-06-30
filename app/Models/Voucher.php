@@ -13,4 +13,16 @@ class Voucher extends Model
     {
         return $this->hasMany(Transaction::class, 'voucher_id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_voucher')
+                    ->withTimestamps()
+                    ->withPivot('used_at');
+    }
+
+    public function signupVoucherInfo(): HasMany
+    {
+        return $this->hasMany(SignupVoucherInfo::class, 'voucher_id');
+    }
 }

@@ -1,82 +1,8 @@
 <div x-data x-on:open-modal.window="$store.modal.show($event.detail)">
     <!-- Drawer Component -->
-    <div id="drawer-top-example"
-        class="fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-lg transition-transform -translate-y-full"
-        tabindex="-1" aria-labelledby="drawer-top-label">
-
-        <div class="max-w-6xl mx-auto h-full px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 min-h-[300px]">
-
-            <!-- Gambar -->
-            <div class="w-full md:w-1/3 flex justify-center md:justify-end">
-                <img src="{{ asset('/images/promo_image_speed60.jpg') }}"
-                    alt="Promo Image"
-                    class="w-48 h-48 md:w-72 md:h-72 object-cover rounded-md shadow-md" />
-            </div>
-
-                   <!-- Konten -->
-            <div class="w-full md:w-2/3 text-center md:text-left flex flex-col justify-center">
-                <div class="text-center md:text-left">
-                    <h2 class="text-xl sm:text-3xl font-bold text-gray-800">
-                        Want <span class="text-red-500">10% OFF*</span>
-                    </h2>
-                    <h2 class="text-xl sm:text-3xl font-bold text-gray-800">
-                        Your First Order?
-                    </h2>
-                </div>
-
-                <!-- Form -->
-                <form class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl w-full">
-                    @csrf
-
-                    <!-- Email - Full width -->
-                    <div class="sm:col-span-2">
-                        <input type="email" name="email" required placeholder="Email"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
-
-                    <!-- First Name -->
-                    <div>
-                        <input type="text" name="first_name" required placeholder="First Name"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
-
-                    <!-- Last Name -->
-                    <div>
-                        <input type="text" name="last_name" required placeholder="Last Name"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
-
-                    <!-- Date of Birth - Full width -->
-                    <div class="sm:col-span-2">
-                        <input type="date" name="dob" required placeholder="Date of Birth"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
-
-                    <!-- Submit Button - Full width -->
-                    <div class="sm:col-span-2">
-                        <button type="submit"
-                                class="w-full px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition">
-                            Get 10% Off
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-
-
-        <!-- Tombol Tutup -->
-        <button type="button"
-            data-drawer-hide="drawer-top-example"
-            aria-controls="drawer-top-example"
-            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span class="sr-only">Tutup</span>
-        </button>
-    </div>
+    @auth
+        @livewire('components.voucher-modal')
+    @endauth
 
 
     @livewire('components.carousel',[
@@ -101,21 +27,21 @@
                     {{-- Voucher Section --}}
                     <div class="overflow-x-auto sm:overflow-visible scrollbar-hide">
                         <div class="flex sm:grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            @for ($i = 0; $i < 3; $i++)
+                            @foreach ($vouchers as $voucher)
                                 <div class="min-w-[240px] sm:min-w-0 flex border border-red-500 rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow duration-200">
                                     {{-- Kiri (diskon) --}}
-                                    <div class="bg-red-500 text-white px-4 py-6 flex flex-col items-center justify-center w-24 sm:w-28">
-                                        <span class="text-base sm:text-xl font-bold leading-5">20%</span>
-                                        <span class="text-xs sm:text-sm font-medium">OFF</span>
+                                    <div class="bg-red-500 text-white px-4 py-6 flex flex-col items-start justify-start w-24 sm:w-28">
+                                        <span class="text-base sm:text-xl font-bold leading-5">{{ $voucher['voucher_discount_percentage'] }} %</span>
+                                        <span class="text-xs sm:text-sm font-medium">{{ $voucher['voucher_name'] }}</span>
                                     </div>
 
                                     {{-- Kanan (deskripsi) --}}
                                     <div class="flex-1 p-3 sm:p-4 flex flex-col justify-between">
                                         <div class="text-gray-800 text-xs sm:text-sm font-medium mb-1">
-                                            Promo Potongan Semua Produk
+                                            {{ $voucher['voucher_description'] }}
                                         </div>
                                         <div class="text-gray-500 text-[10px] sm:text-xs mb-2">
-                                            Min. belanja Rp50.000 • Berlaku s/d 30 Jun
+                                            Min. belanja {{ $voucher['voucher_minimum_transaction'] }} • Berlaku s/d {{ $voucher['voucher_end_date'] }}
                                         </div>
                                         <div>
                                             <button class="text-xs sm:text-sm font-semibold text-red-500 border border-red-500 rounded px-2 py-1 sm:px-3 hover:bg-red-50 transition">
@@ -124,7 +50,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endfor
+                            @endforeach
                         </div>
                     </div>
 
@@ -154,7 +80,9 @@
                         @endforeach
                     </div>        
                     
-                    <x-cart-modal />
+                    {{-- blade component --}}
+                    @livewire('components.cart-modal')
+                    {{-- <x-cart-modal /> --}}
                 </div>
             </div>
         </div>

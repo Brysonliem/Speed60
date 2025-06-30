@@ -7,9 +7,11 @@ use App\Models\Voucher;
 
 class VoucherRepository implements VoucherRepositoryInterface
 {
-    public function all()
+    public function all(?int $limit = null)
     {
-        return Voucher::latest()->get()->toArray();
+        $data = Voucher::latest()->get();
+
+        return $limit ? $data->take($limit)->toArray() : $data->toArray();
     }
 
     public function getAllActiveVouchers(?float $grandTotal)

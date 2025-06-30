@@ -10,20 +10,25 @@
             {{-- products image --}}
             <div id="indicators-carousel" class="w-full sticky top-2" data-carousel="static">
                 <!-- Carousel wrapper -->
-                <div class="relative h-56 overflow-hidden rounded-lg md:h-96" wire:ignore>
+                <div class="relative h-56 overflow-hidden rounded-lg md:h-96" >
                     @foreach ($detailProduct->productImages as $image)
-                        <div class="{{ $image['is_main'] ? '' : 'hidden' }} duration-700 ease-in-out"
-                             data-carousel-item="{{ $image['is_main'] ? 'active' : '' }}">
-                            <img src="{{ asset('storage/'.$image['image_path']) }}" 
-                                 class="absolute inset-0 m-auto max-w-full max-h-full"
-                                 alt="Product Image">
+                        <div 
+                            class="duration-700 ease-in-out {{ $image->is_main ? 'active' : 'hidden' }}"
+                            data-carousel-item
+                            data-color-code="{{ $image->color_code }}"
+                        >
+                            <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                class="absolute inset-0 m-auto max-w-full max-h-full"
+                                alt="{{ $image->color_code }}">
                         </div>
                     @endforeach
+
                 </div>
+
                 
                 <!-- Slider controls -->
                 <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
                         <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
                         </svg>
@@ -31,7 +36,7 @@
                     </span>
                 </button>
                 <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
                         <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                         </svg>
@@ -66,34 +71,52 @@
     
                 {{-- Price --}}
                 <div class="text-3xl font-extrabold border-b pb-3">
-                    @idr($currentVariant->price)
+                    @idr($currentVariant->price ?? 0)
                 </div>
     
                 {{-- Variant Color --}}
-                <div class="space-y-2">
+                <div class="space-y-4">
                     <div class="flex items-center gap-2">
-                        <span class="font-semibold">Choosen Color :</span>
-                        <span class="text-gray-600">{{ $currentVariant->color }}</span>
+                        <span class="font-semibold">Choosen Color:</span>
+                        <span class="text-gray-600">{{ $currentVariant?->color ?? '' }}</span>
                     </div>
-                    <div class="flex gap-2 flex-wrap">
+
+                    <div class="grid grid-cols-3 gap-2">
                         @foreach ($variants as $index => $variant)
-                            <label class="relative inline-flex items-center">
-                                <input
-                                    type="radio"
-                                    name="color"
-                                    @if ($variant->id === $currentVariant->id) checked @endif
-                                    wire:change="setSelectedVariant({{ $index }})"
-                                    class="sr-only peer"
-                                >
-                                <div
-                                    class="w-8 h-8 rounded-full border-2 border-gray-300 peer-checked:ring-2 peer-checked:ring-blue-500 peer-checked:border-blue-500"
-                                    style="background-color: {{ $variant->color_code }}"
-                                    title="{{ $variant->color }}"
-                                ></div>
-                            </label>
+                            @php
+                                $selected = $currentVariant && $variant->id === $currentVariant->id;
+                                $image = $detailProduct->productImages->firstWhere('color_code', $variant->color);
+                            @endphp
+
+                            <div 
+                                wire:click="setSelectedVariant({{ $index }})"
+                                class="flex items-center gap-4 p-2 border rounded cursor-pointer transition-all duration-200
+                                    hover:border-red-500 
+                                    {{ $selected ? 'border-red-600 bg-red-50' : 'border-gray-200 bg-white' }}"
+                            >
+                                {{-- Gambar --}}
+                                @if ($image)
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                        alt="{{ $variant->color }}"
+                                        class="w-14 h-14 object-cover rounded" />
+                                @else
+                                    <div class="w-14 h-14 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
+                                        No Image
+                                    </div>
+                                @endif
+
+                                {{-- Info Warna + Stok --}}
+                                <div class="flex flex-col">
+                                    <span class="font-semibold text-gray-700">{{ $variant->color }}</span>
+                                    <span class="text-sm text-gray-500">Stock: {{ $variant->current_stock }}</span>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
+
                 </div>
+
+
             </div>
 
 
@@ -119,14 +142,14 @@
                     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
                         <li class="me-2">
                             <button
-                                :class="activeTab === 'description' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'"
+                                :class="activeTab === 'description' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-500'"
                                 class="inline-block p-4 border-b-2 rounded-t-lg"
                                 @click="switchTab('description')"
                             >Description</button>
                         </li>
                         <li class="me-2">
                             <button
-                                :class="activeTab === 'reviews' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'"
+                                :class="activeTab === 'reviews' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-500'"
                                 class="inline-block p-4 border-b-2 rounded-t-lg"
                                 @click="switchTab('reviews')"
                             >Reviews</button>
@@ -228,7 +251,7 @@
 
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-normal text-gray-500 ">Delivered</span>
-                                                <button class="text-sm text-blue-700-medium inline-flex items-center hover:underline">
+                                                <button class="text-sm text-red-700-medium inline-flex items-center hover:underline">
                                                     <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
                                                     </svg>
@@ -251,61 +274,66 @@
             class="md:sticky top-2 flex flex-col gap-4 col-span-1 px-4 py-5 bg-white rounded-lg shadow-md border border-gray-200 w-full max-w-full md:max-w-[380px] h-fit"
         >
             {{-- Quantity + Stock Info --}}
-            <div class="flex flex-col gap-2">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <button
-                            type="button"
-                            wire:click="decrementQuantity"
-                            aria-label="Kurangi jumlah"
-                            @disabled($quantity === 1)
-                            class="h-11 w-11 flex items-center justify-center rounded-l-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
-                        >
-                            <svg class="w-3 h-3 text-gray-700" viewBox="0 0 18 2" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
-                            </svg>
-                        </button>
+           <div class="flex flex-col gap-2">
+                @if ($currentVariant)
+                    <div class="flex">
+                        <div class="flex-shrink-0 flex items-center">
+                            <button
+                                type="button"
+                                wire:click="decrementQuantity"
+                                aria-label="Kurangi jumlah"
+                                @disabled($quantity === 1)
+                                class="h-11 w-11 flex items-center justify-center rounded-l-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
+                            >
+                                <svg class="w-3 h-3 text-gray-700" viewBox="0 0 18 2" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                </svg>
+                            </button>
 
-                        <input
-                            type="number"
-                            wire:model.lazy="quantity"
-                            inputmode="numeric"
-                            min="1"
-                            max="{{ $currentVariant->current_stock }}"
-                            class="h-11 flex-grow text-center text-gray-900 bg-gray-50 border-t border-b border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none px-2"
-                        />
+                            <input
+                                type="number"
+                                wire:model.lazy="quantity"
+                                inputmode="numeric"
+                                min="1"
+                                max="{{ $currentVariant->current_stock }}"
+                                class="h-11 flex-grow text-center text-gray-900 bg-gray-50 border-t border-b border-gray-300 focus:ring-red-500 focus:border-red-500 focus:outline-none px-2"
+                            />
 
-                        <button
-                            type="button"
-                            wire:click="incrementQuantity"
-                            aria-label="Tambah jumlah"
-                            @disabled($quantity >= $currentVariant->current_stock)
-                            class="h-11 w-11 flex items-center justify-center rounded-r-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
-                        >
-                            <svg class="w-3 h-3 text-gray-700" viewBox="0 0 18 18" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                            </svg>
-                        </button>
+                            <button
+                                type="button"
+                                wire:click="incrementQuantity"
+                                aria-label="Tambah jumlah"
+                                @disabled($quantity >= $currentVariant->current_stock)
+                                class="h-11 w-11 flex items-center justify-center rounded-r-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
+                            >
+                                <svg class="w-3 h-3 text-gray-700" viewBox="0 0 18 18" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="flex-1 flex items-center ps-4">
+                            <span class="text-sm text-gray-600 mr-1">Stok:</span>
+                            @if($currentVariant->current_stock === 0)
+                                <span class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Habis</span>
+                            @elseif($currentVariant->current_stock <= 10)
+                                <span class="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">Sisa {{ $currentVariant->current_stock }}</span>
+                            @else
+                                <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">{{ $currentVariant->current_stock }}</span>
+                            @endif
+                        </div>
                     </div>
 
-                    <div class="flex-1 flex items-center ps-4">
-                        <span class="text-sm text-gray-600 mr-1">Stok:</span>
-                        @if($currentVariant->current_stock === 0)
-                            <span class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Habis</span>
-                        @elseif($currentVariant->current_stock <= 10)
-                            <span class="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">Sisa {{ $currentVariant->current_stock }}</span>
-                        @else
-                            <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">{{ $currentVariant->current_stock }}</span>
-                        @endif
+                    {{-- Subtotal --}}
+                    <div class="flex justify-between items-center py-2 border-t">
+                        <span class="text-gray-500">Subtotal</span>
+                        <span class="text-2xl font-bold">@idr($subTotal)</span>
                     </div>
-                </div>
-
-                {{-- Subtotal --}}
-                <div class="flex justify-between items-center py-2 border-t">
-                    <span class="text-gray-500">Subtotal</span>
-                    <span class="text-2xl font-bold">@idr($subTotal)</span>
-                </div>
+                @else
+                    <div class="text-gray-500 text-sm italic">Silakan pilih variasi terlebih dahulu untuk mengatur jumlah dan melihat stok.</div>
+                @endif
             </div>
+
 
             {{-- Buttons --}}
             <div class="flex flex-col gap-3">
@@ -314,8 +342,8 @@
                     wire:click="addToCart"
                     wire:loading.attr="disabled"
                     wire:target="addToCart"
-                    class="h-11 flex items-center justify-center bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 transition-colors"
-                    @disabled($currentVariant->current_stock === 0 || $quantity < 1)
+                    class="h-11 flex items-center justify-center bg-red-500 text-white font-semibold rounded-lg hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 transition-colors"
+                    @disabled(! $currentVariant || $currentVariant->current_stock === 0 || $quantity < 1)
                 >
                     <svg wire:loading wire:target="addToCart" class="w-5 h-5 me-2 text-white animate-spin" viewBox="0 0 100 101" fill="none">
                         <!-- loader SVG -->
@@ -329,31 +357,32 @@
                     wire:click="purchaseNow"
                     wire:loading.attr="disabled"
                     wire:target="purchaseNow"
-                    class="h-11 flex items-center justify-center border border-blue-500 text-blue-700 font-semibold rounded-lg hover:bg-blue-100 focus:ring-2 focus:outline-none focus:ring-blue-300 transition-colors"
-                    @disabled($currentVariant->current_stock === 0 || $quantity < 1)
+                    class="h-11 flex items-center justify-center border border-red-500 text-red-700 font-semibold rounded-lg hover:bg-red-100 focus:ring-2 focus:outline-none focus:ring-red-300 transition-colors"
+                    @disabled(! $currentVariant || $currentVariant->current_stock === 0 || $quantity < 1)
                 >
                     BELI SEKARANG
                 </button>
             </div>
+
 
             {{-- Product Features --}}
             <div class="space-y-2 pt-3 border-t">
                 <span class="text-lg font-semibold">Fitur</span>
                 <ul class="space-y-1">
                     <li class="flex items-center gap-2 text-gray-700">
-                        <span class="material-icons text-blue-400">workspace_premium</span>
+                        <span class="material-icons text-red-400">workspace_premium</span>
                         Garansi 1 Bulan
                     </li>
                     <li class="flex items-center gap-2 text-gray-700">
-                        <span class="material-icons text-blue-400">local_shipping</span>
+                        <span class="material-icons text-red-400">local_shipping</span>
                         Pengiriman Hari Sama
                     </li>
                     <li class="flex items-center gap-2 text-gray-700">
-                        <span class="material-icons text-blue-400">headset_mic</span>
+                        <span class="material-icons text-red-400">headset_mic</span>
                         24/7 Bantuan Pelanggan
                     </li>
                     <li class="flex items-center gap-2 text-gray-700">
-                        <span class="material-icons text-blue-400">verified_user</span>
+                        <span class="material-icons text-red-400">verified_user</span>
                         Pembayaran Terjamin
                     </li>
                 </ul>
@@ -413,3 +442,22 @@
         @endif
     </div>
 </div>
+
+<script>
+    Livewire.on('variantSelected', colorCode => {
+        const items = document.querySelectorAll('[data-carousel-item]');
+
+        items.forEach(item => {
+            if (item.dataset.colorCode === colorCode) {
+                item.classList.add('active');
+                item.classList.remove('hidden');
+            } else {
+                item.classList.remove('active');
+                item.classList.add('hidden');
+            }
+        });
+    });
+
+</script>
+
+

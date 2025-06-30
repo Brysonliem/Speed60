@@ -1,7 +1,7 @@
-<div class="mt-14">
+<div class="mt-20">
     <div class="bg-white w-full p-4 border rounded-lg my-4 text-center hover:shadow-lg transition-shadow duration-300">
         <div class="relative overflow-x-auto">
-            <div class="flex flex-col sm:flex-row flex-wrap items-center justify-between pb-4 space-y-4 sm:space-y-0 mx-1">
+            <div class="flex flex-col sm:flex-row flex-wrap items-center justify-between pb-4 space-y-4 sm:space-y-0 mt-5">
                 {{-- Search Input --}}
                 <div class="relative">
                     <label for="table-search" class="sr-only">Search</label>
@@ -35,7 +35,8 @@
                         <th class="px-6 py-3 rounded-s-lg">Code</th>
                         <th class="px-6 py-3">Name</th>
                         <th class="px-6 py-3">Description</th>
-                        <th class="px-6 py-3">Active?</th>
+                        <th class="px-6 py-3">Active</th>
+                        <th class="px-6 py-3">Voucher Type</th>
                         <th class="px-6 py-3">Expired at</th>
                         <th class="px-6 py-3 rounded-e-lg">Aksi</th>
                     </tr>
@@ -54,6 +55,9 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $voucher['voucher_is_disabled'] ? 'No' : 'Yes' }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $voucher['voucher_type'] }}
                             </td>
                             <td class="px-6 py-4">
                                 {{

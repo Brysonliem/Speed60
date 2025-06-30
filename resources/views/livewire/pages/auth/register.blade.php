@@ -4,7 +4,7 @@
         
         {{-- <div>
             <label for="role" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
-            <select wire:model="role_level" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <select wire:model="role_level" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
                 @foreach ($roles as $role)
                     <option value="{{ $role->level }}">{{ strtoupper($role->name) }}</option>
                 @endforeach
@@ -14,19 +14,19 @@
 
         <div>
             <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-            <input wire:model="username" id="username" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="username" id="username" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('username') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         
         <div>
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
-            <input wire:model="name" id="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="name" id="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         
         <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-            <input wire:model="email" id="email" type="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="email" id="email" type="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
@@ -39,71 +39,71 @@
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                 </svg>
             </div>
-            <input datepicker wire:model="birth_date" id="birth_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="">
+            <input datepicker wire:model="birth_date" id="birth_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 " placeholder="">
             @error('birth_date') <span class="text-red-500">{{ $message }}</span> @enderror
         </div> --}}
 
         {{-- RT, RW, Block --}}
-        <div class="grid grid-cols-3 gap-4">
+        {{-- <div class="grid grid-cols-3 gap-4">
             <div>
                 <label for="RT" class="block mb-2 text-sm font-medium text-gray-900">RT</label>
-                <input wire:model="rt" id="rt" type="rt" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                <input wire:model="rt" id="rt" type="rt" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
                 @error('rt') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div>
                 <label for="RW" class="block mb-2 text-sm font-medium text-gray-900">RW</label>
-                <input wire:model="rw" id="rw" type="rw" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                <input wire:model="rw" id="rw" type="rw" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
                 @error('rw') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div>
                 <label for="Block" class="block mb-2 text-sm font-medium text-gray-900">Block</label>
-                <input wire:model="block" id="block" type="block" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                <input wire:model="block" id="block" type="block" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
                 @error('block') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
-        </div>
+        </div> --}}
 
         {{-- Province --}}
-        <div>
+        {{-- <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Province</label>
-            <input wire:model="province" id="province" type="province" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="province" id="province" type="province" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('province') <span class="text-red-500">{{ $message }}</span> @enderror
-        </div>
+        </div> --}}
 
         {{-- District --}}
-        <div>
+        {{-- <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">District</label>
-            <input wire:model="district" id="district" type="district" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="district" id="district" type="district" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('district') <span class="text-red-500">{{ $message }}</span> @enderror
-        </div>
+        </div> --}}
 
         {{-- City --}}
-        <div>
+        {{-- <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">City</label>
-            <input wire:model="city" id="city" type="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="city" id="city" type="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('city') <span class="text-red-500">{{ $message }}</span> @enderror
-        </div>
+        </div> --}}
         
-        <div>            
+        {{-- <div>            
             <label for="address" class="block mb-2 text-sm font-medium text-gray-900 ">Full Address</label>
-            <textarea wire:model="address" id="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder=""></textarea>
+            <textarea wire:model="address" id="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-red-500 focus:border-red-500" placeholder=""></textarea>
             @error('addres') <span class="text-red-500">{{ $message }}</span> @enderror
-        </div>
+        </div> --}}
 
         <div>
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-            <input wire:model="password" id="password" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="password" id="password" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         
         <div>
             <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
-            <input wire:model="password_confirmation" id="password_confirmation" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            <input wire:model="password_confirmation" id="password_confirmation" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required />
             @error('password_confirmation') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         
-        {{-- <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+        {{-- <button type="submit" class="w-full text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Register
         </button> --}}
 
@@ -111,7 +111,7 @@
             type="submit"
             wire:loading.attr="disabled"
             wire:target="register"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 inline-flex items-center"
         >
             <svg
                 wire:loading
@@ -137,7 +137,7 @@
         </button>
         
         <div class="text-sm font-medium text-gray-500">
-            Already have an account? <a href="{{ route('login') }}" class="text-blue-700 hover:underline">Login</a>
+            Already have an account? <a href="{{ route('login') }}" class="text-red-700 hover:underline">Login</a>
         </div>
     </form>
 </div>

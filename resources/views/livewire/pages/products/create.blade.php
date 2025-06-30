@@ -1,6 +1,6 @@
 {{-- @dd($motorCategories) --}}
 
-<div class="mt-14">
+<div class="mt-20">
     <!-- Breadcrumb (omitted) -->
 
     <x-page-header title="Tambah Produk">
@@ -162,22 +162,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Color Code -->
-                            <div class="col-span-2">
-                                <label class="block mb-2 text-sm font-medium text-gray-900">Color Code</label>
-                                <input
-                                    wire:model="variantForms.{{ $i }}.color_code"
-                                     type="color"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                           focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="#FF0000"
-                                    required
-                                />
-                                @error("variantForms.$i.color_code")
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
                             <!-- Current Stock for Variant -->
                             <div class="col-span-1">
                                 <label class="block mb-2 text-sm font-medium text-gray-900">Stock</label>
@@ -211,7 +195,7 @@
                             </div>
 
                             <!-- Purchase Unit -->
-                            <div class="col-span-2">
+                            <div class="col-span-1">
                                 <label class="block mb-2 text-sm font-medium text-gray-900">Purchase Unit</label>
                                 <select
                                     wire:model="variantForms.{{ $i }}.purchase_unit"
@@ -229,7 +213,7 @@
                             </div>
 
                             <!-- Units Per Set (optional) -->
-                            <div class="col-span-2">
+                            <div class="col-span-1">
                                 <label class="block mb-2 text-sm font-medium text-gray-900">Unit Per Set (if any)</label>
                                 <input
                                     wire:model="variantForms.{{ $i }}.unit_per_set"
@@ -242,6 +226,26 @@
                                 @error("variantForms.$i.unit_per_set")
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
+                            </div>
+
+                            <!-- Variant Image -->
+                            <div class="col-span-2">                                
+                                <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input_{{ $i }}">Variant Image</label>
+                                <input 
+                                    wire:model="variantImages.{{ $i }}"
+                                    id="file_input_{{ $i }}" 
+                                    type="file"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
+                                        bg-gray-50 focus:outline-none"
+                                >
+                                @error("variantForms.$i.image")
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+
+                                @if (isset($variantImages[$i]))
+                                    <img src="{{ $variantImages[$i]->temporaryUrl() }}" class="w-24 h-24 object-cover rounded" />
+                                @endif
+
                             </div>
                         </div>
                     </div>

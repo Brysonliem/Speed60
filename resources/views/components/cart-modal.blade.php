@@ -89,28 +89,6 @@
                         </svg>
                     </button>
                 </div>
-                {{-- <div class="flex items-center justify-center sm:justify-start gap-2 my-3">
-                    <label class="text-sm text-gray-600">Jumlah:</label>
-                    <button 
-                        type="button" 
-                        class="px-2 py-1 bg-gray-200 rounded"
-                        @click="$store.modal.quantity = Math.max(1, $store.modal.quantity - 1)"
-                    >-</button>
-
-                    <input 
-                        type="number" 
-                        min="1" 
-                        :max="$store.modal.selectedVariant?.current_stock" 
-                        x-model.number="$store.modal.quantity" 
-                        class="w-16 border rounded text-center" 
-                    >
-
-                    <button 
-                        type="button" 
-                        class="px-2 py-1 bg-gray-200 rounded"
-                        @click="$store.modal.quantity = Math.min($store.modal.quantity + 1, $store.modal.selectedVariant?.current_stock)"
-                    >+</button>
-                </div> --}}
             </template>
         </div>
 
@@ -126,12 +104,10 @@
                 class="px-4 py-2 text-sm bg-red-600 text-white hover:bg-red-700 rounded disabled:opacity-50"
                 :disabled="!$store.modal.selectedVariant"
                 @click="
-                    Livewire.dispatch('add-to-cart-from-modal', [
-                        {
-                            variantId: $store.modal.selectedVariant.id,
-                            quantity: $store.modal.quantity
-                        }
-                    ]);
+                    Livewire.dispatch('add-to-cart-from-modal', {
+                        variantId: $store.modal.selectedVariant.id,
+                        quantity: $store.modal.quantity
+                    });
                     $store.modal.hide();
                 "
             >

@@ -29,26 +29,23 @@ class Registration extends Component
     #[Validate('required|string')]
     public string $password_confirmation = '';
 
-    #[Validate('required|string')]
-    public string $rt = '';
+    // #[Validate('required|string')]
+    // public string $rt = '';
 
-    #[Validate('required|string')]
-    public string $rw = '';
+    // #[Validate('required|string')]
+    // public string $rw = '';
 
-    #[Validate('required|string')]
-    public string $block = '';
+    // #[Validate('required|string')]
+    // public string $block = '';
     
-    #[Validate('required|string')]
-    public string $district = '';
+    // #[Validate('required|string')]
+    // public string $district = '';
 
-    #[Validate('required|string')]
-    public string $province = '';
+    // #[Validate('required|string')]
+    // public string $province = '';
 
-    // #[Validate('nullable')]
-    // public string $birth_date = '';
-
-    #[Validate('required|string')]
-    public string $city = '';
+    // #[Validate('required|string')]
+    // public string $city = '';
 
     #[Validate('required|numeric')]
     public string $role_level = '';
@@ -74,14 +71,14 @@ class Registration extends Component
                 'username' => $this->username,
                 'name' => $this->name,
                 'password' => bcrypt($this->password),
-                'city' => $this->city,
-                'rt' => $this->rt,
-                'rw' => $this->rw,
-                'district' => $this->district,
-                'province' => $this->province,
-                'address' => $this->address,
+                // 'city' => $this->city,
+                // 'rt' => $this->rt,
+                // 'rw' => $this->rw,
+                // 'district' => $this->district,
+                // 'province' => $this->province,
+                // 'address' => $this->address,
                 // 'birth_date' => Carbon::parse($this->birth_date)->format('Y-m-d'),
-                'block' => $this->block,
+                // 'block' => $this->block,
                 'role_id' => $role->id
             ]);
         });

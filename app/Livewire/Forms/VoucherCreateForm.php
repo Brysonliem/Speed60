@@ -11,11 +11,14 @@ class VoucherCreateForm extends Form
 {
     public ?Voucher $voucher = null;
 
-    #[Validate('required|string|max:255|unique:vouchers,voucher_code')]
+    #[Validate('required|string|max:255')]
     public string $code = '';
 
     #[Validate('required|string|max:255')]
     public string $name = '';
+
+    #[Validate('required|string')]
+    public string $voucher_type = ''; 
 
     #[Validate('required|numeric|min:0')]
     public float $minimum_transaction = 0;
@@ -44,6 +47,7 @@ class VoucherCreateForm extends Form
 
         $this->code = $voucher->voucher_code;
         $this->name = $voucher->voucher_name;
+        $this->voucher_type = $voucher->voucher_type;
         $this->minimum_transaction = $voucher->voucher_minimum_transaction;
         $this->is_disabled = $voucher->voucher_is_disabled;
         $this->description = $voucher->voucher_description;

@@ -1,5 +1,5 @@
 {{-- @dd($this->productTypes) --}}
-<div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen" 
+<div class="flex flex-col gap-4 p-4 md:p-8 min-h-screen" x-data x-on:open-modal.window="$store.modal.show($event.detail)"
     >
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
@@ -181,6 +181,9 @@
                         ])
                     @endforeach
                 </div>
+
+                {{-- blade component --}}
+                @livewire('components.cart-modal')
             </div>
         </div>
     </div>

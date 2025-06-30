@@ -31,4 +31,9 @@ class ProductImageService
     {
         return $this->productImageRepository->delete($id);
     }
+
+    public function getAllImagesByProductId(int $productId)
+    {
+        return $this->productImageRepository->getAllImagesByProductId($productId);
+    }
 }

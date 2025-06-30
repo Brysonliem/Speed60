@@ -10,9 +10,12 @@ use App\Services\ProductService;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
-class ProductDetail extends BaseComponent
+#[Layout('components.layouts.app')]
+class ProductDetail extends Component
 {
     protected ProductService $productService;
     protected CartService $cartService;
@@ -23,13 +26,15 @@ class ProductDetail extends BaseComponent
     public $quantity = 1;
     public $subTotal = 0;
     public $variants;
-    public $currentVariant;
+    public $currentVariant = null;
     public $reviews = [];
+    public $mainImage = null;
+
 
     #listeners
     protected $listeners = [
         'loadReviews' => 'loadReviews',
-        'add-to-cart-from-modal' => 'handleAddToCartFromModal',
+        // 'add-to-cart-from-modal' => 'handleAddToCartFromModal',
     ];
 
     public function boot(
@@ -47,8 +52,21 @@ class ProductDetail extends BaseComponent
         $this->products = $this->productService->allProductMaster(5);
         $this->detailProduct = $this->productService->getProductById((int) $product);
         $this->variants = $this->detailProduct->variants;
-        $this->currentVariant = $this->variants[0];
-        $this->subTotal = $this->currentVariant->price * $this->quantity;
+
+        // Tidak memilih variant di awal
+        $this->currentVariant = null;
+
+        // Inisialisasi quantity
+        $this->quantity = 1;
+    }
+
+    public function getSubTotalProperty()
+    {
+        if (!$this->currentVariant) {
+            return 0;
+        }
+
+        return $this->currentVariant->price * $this->quantity;
     }
 
     public function loadReviews() 
@@ -79,6 +97,10 @@ class ProductDetail extends BaseComponent
         if ($index >= 0 && $index < count($this->variants)) {
             $this->currentVariant = $this->variants[$index];
         }
+
+        if ($this->currentVariant) {
+            $this->dispatch('variant-selected', $this->currentVariant->color);
+        }
     }
 
     public function addToCart()
@@ -94,34 +116,31 @@ class ProductDetail extends BaseComponent
         $this->dispatch('card-added');
     }
 
-    #[On('add-to-cart-from-modal')]
+    #[On('addToCartFromModal')]
     public function handleAddToCartFromModal($payload)
     {
-        $variantId = $payload['variantId'] ?? null;
-        $quantity = $payload['quantity'] ?? 1;
+        dd("CALLED");
+        $variantId = $payload['variantId'];
+        $quantity = $payload['quantity'];
 
-        $variant = $this->findVariant($variantId);
+        // Ambil variant
+        $variant = $this->variants->firstWhere('id', $variantId);
         if (!$variant) {
-            session()->flash('error', 'Variant tidak ditemukan');
+            session()->flash('error', 'Variant not found.');
             return;
         }
 
+        // Simpan ke cart
         if ($quantity > $variant->current_stock) {
-            session()->flash('error', 'Stok tidak cukup');
+            session()->flash('error', 'Stok tidak mencukupi.');
             return;
         }
 
         $this->cartService->addToCart($variant->id, $quantity);
-        session()->flash('success', 'Produk berhasil ditambahkan ke keranjang');
+        session()->flash('success', 'Produk ditambahkan ke keranjang.');
 
         $this->dispatch('cart-updated');
     }
-
-    private function findVariant($variantId)
-    {
-        return collect($this->variants)->firstWhere('id', $variantId);
-    }
-
 
     private function canProceed()
     {

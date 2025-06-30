@@ -28,6 +28,7 @@ class Create extends Component
         $this->voucherService->createVoucher([
             'voucher_code' => $this->form->code,
             'voucher_name' => $this->form->name,
+            'voucher_type' => $this->form->voucher_type,
             'voucher_minimum_transaction' => $this->form->minimum_transaction,
             'voucher_is_disabled' => $this->form->is_disabled,
             'voucher_description' => $this->form->description,

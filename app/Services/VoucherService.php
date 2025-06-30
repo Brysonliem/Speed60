@@ -38,9 +38,9 @@ class VoucherService
         return $this->voucherRepository->delete($id);
     }
 
-    public function getAllVouchers()
+    public function getAllVouchers(?int $limit = null)
     {
-        return $this->voucherRepository->all();
+        return $this->voucherRepository->all($limit);
     }
 
     public function getAllActiveVouchers(?float $grandTotal = null)

@@ -69,13 +69,13 @@
                                 @if (!empty($product['variants']))
                                     <div class="grid grid-cols-3 gap-1">
                                         @foreach ($product['variants'] as $variant)
-                                            <span class="flex justify-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                                                style="background-color: {{ $variant['color_code'] }}20; color: {{ $variant['color_code'] }};">
+                                            <span class="flex justify-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-600">
                                                 {{ $variant['color'] }}
                                             </span>
                                         @endforeach
                                     </div>
                                 @endif
+
                             </td>
 
                             <td class="px-6 py-4">

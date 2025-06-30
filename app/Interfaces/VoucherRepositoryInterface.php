@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface VoucherRepositoryInterface
 {
-    public function all();
+    public function all(?int $limit = null);
     public function find(int $id);
     public function create(array $data);
     public function update(int $id, array $data);

@@ -1,19 +1,17 @@
-@php
-    use Carbon\Carbon;
-@endphp
-
-<div class="flex flex-col gap-3 h-screen p-4 md:p-8">
+<div class="flex flex-col h-screen w-min-screen mt-20">
     <!-- Breadcrumb -->
     {{-- @livewire('components.breadcrumb', ['links' => [
         ['name' => 'Voucher', 'url' => route('vouchers.index')],
         ['name' => 'Create Voucher', 'url' => route('vouchers.create')],
     ]]) --}}
 
-    <div class="bg-white w-full p-4 border rounded-lg my-4 hover:shadow-lg transition-shadow duration-300">
+    <x-page-header title="Update Voucher" />
+
+    <div class="bg-white w-full p-4 border rounded-lg hover:shadow-lg transition-shadow duration-300">
         <h2 class="text-xl font-semibold text-gray-800">Edit Voucher</h2>
         <p class="text-sm text-gray-500 mt-1">Fill the forms below.</p>
 
-        <form wire:submit.prevent="store" class="mt-4">
+        <form wire:submit.prevent="update" class="mt-4">
             @csrf
             <div class="grid grid-cols-4 gap-4">
                 <div>
@@ -38,6 +36,16 @@
                     <label for="discount_percentage" class="block mb-2 text-sm font-medium text-gray-900">Discount Percentage</label>
                     <input wire:model="form.discount_percentage" id="discount_percentage" step="0.1" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                     @error('form.discount_percentage') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label for="voucher_type" class="block mb-2 text-sm font-medium text-gray-900 ">Voucher Type</label>
+                    <select wire:model="form.voucher_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>-- CHOOSE A VOUCHER TYPE --</option>
+                        <option value="REGULER">REGULER</option>
+                        <option value="SIGNUP">SIGNUP</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
                 </div>
 
                 <div>
@@ -70,12 +78,12 @@
                         <button
                             type="submit"
                             wire:loading.attr="disabled"
-                            wire:target="store"
+                            wire:target="update"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
                         >
                             <svg
                                 wire:loading
-                                wire:target="store"
+                                wire:target="update"
                                 aria-hidden="true"
                                 role="status"
                                 class="inline w-4 h-4 me-3 text-white animate-spin"
@@ -92,8 +100,8 @@
                                     fill="currentColor"
                                 />
                             </svg>
-                            <span wire:loading.remove wire:target="store">Simpan</span>
-                            <span wire:loading wire:target="store">Menyimpan...</span>
+                            <span wire:loading.remove wire:target="update">Simpan</span>
+                            <span wire:loading wire:target="update">Menyimpan...</span>
                         </button>
                     </div>
                 </div>

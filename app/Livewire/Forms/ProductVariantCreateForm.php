@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\ProductVariant;
+use Illuminate\Support\Arr;
 use Livewire\Form;
 use Livewire\Attributes\Validate;
 
@@ -16,7 +17,7 @@ class ProductVariantCreateForm extends Form
     #[Validate('required|string')]
     public string $color;
 
-    #[Validate('required|string')]
+    #[Validate('nullable|string')]
     public string $color_code;
 
     #[Validate('required|integer|min:0')]
@@ -30,6 +31,15 @@ class ProductVariantCreateForm extends Form
 
     #[Validate('nullable|numeric|min:0|required_if:purchase_unit,set')]
     public ?float $unit_per_set;
+
+    #[Validate('nullable|string')]
+    public ?string $image = '';
+
+    // lalu override toArray jika perlu:
+    public function toArray()
+    {
+        return Arr::except(parent::toArray(), ['image']);
+    }
 
     public function setProductVariant(ProductVariant $variant)
     {
@@ -47,7 +57,7 @@ class ProductVariantCreateForm extends Form
     public function fillFromModel(ProductVariant $variant)
     {
         $this->color = $variant->color;
-        $this->color_code = $variant->color_code;
+        // $this->color_code = $variant->color_code ?? null;
         $this->current_stock = $variant->current_stock;
         $this->price = $variant->price;
         $this->purchase_unit = $variant->purchase_unit;
