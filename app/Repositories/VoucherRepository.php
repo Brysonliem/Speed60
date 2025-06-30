@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Interfaces\VoucherRepositoryInterface;
 use App\Models\Voucher;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VoucherRepository implements VoucherRepositoryInterface
 {
@@ -29,9 +31,47 @@ class VoucherRepository implements VoucherRepositoryInterface
             ->toArray();
     }
 
+    public function assign(int $voucherId, int $userId)
+    {
+        return DB::transaction(function() use ($voucherId, $userId) {
+            $voucher = $this->find($voucherId);
+
+            if($voucher->voucher_is_disabled) {
+                throw new \Exception('Voucher is disabled');
+            }
+
+            return DB::table('user_vouchers')->insert([
+                'user_id' => $userId,
+                'voucher_id' => $voucherId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        });
+    }
+
+    public function getAvailableVouchers(?int $limit = null)
+    {
+        $user = Auth::user();
+
+        // Fetching owned voucher IDs for the authenticated user
+        $ownedVoucherIds = $user->vouchers->pluck('voucher_id')->toArray();
+
+        $availableVouchers = Voucher::whereNotIn('id', $ownedVoucherIds)->take($limit)->get();
+            // ->where('voucher_is_disabled', false)
+            // ->whereDate('voucher_start_date', '<=', now())
+            // ->where(function ($query) {
+            //     $query->whereNull('voucher_end_date')
+            //         ->orWhere('voucher_end_date', '>=', now());
+            // })
+            // ->latest()
+            // ->get();
+
+        return $availableVouchers->toArray();
+    }
+
     public function find(int $id)
     {
-        return Voucher::find($id);
+        return Voucher::findOrFail($id);
     }
 
     public function create(array $data)

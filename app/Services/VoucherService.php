@@ -43,8 +43,18 @@ class VoucherService
         return $this->voucherRepository->all($limit);
     }
 
+    public function getAvailableVouchers(?int $limit = null)
+    {
+        return $this->voucherRepository->getAvailableVouchers($limit);
+    }
+
     public function getAllActiveVouchers(?float $grandTotal = null)
     {
         return $this->voucherRepository->getAllActiveVouchers($grandTotal);
+    }
+
+    public function assignVoucher(int $voucherId, int $userId)
+    {
+        return $this->voucherRepository->assign($voucherId, $userId);
     }
 }

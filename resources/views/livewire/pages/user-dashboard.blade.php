@@ -19,6 +19,37 @@
     {{-- information section --}}
         <div class="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-10">
 
+            @if (session()->has('voucher_assigned'))
+                <div 
+                    x-data="{ show: true }" 
+                    x-init="setTimeout(() => show = false, 3000)" 
+                    x-show="show"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-2"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 translate-y-2"
+                    class="fixed top-5 right-5 z-50 w-full max-w-xs p-4 bg-green-100 text-green-800 rounded-lg shadow-lg flex items-start gap-3"
+                    role="alert"
+                >
+                    <div class="flex items-center justify-center w-8 h-8 bg-green-200 rounded-full">
+                        <svg class="w-5 h-5 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-sm font-medium leading-tight text-center ">
+                        {{ session()->get('voucher_assigned') }}
+                    </div>
+                    <button @click="show = false" class="ml-auto text-green-700 hover:text-green-900 transition">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+            @endif
+
 
             {{-- content --}}
             <div class="col-span-6">
@@ -44,7 +75,7 @@
                                             Min. belanja {{ $voucher['voucher_minimum_transaction'] }} • Berlaku s/d {{ $voucher['voucher_end_date'] }}
                                         </div>
                                         <div>
-                                            <button class="text-xs sm:text-sm font-semibold text-red-500 border border-red-500 rounded px-2 py-1 sm:px-3 hover:bg-red-50 transition">
+                                            <button wire:click="assignVoucher({{ $voucher['id'] }})" class="text-xs sm:text-sm font-semibold text-red-500 border border-red-500 rounded px-2 py-1 sm:px-3 hover:bg-red-50 transition">
                                                 Gunakan
                                             </button>
                                         </div>

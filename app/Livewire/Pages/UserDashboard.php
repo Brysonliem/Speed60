@@ -5,6 +5,7 @@ namespace App\Livewire\Pages;
 use App\Livewire\BaseComponent;
 use App\Services\ProductService;
 use App\Services\VoucherService;
+use Illuminate\Support\Facades\Auth;
 
 class UserDashboard extends BaseComponent
 {
@@ -27,7 +28,26 @@ class UserDashboard extends BaseComponent
 
     public function loadVouchers()
     {
-        $this->vouchers = $this->voucherService->getAllVouchers(3);
+        if (Auth::check()) {
+            $this->vouchers = $this->voucherService->getAllVouchers(3);
+        } else {
+            $this->vouchers = $this->voucherService->getAvailableVouchers(3); // tanpa filtering user
+        }
+    }
+
+
+    public function assignVoucher(int $voucher_id)
+    {
+        if(!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $this->voucherService->assignVoucher($voucher_id, Auth::user()->id);
+
+        $this->loadVouchers();
+        $this->loadProducts();
+
+        session()->flash('voucher_assigned', 'Voucher assigned successfully!');
     }
 
     public function mount()
