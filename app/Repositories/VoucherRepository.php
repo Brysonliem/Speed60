@@ -54,7 +54,7 @@ class VoucherRepository implements VoucherRepositoryInterface
         $user = Auth::user();
 
         // Fetching owned voucher IDs for the authenticated user
-        $ownedVoucherIds = $user->vouchers->pluck('voucher_id')->toArray();
+        $ownedVoucherIds = $user?->vouchers?->pluck('voucher_id')?->toArray() ?? [];
 
         $availableVouchers = Voucher::whereNotIn('id', $ownedVoucherIds)->take($limit)->get();
             // ->where('voucher_is_disabled', false)
