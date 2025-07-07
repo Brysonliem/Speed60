@@ -53,6 +53,11 @@ class VoucherService
         return $this->voucherRepository->getAllActiveVouchers($grandTotal);
     }
 
+    public function getVouchersUser(int $user_id, float $grand_total)
+    {
+        return $this->voucherRepository->getVouchersUser($user_id, $grand_total);
+    }
+
     public function assignVoucher(int $voucherId, int $userId)
     {
         return $this->voucherRepository->assign($voucherId, $userId);

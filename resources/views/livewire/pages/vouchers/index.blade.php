@@ -32,34 +32,34 @@
             <table class="w-full text-sm text-left text-gray-700">
                 <thead class="text-xs uppercase bg-gray-100 text-gray-600">
                     <tr>
-                        <th class="px-6 py-3 rounded-s-lg">Code</th>
-                        <th class="px-6 py-3">Name</th>
-                        <th class="px-6 py-3">Description</th>
-                        <th class="px-6 py-3">Active</th>
-                        <th class="px-6 py-3">Voucher Type</th>
-                        <th class="px-6 py-3">Expired at</th>
-                        <th class="px-6 py-3 rounded-e-lg">Aksi</th>
+                        <th class="px-10 py-3 min-w-[120px]">Code</th>
+                        <th class="px-10 py-3 min-w-[180px]">Name</th>
+                        <th class="px-10 py-3 min-w-[250px]">Description</th>
+                        <th class="px-10 py-3 min-w-[80px]">Active</th>
+                        <th class="px-10 py-3 min-w-[130px]">Voucher Type</th>
+                        <th class="px-10 py-3 min-w-[100px]">Expired at</th>
+                        <th class="px-10 py-3 min-w-[200px] rounded-e-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($vouchers as $voucher)
                         <tr class="bg-white border-b border-gray-200">
-                            <td class="px-6 py-4 font-medium text-gray-900">
+                            <td class="px-10 py-4 font-medium text-gray-900">
                                 {{ $voucher['voucher_code'] }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-10 py-4">
                                 {{ $voucher['voucher_name'] }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-10 py-4">
                                 {{ $voucher['voucher_description'] }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-10 py-4">
                                 {{ $voucher['voucher_is_disabled'] ? 'No' : 'Yes' }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-10 py-4">
                                 {{ $voucher['voucher_type'] }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-10 py-4">
                                 {{
                                     $voucher['voucher_end_date'] ?
                                     \Carbon\Carbon::parse($voucher['voucher_end_date'])->format('d-m-Y') : 

@@ -1,30 +1,5 @@
 {{-- dashboard --}}
 <div class="p-4 rounded-lg bg-gray-50 shadow-md flex flex-col gap-3" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-    
-    {{-- Cards --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div>
-            @livewire('components.order-card', [
-                'count' => $total_info['total_order']
-            ])
-        </div>
-        <div>
-            @livewire('components.order-card', [
-                'color' => 'yellow',
-                'count' => $total_info['pending_order'],
-                'label' => 'Pending Orders',
-                'icon' => 'receipt'
-            ])
-        </div>
-        <div>
-            @livewire('components.order-card', [
-                'color' => 'green',
-                'count' => $total_info['completed_order'],
-                'label' => 'Completed Orders',
-                'icon' => 'widgets'
-            ])
-        </div>
-    </div>
 
     @php
         $columns = ['ORDER ID', 'STATUS', 'TRANSACTION DATE', 'TOTAL'];
@@ -32,7 +7,7 @@
     @endphp
 
     {{-- Table --}}
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="flex flex-col gap-2 ">
         <div class="flex items-center">
             <span class="text-sm font-medium">ORDER HISTORY</span>
             <a href="#" class="text-sm font-medium ms-auto text-blue-600">VIEW ALL</a>
@@ -60,6 +35,7 @@
                                 'REFUND' => 'orange',
                                 'CANCELLED' => 'red',
                                 'PENDING' => 'yellow',
+                                'COMPLETED' => 'green'
                             };
                         @endphp
 

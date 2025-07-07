@@ -65,6 +65,18 @@
                         <input wire:model="address_form.phone" type="tel" id="phone" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
                     </div>
 
+                    <div class="col-span-full">
+                        <div class="flex items-center p-4 border border-gray-200 rounded-sm ">
+                            <div class="flex items-center h-5">
+                                <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" wire:model="is_store" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+                            </div>
+                            <div class="ms-2 text-sm">
+                                <label for="helper-checkbox" class="font-medium text-gray-900 ">Simpan alamat</label>
+                                <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 ">Alamat akan disimpan di transaksi selanjutnya.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Informasi Tambahan -->
                     <div class="col-span-full">
                         <span class="block mt-6 mb-2 font-medium text-lg text-gray-900">Informasi Tambahan</span>

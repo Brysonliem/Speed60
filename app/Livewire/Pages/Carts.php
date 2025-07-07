@@ -122,6 +122,7 @@ class Carts extends Component
                     'detail_variant' => $product->product_variant_id,
                     'detail_qty' => $product->quantity,
                     'detail_subtotal' => $product->quantity * $product->price,
+                    'product_id' => $product->product_id
                 ]);
                 $this->cartService->deleteFromCart($product->product_variant_id);
             }

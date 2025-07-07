@@ -5,11 +5,13 @@ namespace App\Livewire\Pages;
 use App\Livewire\BaseComponent;
 use App\Livewire\Forms\TransactionAddressForm;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Services\TransactionAddressService;
 use App\Services\VoucherService;
 use App\Services\CartService;
 use App\Services\ProductService;
 use App\Services\TransactionService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 
@@ -24,6 +26,7 @@ class CheckoutProduct extends BaseComponent
     protected ProductService $productService;
 
     public TransactionAddressForm $address_form;
+    public bool $is_store = false;
     public $products;
     public $sub_total;
     public $tax;
@@ -44,6 +47,21 @@ class CheckoutProduct extends BaseComponent
         $this->voucherService = $voucherService;
         $this->productService = $productService;
         $this->transactionAddressService = $transactionAddressService;
+    }
+
+    public function fillAddress()
+    {
+        $current_user = Auth::user();
+        $form = $this->address_form;
+
+        $form->first_name = $current_user->name;
+        $form->last_name = $current_user?->last_name;
+        $form->address = $current_user?->address;
+        $form->province = $current_user?->province;
+        $form->city = $current_user?->city;
+        $form->postal_code = $current_user?->postal_code;
+        $form->email = $current_user?->email;
+        $form->phone = $current_user?->phone_number;
     }
 
     public function calculateTotals()
@@ -94,7 +112,8 @@ class CheckoutProduct extends BaseComponent
 
     public function loadVouchers()
     {
-        $this->vouchers = $this->voucherService->getAllActiveVouchers($this->grand_total);
+        $current_user = Auth::user();
+        $this->vouchers = $this->voucherService->getVouchersUser($current_user->id, $this->grand_total);
     }
 
     public function mount()
@@ -102,6 +121,7 @@ class CheckoutProduct extends BaseComponent
         $this->loadProductCarts();
         $this->calculateTotals();
         $this->loadVouchers();
+        $this->fillAddress();
     }
 
     public function redirectWhenSuccessCheckout()
@@ -150,6 +170,24 @@ class CheckoutProduct extends BaseComponent
             'phone'          => $this->address_form->phone,
             'description'    => $this->address_form->description,
         ]);
+
+        # jika user mau data alamat nya dipakai di transaksi selanjutnya maka simpan ke informasi pengguna nya agar tersimpan
+        if($this->is_store)
+        {
+            $auth_user = Auth::user();
+            $user = User::findOrFail($auth_user->id);
+
+            $user->update([
+                'name' => $this->address_form->first_name,
+                'last_name' => $this->address_form->last_name,
+                'address' => $this->address_form->address,
+                'province' => $this->address_form->province,
+                'city' => $this->address_form->city,
+                'postal_code' => $this->address_form->postal_code,
+                'email' => $this->address_form->email,
+                'phone_number' => $this->address_form->phone
+            ]);
+        }
     }
 
 
@@ -162,7 +200,8 @@ class CheckoutProduct extends BaseComponent
             'tax_price' => $this->tax,
             'discount_price' => $this->discount,
             'grand_total' => $this->grand_total,
-            'proceed_at' => now()
+            'proceed_at' => now(),
+            'transaction_status' => 'COMPLETED'
         ];
 
         if ($this->voucher) {

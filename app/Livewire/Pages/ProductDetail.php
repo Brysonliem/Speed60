@@ -72,7 +72,7 @@ class ProductDetail extends Component
     public function loadReviews() 
     {
         if(empty($this->reviews)) {
-            $this->reviews = Reviews::all();
+            $this->reviews = Reviews::with('reviewImages')->where('product_id',$this->detailProduct->id)->get();
         }
     }
 

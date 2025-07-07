@@ -173,13 +173,16 @@
                             @foreach ($reviews as $review)
                                                                 
                                 <div class="flex items-start gap-2.5" >
-                                    <img class="w-8 h-8 rounded-full" src="{{ asset('/images/avatar.jpg') }}" alt="User Image">
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('/images/admin.jpg') }}" alt="User Image">
                                     <div class="flex flex-col gap-1">
                                         <div class="flex flex-col w-full max-w-[326px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">
                                             <div class="flex flex-col gap-2 mb-2">
                                                 <div class="flex items-center space-x-2 rtl:space-x-reverse mb-2">
                                                     <span class="text-sm font-semibold text-gray-900">{{ $review->user->name }}</span>
-                                                    <span class="text-sm font-normal text-gray-500 ">11:46</span>
+                                                    <span class="text-sm font-normal text-gray-500">
+                                                        {{ $review->created_at->format('d-m-Y H:i') }}
+                                                    </span>
+
                                                 </div>
 
                                                 <div class="flex items-center">
@@ -205,58 +208,20 @@
                                             </div>
 
                                             <p class="text-sm font-normal text-gray-900">{{ $review->content }}</p>
-                                            <div class="grid gap-4 grid-cols-2 my-2.5" x-data="{ open: false, selectedImage: null }">
-                                                <!-- Loop Item -->
-                                                <template x-for="(image, index) in [
-                                                    '{{ asset('/images/dashboard-imgs.jpg') }}',
-                                                    '{{ asset('/images/dashboard-imgs.jpg') }}',
-                                                    '{{ asset('/images/dashboard-imgs.jpg') }}',
-                                                    '{{ asset('/images/dashboard-imgs.jpg') }}'
-                                                ]" :key="index">
-                                                    <div class="group relative">
-                                                        <!-- Overlay & Button -->
-                                                        <div class="absolute w-full h-full bg-gray-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-                                                            <button 
-                                                                @click="selectedImage = image; open = true"
-                                                                class="inline-flex items-center justify-center rounded-full h-8 w-8 bg-white/30 hover:bg-white/50 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                                            >
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-white">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                                </svg>
-                                                            </button>
+                                            @foreach ($reviews as $review)
+                                                <div class="border rounded-lg p-4 space-y-3 bg-white shadow-sm">
+                                                    <!-- Gambar-gambar Review -->
+                                                    @if ($review->reviewImages->count())
+                                                        <div class="grid grid-cols-2  gap-3 mt-3">
+                                                            @foreach ($review->reviewImages as $image)
+                                                                <div class="w-full h-32 bg-gray-100 rounded overflow-hidden">
+                                                                    <img src="{{ Storage::url($image->image_path) }}" alt="Review Image" class="w-full h-full object-cover">
+                                                                </div>
+                                                            @endforeach
                                                         </div>
-                                                        <img :src="image" class="rounded-lg" />
-                                                    </div>
-                                                </template>
-
-                                                <!-- Komponen Modal -->
-                                                <x-modal title="Preview Image">
-                                                    <x-slot:slot>
-                                                        <div class="w-full max-h-[75vh] md:max-h-[90vh] overflow-auto flex justify-center">
-                                                            <img :src="selectedImage" class="max-w-full h-auto object-contain rounded-lg" />
-                                                        </div>
-
-                                                    </x-slot:slot>
-
-                                                    <x-slot:footer>
-                                                        <div class="ms-auto">
-                                                            <button @click="open = false" class="bg-red-500 text-white px-4 py-4 rounded">
-                                                                Tutup
-                                                            </button>
-                                                        </div>
-                                                    </x-slot:footer>
-                                                </x-modal>
-                                            </div>
-
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-sm font-normal text-gray-500 ">Delivered</span>
-                                                <button class="text-sm text-red-700-medium inline-flex items-center hover:underline">
-                                                    <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
-                                                    </svg>
-                                                Save all</button>
-                                            </div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>

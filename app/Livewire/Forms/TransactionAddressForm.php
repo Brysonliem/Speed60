@@ -11,29 +11,29 @@ class TransactionAddressForm extends Form
     public string $first_name = '';
 
     #[Validate('nullable|string')]
-    public string $last_name = '';
+    public ?string $last_name = '';
 
     #[Validate('required|string')]
-    public string $address = '';
+    public ?string $address = '';
 
     #[Validate('required|string')]
-    public string $province = '';
+    public ?string $province = '';
 
     #[Validate('required|string')]
-    public string $city = '';
+    public ?string $city = '';
 
     #[Validate('required|string')]
-    public string $postal_code = '';
+    public ?string $postal_code = '';
 
     #[Validate('required|string')]
-    public string $email = '';
+    public ?string $email = '';
 
     #[Validate('required|string')]
-    public string $phone = '';
+    public ?string $phone = '';
 
     #[Validate('nullable|string')]
-    public string $description = '';
+    public ?string $description = '';
 
     #[Validate('numeric')]
-    public string $transaction_id = '';
+    public ?string $transaction_id = '';
 }

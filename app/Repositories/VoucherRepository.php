@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\VoucherRepositoryInterface;
+use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,21 @@ class VoucherRepository implements VoucherRepositoryInterface
                     ->orWhere('voucher_end_date', '>=', $now); // still valid
             })
             ->latest()
+            ->get()
+            ->toArray();
+    }
+
+    public function getVouchersUser(int $user_id,float $grand_total)
+    {
+        $user = User::findOrFail($user_id);
+        $now = now();
+        return $user->vouchers()
+            ->wherePivot('is_used', false)
+            ->where('voucher_minimum_transaction', '<=', $grand_total)
+            ->where(function ($q) use ($now) {
+                $q->whereNull('voucher_end_date')
+                ->orWhere('voucher_end_date', '>=', $now);
+            })
             ->get()
             ->toArray();
     }

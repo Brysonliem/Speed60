@@ -73,6 +73,7 @@
                                     'REFUND' => $color_status = 'orange',
                                     'CANCELLED' => $color_status = 'red',
                                     'PENDING' => $color_status = 'yellow',
+                                    'COMPLETED' => $color_status = 'green'
                                 };
                             @endphp
 

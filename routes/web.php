@@ -22,7 +22,9 @@ use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Products\Edit;
 use App\Livewire\Pages\Profile;
 use App\Livewire\Pages\Refunds\Index as RefundsIndex;
+use App\Livewire\Pages\Reviews\Create as ReviewsCreate;
 use App\Livewire\Pages\Reviews\Index as ReviewsIndex;
+use App\Livewire\Pages\Tabs\StoreReview;
 use App\Livewire\Pages\UserDashboard;
 use App\Livewire\Pages\Vouchers\Index as VoucherIndex;
 use App\Livewire\Pages\Vouchers\Create as VoucherCreate;
@@ -87,6 +89,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('reviews')->name('reviews.')->group(function() {
         Route::get('index', ReviewsIndex::class)->name('index');
+        Route::get('create', ReviewsCreate::class)->name('create');
+        Route::get('{variant_id}/store/{detail_id}', StoreReview::class)->name('store');
     });
 });
 

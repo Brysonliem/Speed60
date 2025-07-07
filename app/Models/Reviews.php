@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Reviews extends Model
 {
@@ -30,5 +31,10 @@ class Reviews extends Model
     public function transactionDetail(): BelongsTo
     {
         return $this->belongsTo(TransactionDetail::class, 'transaction_detail_id');
+    }
+
+    public function reviewImages(): HasMany
+    {
+        return $this->hasMany(ReviewImages::class, 'review_id');
     }
 }
