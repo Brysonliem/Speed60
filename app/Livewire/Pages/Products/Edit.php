@@ -34,6 +34,7 @@ class Edit extends Component
     public array $previewNewImages = [];
     public array $existingImages = [];
     public $product_types;
+    public $sub_product_types;
     public $motorCategories;
     public array $selectedMotorCategoryIds = [];
     public array $deletedImageIds = [];
@@ -55,6 +56,8 @@ class Edit extends Component
     {
         $this->product = $product->load(['images', 'variants', 'motorCategories']);
         $this->product_types = ProductType::all();
+        $sub_types = DB::table('sub_product_type')->get();
+        $this->sub_product_types = $sub_types;
         $this->motorCategories = $this->motorCategoryService->getAllCategory();
 
         $this->form = new ProductCreateForm($this, 'form');
@@ -62,6 +65,7 @@ class Edit extends Component
         $this->form->description = $product->description;
         $this->form->condition = $product->condition;
         $this->form->product_type_id = $product->product_type_id;
+        $this->form->sub_product_type_id = $product->sub_product_type_id;
         $this->form->material = $product->material;
 
         $this->selectedMotorCategoryIds = $product->motorCategories->pluck('id')->toArray();
@@ -157,6 +161,7 @@ class Edit extends Component
                 'description' => $this->form->description,
                 'condition' => $this->form->condition,
                 'product_type_id' => $this->form->product_type_id,
+                'sub_product_type_id' => $this->form->sub_product_type_id,
                 'material' => $this->form->material,
             ]);
 

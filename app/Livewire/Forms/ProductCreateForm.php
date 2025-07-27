@@ -26,6 +26,9 @@ class ProductCreateForm extends Form
     #[Validate('required|integer|exists:product_types,id')]
     public int $product_type_id;
 
+    #[Validate('required|integer|exists:sub_product_type,id')]
+    public int $sub_product_type_id;
+
     /**
      * Untuk mengisi form saat update misalnya
      */
@@ -38,5 +41,6 @@ class ProductCreateForm extends Form
         $this->condition = $product->condition;
         $this->material = $product->material;
         $this->product_type_id = $product->product_type_id;
+        $this->sub_product_type_id = $product->sub_product_type_id;
     }
 }

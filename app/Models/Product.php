@@ -18,12 +18,18 @@ class Product extends Model
         'condition',
         'created_by',
         'product_type_id',
+        'sub_product_type_id',
         'material'
     ];
 
     public function productType(): BelongsTo
     {
         return $this->belongsTo(ProductType::class, 'product_type_id');
+    }
+
+    public function subProductType(): BelongsTo
+    {
+        return $this->belongsTo(SubProductType::class, 'sub_product_type_id');
     }
 
     public function images(): HasMany

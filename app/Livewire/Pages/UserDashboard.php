@@ -23,7 +23,7 @@ class UserDashboard extends BaseComponent
 
     public function loadProducts() 
     {
-        $this->products = $this->productService->getAllProducts(null, null, null);
+        $this->products = $this->productService->getAllProducts(null, null, null, null);
     }
 
     public function loadVouchers()

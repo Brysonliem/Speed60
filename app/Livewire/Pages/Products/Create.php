@@ -30,6 +30,7 @@ class Create extends Component
     public array $imagePreviews = [];
     public array $variantImages = []; // variant-specific images
     public $product_types;
+    public $sub_product_types;
     public $motorCategories;
     public array $selectedMotorCategoryIds = [];
 
@@ -46,9 +47,11 @@ class Create extends Component
     public function mount()
     {
         $types = ProductType::all();
+        $sub_types = DB::table('sub_product_type')->get();
+        $this->sub_product_types = $sub_types;
         $this->product_types = $types;
         $this->motorCategories = $this->motorCategoryService->getAllCategory();
-        $this->form->product_type_id = $types[0]->id ?? null;
+        // $this->form->product_type_id = $types[0]->id ?? null;
         $this->variantForms[] = $this->makeVariantForm(0);
     }
 
@@ -103,7 +106,8 @@ class Create extends Component
                 'condition' => $this->form->condition,
                 'created_by' => Auth::id(),
                 'product_type_id' => $this->form->product_type_id,
-                'material' => $this->form->material
+                'material' => $this->form->material,
+                'sub_product_type_id' => $this->form->sub_product_type_id
             ]);
 
             // Relasi kategori motor

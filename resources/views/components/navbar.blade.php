@@ -49,6 +49,33 @@
         ];
     })->toArray();
 
+    $subchildrens = [];
+
+    $subchildrensTitanium = [];
+
+    for ($i = 1; $i <= 10; $i++) {
+        $subchildrens[] = [
+            'name' => "M{$i} Hardware Size",
+            'link' => route('products.index', [
+                'material' => 'STAINLESS',
+                'product_type' => 'Baut',
+                'sub_product_type' => "B_M{$i}",
+            ]),
+        ];
+    }
+
+    for ($i = 1; $i <= 10; $i++) {
+        $subchildrensTitanium[] = [
+            'name' => "M{$i} Hardware Size",
+            'link' => route('products.index', [
+                'material' => 'TITANIUM',
+                'product_type' => 'Baut',
+                'sub_product_type' => "B_M{$i}",
+            ]),
+        ];
+    }
+
+
     $links = [
         [
             "id" => "HOMEPAGE",
@@ -70,19 +97,7 @@
                 [
                     "id" => "BAUT_STAINLESS",
                     "name" => "Baut",
-                    'subchildrens' => [
-                        ['name' => 'M1 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M2 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M3 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M4 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M5 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M6 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M7 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M8 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M9 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                        ['name' => 'M10 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
-                    ]
-
+                    'subchildrens' => $subchildrens
                 ],
                 [
                     "id" => "MUR_STAINLESS",
@@ -114,7 +129,7 @@
                 [
                     "id" => "BAUT_STAINLESS",
                     "name" => "Baut",
-                    "link" => route('products.index', ['material' => 'TITANIUM','product_type' => 'Baut'])
+                    'subchildrens' => $subchildrensTitanium
                 ],
                 [
                     "id" => "MUR_STAINLESS",

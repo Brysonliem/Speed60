@@ -18,9 +18,9 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getAllProducts(?string $motorCategoryCode = null, ?string $material, ?string $searchName)
+    public function getAllProducts(?string $motorCategoryCode = null, ?string $material, ?string $searchName,?string $subProductTypeCode)
     {
-        return $this->productRepository->all($motorCategoryCode, $material, $searchName);
+        return $this->productRepository->all($motorCategoryCode, $material, $searchName, $subProductTypeCode);
     }
 
     public function allProductMaster(?int $limit)

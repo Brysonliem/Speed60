@@ -46,6 +46,24 @@
                 </div>
 
                 <div class="col-span-1">
+                    <label for="sub_product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Sub Tipe Produk</label>
+                    <select
+                        wire:model="form.sub_product_type_id"
+                        id="sub_product_type_id"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    >
+                        <option value="" selected>-- Pilih Sub Tipe Produk --</option>
+                        @foreach ($sub_product_types as $sub_type)
+                            <option value="{{ $sub_type->id }}">{{ $sub_type->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('form.product_type_id') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="col-span-1">
                     <label for="product_type_id" class="block mb-2 text-sm font-medium text-gray-900">Pilih Tipe Motor</label>
                     <button id="dropdownCheckboxButton" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center w-full" type="button">
                         Tipe Motor

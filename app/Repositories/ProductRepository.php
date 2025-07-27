@@ -15,6 +15,7 @@ class ProductRepository implements ProductRepositoryInterface
             ->with([
                 'variants',
                 'productType',
+                'subProductType',
                 'productImages' => function ($query) {
                     $query->where('is_main', 1);
                 },
@@ -28,7 +29,7 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
-    public function all(?string $motorCategoryCode = null, ?string $material, ?string $searchName = null)
+    public function all(?string $motorCategoryCode = null, ?string $material, ?string $searchName = null, ?string $subProductTypeCode)
     {
         $query = $this->baseProductQuery();
 
@@ -45,6 +46,14 @@ class ProductRepository implements ProductRepositoryInterface
         if ($searchName) {
             $query->where('name', 'like', "%{$searchName}%");
         }
+
+        if($subProductTypeCode) {
+            $query->whereHas('subProductType', function($subQuery) use ($subProductTypeCode) {
+                $subQuery->where('code', $subProductTypeCode);
+            });
+        }
+
+        // dd($query->get()->toArray());
 
         return $query->get()->toArray();
     }

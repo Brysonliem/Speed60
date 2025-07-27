@@ -23,6 +23,7 @@ class Index extends BaseComponent
     public string $selectedCategoryCode = '';
     public string $selectedMaterial = '';
     public string $selectedProductType = '';
+    public string $selectedSubProductType = '';
 
     public array $materialProducts = [
         ['name' => 'Stainless', 'code' => 'STAINLESS'],
@@ -35,6 +36,7 @@ class Index extends BaseComponent
         'search' => ['except' => ''],
         'selectedMaterial' => ['as' => 'material', 'except' => ''],
         'selectedProductType' => ['as' => 'product_type', 'except' => ''],
+        'selectedSubProductType' => ['as' => 'sub_product_type', 'except' => '']
     ];
 
     public function boot(
@@ -53,7 +55,8 @@ class Index extends BaseComponent
         return $this->productService->getAllProducts(
             $this->selectedCategoryCode ?: null,
             $this->selectedMaterial ?: null,
-            $this->search ?: null
+            $this->search ?: null,
+            $this->selectedSubProductType ?: null
         );
     }
 
