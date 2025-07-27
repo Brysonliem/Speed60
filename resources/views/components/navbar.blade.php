@@ -70,7 +70,19 @@
                 [
                     "id" => "BAUT_STAINLESS",
                     "name" => "Baut",
-                    "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])
+                    'subchildrens' => [
+                        ['name' => 'M1 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M2 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M3 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M4 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M5 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M6 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M7 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M8 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M9 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                        ['name' => 'M10 Hardware Size', "link" => route('products.index', ['material' => 'STAINLESS','product_type' => 'Baut'])],
+                    ]
+
                 ],
                 [
                     "id" => "MUR_STAINLESS",
@@ -236,7 +248,7 @@
                             <div class="w-full">
                                 <p class="text-gray-500 text-sm font-semibold uppercase mb-1">{{ $link['name'] }}</p>
                                 @foreach($link['childrens'] as $child)
-                                    <a href="{{ $child['link'] }}"
+                                    <a href="{{ $child['link'] ?? '#' }}"
                                     class="block text-gray-700 text-base font-medium hover:text-blue-600 py-1">
                                         {{ $child['name'] }}
                                     </a>
@@ -277,45 +289,58 @@
                 >
             </div>
 
-
-
-
             <div class="hidden lg:flex lg:justify-center h-full">
                 @foreach($links as $link)
                     @if(is_array($link['childrens']) && count($link["childrens"]) > 0)
-                        <!-- Link with dropdown -->
                         <div class="relative group">
                             <a href="{{ $link['link'] }}"
-                                class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 mr-0 text-sm font-medium h-full flex items-center">
+                            class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 text-sm font-medium h-full flex items-center">
                                 {{ $link['name'] }}
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </a>
+
+                            <!-- Dropdown menu -->
                             <div class="absolute left-0 hidden group-hover:block z-10">
                                 <div class="bg-white border-x border-b w-48">
                                     @foreach($link['childrens'] as $child)
-                                        <a href="{{ $child['link'] }}"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white">
-                                            {{ $child['name'] }}
-                                        </a>
+                                        <div class="relative group">
+                                            <a href="{{ !empty($child['link']) ? $child['link'] : '#' }}"
+                                               class="flex justify-between items-center px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white w-full {{ empty($child['link']) ? 'cursor-default' : '' }}">
+
+                                                {{ $child['name'] }}
+                                                @if(isset($child['subchildrens']) && count($child['subchildrens']) > 0)
+                                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                @endif
+                                            </a>
+
+                                            <!-- Subchildren submenu -->
+                                            @if(isset($child['subchildrens']) && count($child['subchildrens']) > 0)
+                                                <div class="absolute left-full top-0 hidden group-hover:block z-20 bg-white border w-48">
+                                                    @foreach($child['subchildrens'] as $sub)
+                                                        <a href="{{ $sub['link'] }}"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white">
+                                                            {{ $sub['name'] }}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
                     @else
-                        <!-- Regular link without dropdown -->
                         <a href="{{ $link['link'] }}"
-                            class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 mr-0 text-sm font-medium h-full flex items-center">
+                        class="text-gray-900 hover:text-white hover:bg-red-500 py-2 md:px-5 text-sm font-medium h-full flex items-center">
                             {{ $link['name'] }}
                         </a>
                     @endif
                 @endforeach
             </div>
-
-
-
 
             <!-- Right side icons -->
             <div class="w-1/3 flex justify-end items-center gap-4">
