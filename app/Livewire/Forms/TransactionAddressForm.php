@@ -26,6 +26,12 @@ class TransactionAddressForm extends Form
     public ?string $postal_code = '';
 
     #[Validate('required|string')]
+    public ?string $district = '';
+
+    #[Validate('required|string')]
+    public ?string $subdistrict = '';
+
+    #[Validate('required|string')]
     public ?string $email = '';
 
     #[Validate('required|string')]

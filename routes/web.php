@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Pages\Carts;
+use App\Livewire\Pages\CheckoutFailed;
 use App\Livewire\Pages\CheckoutProduct;
 use App\Livewire\Pages\CheckoutSuccess;
 use App\Livewire\Pages\IndexTransactions;
@@ -63,6 +64,7 @@ Route::middleware('auth')->group(function () {
         Route::get('{product}/detail', ProductDetail::class)->name('detail');
         Route::get('checkout', CheckoutProduct::class)->name('checkout');
         Route::get('checkout/success', CheckoutSuccess::class)->name('checkout.success');
+        Route::get('checkout/failed', CheckoutFailed::class)->name('checkout.failed');
     });
 
     Route::prefix('vouchers')->name('vouchers.')->group(function () {
@@ -125,5 +127,57 @@ Route::get('/cart', function () {
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
+
+// Route::get('/debug/rajaongkir/calculate', function (\App\Services\RajaOngkirClient $ro) {
+//     $payload = [
+//         'origin'          => (int) config('rajaongkir.origin_id'),   // dari .env
+//         'destination'     => (int) config('rajaongkir.origin_id'), // tujuan: coba sendiri
+//         'weight'          => 1000, // 1kg (gram)
+//         'courier'         => config('rajaongkir.default_couriers'),
+//         'price'           => 'lowest'
+//     ];
+
+//     $res = $ro->cost($payload);
+//     return $res;
+// });
+
+// Route::get('/debug/rajaongkir/origin-ids', function (\App\Services\RajaOngkirClient $ro) {
+//     // 1) Provinsi: Jawa Barat
+//     $prov = collect(
+//             data_get($ro->provinces(), 
+//             'data',
+//             [])
+//         )
+//             ->first(fn($p) => Str::upper($p['name']) === 'BANTEN');
+
+//     // 2) Kota Bekasi (bukan Kab. Bekasi)
+//     $city = collect(data_get($ro->cities($prov['id']), 'data', []))
+//         ->first(fn($c) => Str::upper($c['name']) === 'TANGERANG');
+
+//         // // 3) Daerah Mustikajaya
+//     $dis = collect(data_get($ro->districts($city['id']), 'data', []))
+//         ->first(function ($s) {
+//             $name = Str::of($s['name'])->upper()->replace(' ', '');
+//             return in_array($name, ['PANONGAN']); // redundant-safe
+//         });
+//     // 4) Kecamatan Mustikajaya
+//     $sub = collect(data_get($ro->subdistricts($dis['id']), 'data', []))
+//         ->first(function ($s) {
+//             $name = Str::of($s['name'])->upper()->replace(' ', '');
+//             return in_array($name, ['PANONGAN']); // redundant-safe
+//         });
+
+//     return [
+//         'province' => $prov,
+//         'city'     => $city,
+//         'district' => $dis,
+//         'subdistrict' => $sub,
+//         'how_to_set_env' => [
+//             'ORIGIN_SUBDISTRICT_ID' => $sub['subdistrict_id'] ?? null,
+//             'ORIGIN_CITY_ID'        => $city['city_id'] ?? null,
+//             'note' => 'Pakai ORIGIN_SUBDISTRICT_ID agar originType=subdistrict',
+//         ],
+//     ];
+// });
 
 require __DIR__ . '/auth.php';

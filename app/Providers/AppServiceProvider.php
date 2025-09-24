@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Xendit\Configuration;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
                 Session::flash('show_promo_modal', true);
             }
         });
+
+        Configuration::setXenditKey(config('xendit.secret_key'));
     }
 }

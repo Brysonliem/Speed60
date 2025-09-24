@@ -1,89 +1,254 @@
 <div class="flex flex-col gap-4 p-4 md:p-8">
-    <!-- Breadcrumb -->
-    {{-- @livewire('components.breadcrumb', ['links' => [
-        ['name' => 'Produk', 'url' => route('products.index')],
-        ['name' => 'Checkout', 'url' => route('products.checkout')]
-    ]]) --}}
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div class="md:col-span-2">
             <div class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-                <span class="text-lg font-medium mb-5">Informasi Pembayaran</span>
-                {{-- forms --}}
-                <form wire:submit.prevent="" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-5">
-                    <!-- Nama Depan -->
-                    <div class="sm:col-span-2">
-                        <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900">Nama Depan</label>
-                        <input wire:model="address_form.first_name" type="text" id="firstname" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
+                <div
+                x-data="{
+                    selectedId: @entangle('selected_address_id'),
+                    showNewForm: @entangle('show_book_form'),
+                }"
+                class="w-full max-w-5xl mx-auto space-y-6"
+                >
+                <!-- Header -->
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900">Alamat Pengiriman</h3>
+                    <span class="text-sm text-gray-500">Pilih satu alamat</span>
+                </div>
 
-                    <!-- Nama Belakang -->
-                    <div class="sm:col-span-2">
-                        <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900">Nama Belakang</label>
-                        <input wire:model="address_form.last_name" type="text" id="lastname" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
-
-                    <!-- Nama Perusahaan -->
-                    {{-- <div class="sm:col-span-2 md:col-span-2">
-                        <label for="company" class="block mb-2 text-sm font-medium text-gray-900">Company Name</label>
-                        <input wire:model="address_form.company_name" type="text" id="company" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div> --}}
-
-                    <!-- Alamat -->
-                    <div class="col-span-full">
-                        <label for="address" class="block mb-2 text-sm font-medium text-gray-900">Alamat Lengkap</label>
-                        <textarea wire:model="address_form.address" id="message" rows="4" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
-                    </div>
-
-                    <!-- Provinsi -->
-                    <div class="sm:col-span-1">
-                        <label for="province" class="block mb-2 text-sm font-medium text-gray-900">Provinsi</label>
-                        <input wire:model="address_form.province" type="text" id="zipcode" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
-
-                    <!-- Kota -->
-                    <div class="sm:col-span-1">
-                        <label for="city" class="block mb-2 text-sm font-medium text-gray-900">Kota</label>
-                        <input wire:model="address_form.city" type="text" id="zipcode" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
-
-                    <!-- Kode Pos -->
-                    <div class="sm:col-span-2">
-                        <label for="zipcode" class="block mb-2 text-sm font-medium text-gray-900">Kode Pos</label>
-                        <input wire:model="address_form.postal_code" type="text" id="zipcode" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
-
-                    <!-- Email -->
-                    <div class="sm:col-span-2">
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                        <input wire:model="address_form.email" type="email" id="email" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
-
-                    <!-- Nomor Telepon -->
-                    <div class="sm:col-span-2">
-                        <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Nomor Telepon</label>
-                        <input wire:model="address_form.phone" type="tel" id="phone" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
-                    </div>
-
-                    <div class="col-span-full">
-                        <div class="flex items-center p-4 border border-gray-200 rounded-sm ">
-                            <div class="flex items-center h-5">
-                                <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" wire:model="is_store" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
-                            </div>
-                            <div class="ms-2 text-sm">
-                                <label for="helper-checkbox" class="font-medium text-gray-900 ">Simpan alamat</label>
-                                <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 ">Alamat akan disimpan di transaksi selanjutnya.</p>
-                            </div>
+                <!-- Grid Alamat (single-select, dari Livewire) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" role="radiogroup" aria-label="Pilihan Alamat">
+                    @forelse ($addresses as $addr)
+                    <label
+                        class="group relative block h-full cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-md
+                            {{ ($selected_address_id == $addr['id']) ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200' }}"
+                        role="radio"
+                        tabindex="0"
+                        @click="$wire.selectAddress({{ $addr['id'] }}); selectedId = {{ $addr['id'] }}"
+                        @keydown.enter.prevent="$wire.selectAddress({{ $addr['id'] }}); selectedId = {{ $addr['id'] }}"
+                        @keydown.space.prevent="$wire.selectAddress({{ $addr['id'] }}); selectedId = {{ $addr['id'] }}"
+                    >
+                        <!-- Radio visual -->
+                        <div class="absolute top-3 right-3">
+                        <div class="h-5 w-5 rounded-full border flex items-center justify-center
+                                    {{ ($selected_address_id == $addr['id']) ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-300' }}">
+                            @if ($selected_address_id == $addr['id'])
+                            <div class="h-2.5 w-2.5 rounded-full bg-white"></div>
+                            @endif
                         </div>
+                        </div>
+
+                        <div class="flex items-center gap-2 mb-2">
+                        <span class="text-sm font-medium text-gray-900">{{ $addr['title_address'] ?: 'Alamat' }}</span>
+                        @if ($addr['is_main'])
+                            <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Utama</span>
+                        @endif
+                        </div>
+
+                        <div class="space-y-1 text-sm">
+                        <div class="font-medium text-gray-900">{{ $addr['recipients_name'] }}</div>
+                        <div class="text-gray-700">{{ $addr['recipients_phone'] }}</div>
+                        <div class="text-gray-600">{{ $addr['address'] }}</div>
+                        @if (!empty($addr['additional_address']))
+                            <div class="text-gray-600">{{ $addr['additional_address'] }}</div>
+                        @endif
+                        <div class="text-gray-600">{{ $addr['city'] }}, {{ $addr['province'] }} {{ $addr['postal_code'] }}</div>
+                        </div>
+
+                        <!-- Aksi kecil -->
+                        <div class="mt-3 flex items-center gap-3 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition">
+                        <button type="button" class="hover:underline" wire:click.stop="editBookAddress({{ $addr['id'] }})">Ubah</button>
+                        <span class="text-gray-300">•</span>
+                        <button type="button" class="hover:underline" wire:click.stop="deleteBookAddress({{ $addr['id'] }})">Hapus</button>
+                        @if (! $addr['is_main'])
+                            <span class="text-gray-300">•</span>
+                            <button type="button" class="hover:underline" wire:click.stop="setMainBookAddress({{ $addr['id'] }})">Jadikan Utama</button>
+                        @endif
+                        </div>
+                    </label>
+                    @empty
+                    <div class="col-span-full text-sm text-gray-600">Belum ada alamat. Tambahkan alamat baru di bawah.</div>
+                    @endforelse
+                </div>
+
+                <!-- CTA bawah grid -->
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <button type="button"
+                            @click="$wire.showCreateAddress(); showNewForm = true"
+                            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"/></svg>
+                    Tambah alamat baru
+                    </button>
+
+                    <div class="text-sm text-gray-500" x-show="selectedId">
+                    Terpilih: <strong>#<span x-text="selectedId"></span></strong>
+                    </div>
+                </div>
+
+                <!-- FORM Alamat Buku (Livewire) -->
+                @if ($show_book_form)
+                    <div class="block w-full p-6 bg-white border border-dashed border-gray-300 rounded-lg shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-lg font-medium">{{ $is_editing_book ? 'Ubah Alamat' : 'Tambah Alamat Baru' }}</span>
+                        <button type="button" wire:click="cancelBookForm" class="text-sm text-gray-500 hover:underline">Tutup</button>
                     </div>
 
-                    <!-- Informasi Tambahan -->
-                    <div class="col-span-full">
-                        <span class="block mt-6 mb-2 font-medium text-lg text-gray-900">Informasi Tambahan</span>
-                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Catatan Pemesanan (opsional)</label>
-                        <textarea wire:model="address_form.description" id="message" rows="4" class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <form wire:submit.prevent="saveBookAddress" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Label (Rumah/Kantor)</label>
+                            <input wire:model.defer="book_form.title_address" type="text"
+                                class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Rumah / Kantor" />
+                            @error('book_form.title_address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Nama Penerima</label>
+                            <input wire:model.defer="book_form.recipients_name" type="text"
+                                class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
+                            @error('book_form.recipients_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Nomor Telepon</label>
+                            <input wire:model.defer="book_form.recipients_phone" type="tel"
+                                class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" required />
+                            @error('book_form.recipients_phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="col-span-full">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Alamat Lengkap</label>
+                            <textarea wire:model.defer="book_form.address" rows="3"
+                                    class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Nama jalan, nomor, RT/RW, patokan" required></textarea>
+                            @error('book_form.address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="col-span-full">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Alamat Tambahan (opsional)</label>
+                            <input wire:model.defer="book_form.additional_address" type="text"
+                                class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500" />
+                            @error('book_form.additional_address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        {{-- PROVINSI --}}
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Provinsi</label>
+                            <select class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500"
+                                    wire:change="onBookProvinceChanged($event.target.value)">
+                            <option value="">Pilih provinsi...</option>
+                            @foreach($provinceOptions as $opt)
+                                <option value="{{ $opt['id'] }}">{{ $opt['name'] }}</option>
+                            @endforeach
+                            </select>
+                            <input class="mt-2 w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm"
+                                wire:model.defer="book_form.province" placeholder="Provinsi terpilih" readonly required>
+                            @error('book_form.province') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        {{-- KOTA/KABUPATEN --}}
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Kota/Kabupaten</label>
+                            <select class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500"
+                                    wire:change="onBookCityChanged($event.target.value)"
+                                    @disabled(empty($tmpProvinceId))>
+                            <option value="">Pilih kota/kab...</option>
+                            @foreach($cityOptions as $opt)
+                                <option value="{{ $opt['id'] }}">{{ $opt['name'] }}</option>
+                            @endforeach
+                            </select>
+                            <input class="mt-2 w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm"
+                                wire:model.defer="book_form.city" placeholder="Kota/Kab terpilih" readonly required>
+                            @error('book_form.city') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        {{-- DISTRICT / DAERAH --}}
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">District / Daerah</label>
+                            <select class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500"
+                        wire:change="onBookDistrictChanged($event.target.value)"
+                        @disabled(empty($tmpCityId))>
+                            <option value="">Pilih district...</option>
+                            @foreach($districtOptions as $opt)
+                                <option value="{{ $opt['id'] }}">{{ $opt['name'] }}</option>
+                            @endforeach
+                            </select>
+                            <input class="mt-2 w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm"
+                                wire:model.defer="book_form.district" placeholder="District terpilih" readonly required>
+                            @error('book_form.district') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        {{-- SUBDISTRICT / KECAMATAN + KODE POS --}}
+                        <div class="sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Subdistrict / Kecamatan</label>
+                            <select class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm focus:ring-blue-500 focus:border-blue-500"
+                                    wire:change="onBookSubdistrictChanged($event.target.value)"
+                                    @disabled(empty($tmpDistrictId))>
+                            <option value="">Pilih subdistrict...</option>
+                            @foreach($subdistrictOptions as $opt)
+                                <option value="{{ $opt['id'] }}">{{ $opt['name'] }}</option>
+                            @endforeach
+                            </select>
+                            <div class="mt-2 grid grid-cols-2 gap-2">
+                            <input class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm"
+                                    wire:model.defer="book_form.subdistrict" placeholder="Subdistrict terpilih" readonly required>
+                            <input class="w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-sm"
+                                    wire:model.defer="book_form.postal_code" placeholder="Kode pos (auto)" readonly required>
+                            </div>
+                            @error('book_form.subdistrict') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('book_form.postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="col-span-full">
+                            <label class="inline-flex items-center gap-2">
+                            <input type="checkbox" wire:model.defer="book_form.is_main"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+                            <span class="text-sm text-gray-700">Jadikan sebagai alamat utama</span>
+                            </label>
+                        </div>
+
+                        <div class="col-span-full flex items-center gap-3">
+                            <button type="submit" class="px-5 py-2.5 text-sm font-medium rounded-lg text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Simpan Alamat
+                            </button>
+                            <button type="button" wire:click="cancelBookForm" class="px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50">
+                            Batal
+                            </button>
+                        </div>
+                    </form>
+
                     </div>
-                </form>
+                @endif
+
+                <!-- Ringkasan alamat terpilih -->
+                <div class="rounded-lg border border-gray-200 p-4">
+                    <div class="text-sm text-gray-600">
+                    <span class="font-medium text-gray-900">Ringkasan Alamat Terpilih:</span>
+                    @php $sel = collect($addresses)->firstWhere('id', $selected_address_id); @endphp
+                    @if (! $sel)
+                        <div class="mt-1 text-gray-500">Belum ada alamat dipilih.</div>
+                    @else
+                        <div class="mt-2 space-y-0.5">
+                        <div class="font-medium text-gray-900">{{ $sel['recipients_name'] }}</div>
+                        <div class="text-gray-700">{{ $sel['recipients_phone'] }}</div>
+                        <div class="text-gray-700">{{ $sel['address'] }}</div>
+                        @if(!empty($sel['additional_address']))
+                            <div class="text-gray-700">{{ $sel['additional_address'] }}</div>
+                        @endif
+                        <div class="text-gray-700">{{ $sel['city'] }}, {{ $sel['province'] }} {{ $sel['postal_code'] }}</div>
+                        <div class="text-xs text-gray-500">
+                            <span class="uppercase tracking-wide">{{ $sel['title_address'] }}</span>
+                            @if ($sel['is_main'])
+                            <span class="ml-1 px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">Utama</span>
+                            @endif
+                        </div>
+                        </div>
+                    @endif
+                    </div>
+                </div>
+                </div>
+
+
 
             </div>
         </div>
@@ -106,7 +271,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Shipping</span>
-                        <span class="text-sm font-medium">FREE</span>
+                        <span class="text-sm font-medium">@idr($shipping_price)</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm font-medium text-gray-400">Tax</span>

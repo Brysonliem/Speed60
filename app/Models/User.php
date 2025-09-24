@@ -3,16 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPasswordContract
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -75,6 +78,29 @@ class User extends Authenticatable
         return $this->belongsToMany(Voucher::class, 'user_vouchers')
                     ->withTimestamps()
                     ->withPivot('used_at');
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(AddressUsers::class);
+    }
+
+    public function mainAddress()
+    {
+        return $this->hasOne(AddressUsers::class)->where('is_main', true);
+    }
+
+     // (Opsional) override untuk ganti URL reset sesuai route kita
+    public function sendPasswordResetNotification($token)
+    {
+        $url = url(route('password.reset', [
+            'token' => $token,
+            'email' => $this->getEmailForPasswordReset(),
+        ], false));
+
+        $this->notify(new \App\Notifications\ResetPasswordNotificationCustom($url));
+        // atau pakai bawaan Laravel:
+        // $this->notify(new \Illuminate\Auth\Notifications\ResetPassword($token));
     }
 
 }

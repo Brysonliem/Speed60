@@ -31,7 +31,7 @@ class LoginForm extends Form
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'form.username' => trans('auth.failed'),
+                'form.username' => "Akun tidak ditemukan atau password salah.",
             ]);
         }
 
