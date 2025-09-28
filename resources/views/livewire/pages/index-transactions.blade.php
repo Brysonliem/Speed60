@@ -61,7 +61,7 @@
                             <th scope="col" class="px-6 py-3">Use Voucher</th>
                             <th scope="col" class="px-6 py-3">Total Quantity</th>
                             <th scope="col" class="px-6 py-3">Checkout At</th>
-                            <th scope="col" class="px-6 py-3"><span class="sr-only">Actions</span></th>
+                            {{-- <th scope="col" class="px-6 py-3"><span class="sr-only">Actions</span></th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -82,7 +82,7 @@
                                     {{ $trx->transaction_number }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="bg-{{ $color_status }}-100 text-{{ $color_status }}-800 text-sm font-medium me-2 px-2.5 py-1 rounded-sm">
+                                    <span class="bg-{{ $color_status }}-100 text-{{ $color_status }}-800 border border-{{ $color_status }}-600 text-sm font-medium me-2 px-2.5 py-1 rounded-md">
                                         {{ $trx->transaction_status }}
                                     </span>
                                 </td>
@@ -101,7 +101,7 @@
                                 <td class="px-6 py-4">
                                     {{ \Carbon\Carbon::parse($trx->proceed_at)->format('d-m-Y H:i') }}
                                 </td>
-                                <td class="px-6 py-4 text-right flex gap-2">
+                                {{-- <td class="px-6 py-4 text-right flex gap-2">
                                     <button
                                         data-tooltip-target="tooltip-detail-{{ $index }}"
                                         type="button"
@@ -125,7 +125,7 @@
                                         Detail Transaction
                                         <div class="tooltip-arrow" data-popper-arrow></div>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>

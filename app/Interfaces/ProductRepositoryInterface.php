@@ -8,6 +8,7 @@ interface ProductRepositoryInterface
     public function allProductMaster(?int $limit = null);
     public function find(int $id);
     public function create(array $data);
+    public function countProducts();
 
     public function getAllType();
     public function update(int $id, array $data);

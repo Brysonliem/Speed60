@@ -75,4 +75,9 @@ class TransactionService
     {
         return $this->transactionRepository->getTransactionsByUser($userId, $status, $exclude);
     }
+
+    public function getDetailTransactionAndDetails(int $id)
+    {
+        return $this->transactionRepository->getDetailTransactionAndDetails($id);
+    }
 }

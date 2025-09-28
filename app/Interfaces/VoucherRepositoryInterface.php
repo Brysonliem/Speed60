@@ -13,4 +13,5 @@ interface VoucherRepositoryInterface
     public function activate(int $id, bool $status);
     public function delete(int $id);
     public function assign(int $voucherId, int $userId);
+    public function countVouchers();
 }

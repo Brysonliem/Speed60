@@ -22,9 +22,6 @@
                                 {{ $column }}
                             </th>
                         @endforeach
-                        <th scope="col" class="px-4 py-3">
-                            <span class="sr-only">Action</span>
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,13 +48,6 @@
                             </td>
                             <td class="px-4 py-3">
                                 @idr($trx->grand_total) ({{ $trx->total_product }} BARANG)
-                            </td>
-                            <td class="px-4 py-3 text-right">
-                                <button
-                                    type="button"
-                                    class="inline-block font-medium text-white bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded">
-                                    Detail
-                                </button>
                             </td>
                         </tr>
                     @empty

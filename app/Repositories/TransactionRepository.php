@@ -163,4 +163,12 @@ class TransactionRepository implements TransactionRepositoryInterface
         return $query->get()->toArray();
     }
 
+    public function getDetailTransactionAndDetails(int $id)
+    {
+        $query = DB::table('transactions as tx')
+            ->join('transaction_details td', 'td.detail_master', '=', 'tx.id')
+            ->where('tx.id', $id);
+
+        return $query->first();
+    }
 }

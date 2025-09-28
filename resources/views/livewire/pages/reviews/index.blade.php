@@ -51,7 +51,7 @@
                                 {{ $review->created_at->format('d-m-Y H:i:s') }}
                             </td>
                             <td class="px-6 py-4 space-x-2">
-                                <a href="#"
+                                <a href="{{ route('reviews.show', [$review->id]) }}"
                                    class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded hover:bg-blue-700">
                                     Detail
                                 </a>

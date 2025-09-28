@@ -8,6 +8,7 @@ interface TransactionRepositoryInterface
     public function create(array $data);
     public function update(int $id, array $data);
     public function delete(int $id);
+    public function getDetailTransactionAndDetails(int $id);
     public function deleteByTransactionNumber(string $trx_number);
     public function getTransactionDetails(?string $status);
     public function countTransactionByUser(int $userId);

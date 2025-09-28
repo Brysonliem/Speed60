@@ -62,4 +62,9 @@ class VoucherService
     {
         return $this->voucherRepository->assign($voucherId, $userId);
     }
+
+    public function countVouchers()
+    {
+        return $this->voucherRepository->countVouchers();
+    }
 }

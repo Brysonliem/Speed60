@@ -72,7 +72,7 @@
                         Post Reviews
                     </button>
                 </li>
-                <li>
+                {{-- <li>
                     <button 
                         :class="activeTab === 'my-vouchers' ? 'text-white bg-red-600' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" 
                         class="inline-flex items-center px-4 py-3 w-full gap-2 font-medium"
@@ -85,7 +85,7 @@
 
                         My Vouchers
                     </button>
-                </li>
+                </li> --}}
                 <li>
                     <button 
                         :class="activeTab === 'my-account' ? 'text-white bg-red-600' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" 

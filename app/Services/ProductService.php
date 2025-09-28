@@ -66,4 +66,9 @@ class ProductService
     {
         return $this->productRepository->getVariantById($id);
     }
+
+    public function countProducts()
+    {
+        return $this->productRepository->countProducts();
+    }
 }

@@ -111,4 +111,9 @@ class VoucherRepository implements VoucherRepositoryInterface
     {
         return Voucher::where('id', $id)->delete();
     }
+
+    public function countVouchers()
+    {
+        return Voucher::all()->count();
+    }
 }

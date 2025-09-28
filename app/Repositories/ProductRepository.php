@@ -119,4 +119,9 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return ProductVariant::with('product')->findOrFail($id);
     }
+
+    public function countProducts()
+    {
+        return Product::all()->count();
+    }
 }

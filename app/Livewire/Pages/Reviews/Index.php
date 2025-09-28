@@ -3,8 +3,8 @@
 namespace App\Livewire\Pages\Reviews;
 
 use App\Models\Reviews;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.admin')]
 class Index extends Component

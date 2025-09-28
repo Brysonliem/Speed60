@@ -105,13 +105,28 @@
                                 </td>
                                 <td class="px-3 md:px-6 py-2 md:py-4 text-right">
                                     <div class="flex flex-wrap justify-end gap-2">
-                                        <button
-                                            wire:click="showDetail({{ $trx->id }})"
+                                        @php
+                                            // Ganti nama field sesuai punyamu: tracking_number / resi / awb / dll
+                                            $resi = $trx->transaction_number;
+
+                                            // Pola URL cekresi (umum): ?noresi=<NOMOR_RESI>
+                                            $cekresiUrl = $resi
+                                                ? 'https://cekresi.com/?noresi=' . urlencode($resi)
+                                                : 'https://cekresi.com/';
+                                        @endphp
+
+                                        <a href="{{ $cekresiUrl }}"
+                                            target="_blank" rel="noopener"
                                             data-tooltip-target="tooltip-detail-{{ $index }}"
-                                            type="button"
-                                            class="inline-block font-medium text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded">
-                                            Detail
-                                        </button>
+                                            class="inline-flex items-center gap-1.5 font-medium text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded">
+                                            {{-- heroicon: arrow-top-right-on-square --}}
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M13.5 6H18m0 0v4.5M18 6l-9 9M8.25 6.75H6A2.25 2.25 0 0 0 3.75 9v9A2.25 2.25 0 0 0 6 20.25h9A2.25 2.25 0 0 0 17.25 18v-2.25"/>
+                                            </svg>
+                                            <span>CEK RESI</span>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
